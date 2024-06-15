@@ -27,7 +27,7 @@ ChartJS.register(
 
 import { options, data } from "./utils/chartMockData";
 import { diagnosticHistoryCards } from "./utils/diagnosisMockData";
-import BaseCard from './BaseCard';
+import BaseCardDiagnosis from './BaseCardDiagnosis';
 
 const DiagnosisHistory = () => {
     return (
@@ -45,7 +45,7 @@ const DiagnosisHistory = () => {
                         </span> 
                     </p>
                 </div>
-                <div className='flex items-center'>
+                <div className='flex items-center w-10/12 lg:w-full'>
                     <Line options={options} data={data} /> 
                 </div>
               </div>
@@ -79,10 +79,9 @@ const DiagnosisHistory = () => {
             </section>
             <section className='grid grid-cols-3 grid-rows-1 mt-5 gap-5' >
             { diagnosticHistoryCards.map( (cardPros, index) => {
-                return (<BaseCard key={index} cardProps={cardPros} />)
+                return (<BaseCardDiagnosis key={index} cardProps={cardPros} />)
             })}
             </section>
-             
         </section>
         )
 }
