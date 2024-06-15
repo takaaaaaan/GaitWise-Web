@@ -48,29 +48,31 @@ const DiagnosisHistory = () => {
                     <Line options={options} data={data} /> 
                 </div>
               </div>
-              <div className='grid grid-cols-1 grid-rows-3'>
-                <div className='grid grid-cols-1 grid-rows-3 text-md font-medium'>
+              <div className='flex flex-wrap'>
+                <div className='w-full grid grid-cols-1 grid-rows-3 text-md font-medium mb-4'>
                     <div className='flex items-center'>
                         <div className=' w-4 h-4 mr-2 bg-pink-400 rounded-full' ></div>
                         Systolic
                     </div>
-                    <h3 className="flex items-center text-2xl font-medium">160</h3>
+                    <h3 className="py-1 flex items-center text-2xl font-medium">160</h3>
                     <div className='flex items-center'>
                         <ArrowUpIcon /> 
                         <p className='ml-1 font-extralight'>Higher than Average</p>
                     </div>
                 </div>
-                <div className='grid grid-cols-1 grid-rows-3 mt-4 text-md font-medium'>
-                <div className=' w-full h-px mt-1 mr-1 bg-gray-400' ></div>
+                <div className='h-px w-full mr-2 bg-gray-400 mb-4' ></div>
+                <div className='w-full grid grid-cols-1 grid-rows-3 text-md font-medium'>
                     <div className='flex items-center'>
-                        <div className=' w-4 h-4 mr-2 bg-purple-400 rounded-full' ></div>
+                        <div className='w-4 h-4 mr-2 bg-purple-400 rounded-full' ></div>
                         Diastolic
                     </div>
-                    <h3 className="flex items-center text-2xl font-medium">78</h3>
+                    <h3 className="py-1 flex items-center text-2xl font-medium">78</h3>
                     <div className='flex items-center'>
                         <ArrowDownIcon /> 
                         <p className='ml-1 font-extralight'>Lower than Average</p>
                     </div>
+                </div>
+                <div className='w-full h-14'>
                 </div>
               </div>
             </section>

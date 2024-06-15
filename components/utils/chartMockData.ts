@@ -18,11 +18,21 @@ export const data = {
       data: labels.map(() => faker.datatype.number({ min: 120, max: 180 })),
       borderColor: 'rgb(230, 111, 210)',
       backgroundColor: 'rgba(230, 111, 210)',
+      tension: 0.4,
+      pointBorderWidth: 2,
+      pointBorderColor: 'rgba(255,255,255)',
+      pointRadius: 7,
+      borderWidth: 2
     },
     {
       data: labels.map(() => faker.datatype.number({ min: 60, max: 100 })),
       borderColor: 'rgb(140, 111, 230)',
       backgroundColor: 'rgba(140, 111, 230)',
+      tension: 0.4,
+      pointBorderWidth: 2,
+      pointBorderColor: 'rgba(255,255,255)',
+      pointRadius: 7,
+      borderWidth: 2
     },
   ],
 };
