@@ -7,6 +7,13 @@ export const options = {
           display: false,
       },
     },
+    scales: {
+      x: {
+        grid: {
+            display: false
+        }
+    },
+    }
   };
   
 const labels = ['Oct, 2023', 'Nov, 2023', 'Dec, 2023', 'Jan, 2024', 'Feb, 2024', 'Mar, 2024'];
