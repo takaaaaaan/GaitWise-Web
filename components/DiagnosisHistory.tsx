@@ -26,7 +26,8 @@ ChartJS.register(
 );
 
 import { options, data } from "./utils/chartMockData";
-import Image from 'next/image';
+import { diagnosticHistoryCards } from "./utils/diagnosisMockData";
+import BaseCard from './BaseCard';
 
 const DiagnosisHistory = () => {
     return (
@@ -77,45 +78,9 @@ const DiagnosisHistory = () => {
               </div>
             </section>
             <section className='grid grid-cols-3 grid-rows-1 mt-5 gap-5' >
-                <div className='pl-4 bg-blue-50 rounded-xl'>
-                    <Image
-                        className='py-5'
-                        src="/images/respiratoryrate@2x.png"
-                        width={90}
-                        height={90}
-                        alt="Temperature"
-                    />
-                    <h2 className='text-lg font-light' >Respiratory Rate</h2>
-                    <p className='text-3xl font-bold'>20 bpm</p>
-                    <p className='my-5'>Normal</p>
-                </div>
-                <div className='pl-4 bg-red-50 rounded-xl'>
-                    <Image
-                        className='py-5'
-                        src="/images/temperature@2x.png"
-                        width={90}
-                        height={90}
-                        alt="Temperature"
-                    />
-                    <h2 className='text-lg font-light' >Temperature</h2>
-                    <p className='text-3xl font-bold'>98.6°F</p>
-                    <p className='my-5'>Normal</p>
-                </div>
-                <div className='pl-4 bg-red-50 rounded-xl'>
-                    <Image
-                        className='py-5'
-                        src="/images/HeartBPM@2x.png"
-                        width={90}
-                        height={90}
-                        alt="Temperature"
-                    />
-                    <h2 className='text-lg font-light' >Heart Rate</h2>
-                    <p className='text-3xl font-bold'>78 bpm</p>
-                    <div className='flex items-center my-5'>
-                        <ArrowDownIcon /> 
-                        <p className='ml-1 font-extralight'>Lower than Average</p>
-                    </div>
-                </div>
+            { diagnosticHistoryCards.map( (cardPros, index) => {
+                return (<BaseCard key={index} cardProps={cardPros} />)
+            })}
             </section>
              
         </section>
