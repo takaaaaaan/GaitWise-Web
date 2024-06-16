@@ -24,7 +24,7 @@ const LabResultsList = () => {
                         <p className="text-sm font=light leading-6 text-gray-900">{result.result}</p>
                     </div>
                     </div>
-                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-center">
+                    <div className="shrink-0 sm:flex sm:flex-col sm:items-center">
                         <DownloadIcon/>
                     </div>
                 </li>
