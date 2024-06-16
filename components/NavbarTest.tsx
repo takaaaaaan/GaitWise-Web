@@ -62,7 +62,7 @@ export default function NavbarTest() {
                 <div className="hidden md:w-full sm:ml-6 sm:block ">
                   <div className="flex justify-center space-x-4">
                     {navigation.map((item) => (
-                      <af
+                      <a
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -75,7 +75,7 @@ export default function NavbarTest() {
                       >
                         <div className='pr-2'>{ item.svgIcon }</div>
                         {item.name}
-                      </af>
+                      </a>
                     ))}
                   </div>
                 </div>
