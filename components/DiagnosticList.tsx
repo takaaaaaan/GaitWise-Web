@@ -10,7 +10,7 @@ const DiagnosticList = () => {
                 <table className="w-full table-fixed">
                     <thead>
                         <tr>
-                        <th className="bg-gray-100 font-medium rounded-l-3xl text-left p-4">Problem/Diagnosis</th>
+                        <th className="bg-gray-100 font-medium rounded-l-3xl text-left p-4">Problem / Diagnosis</th>
                         <th className="bg-gray-100 font-medium text-left p-4">Description</th>
                         <th className="bg-gray-100 font-medium rounded-r-3xl text-left p-4">Status</th>
                         </tr>
@@ -20,7 +20,7 @@ const DiagnosticList = () => {
                     {diagnosticTableMockData.map( (diagnostic, index) => {
                     return (
                     <tr key={index}>
-                       <td className="py-4 pl-4 font-light">{diagnostic.name})</td>
+                       <td className="break-normal py-4 pl-4 font-light text-pretty">{diagnostic.name}</td>
                        <td className="py-4 pl-4 font-light">{diagnostic.description}</td>
                        <td className="py-4 pl-4 font-light">{diagnostic.status}</td>
                     </tr>

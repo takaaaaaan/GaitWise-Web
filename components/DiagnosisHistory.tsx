@@ -35,8 +35,8 @@ const DiagnosisHistory = () => {
             <div className="flex items-center pb-10">
                 <h2 className="text-2xl font-medium" >Diagnosis History</h2>
             </div> 
-            <section className='grid grid-cols-3 grid-rows-1 bg-blue-50 p-5 rounded-xl' >
-              <div className='grid col-span-2 row-span-1'>
+            <section className='grid grid-cols-1 grid-rows-1 gap-y-12 bg-blue-50 p-5 rounded-xl' >
+              <div className='grid col-span-2 row-span-1 gap-y-8'>
                 <div className='flex items-center justify-between h-12' >
                     <h2 className="text-xl font-medium">Blood Pressure</h2>
                     <p className='flex items-center text-sm mr-8'>
@@ -73,11 +73,11 @@ const DiagnosisHistory = () => {
                         <p className='ml-1 font-extralight'>Lower than Average</p>
                     </div>
                 </div>
-                <div className='w-full h-14'>
+                <div className='hidden lg:flex w-full h-14'>
                 </div>
               </div>
             </section>
-            <section className='grid grid-cols-3 grid-rows-1 mt-5 gap-5' >
+            <section className='grid grid-cols-1 grid-rows-1 mt-5 gap-5 justify-center' >
             { diagnosticHistoryCards.map( (cardPros, index) => {
                 return (<BaseCardDiagnosis key={index} cardProps={cardPros} />)
             })}
