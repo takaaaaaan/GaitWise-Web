@@ -31,8 +31,6 @@ const PatientList = () => {
                 </li>
             )
         })}
-        
-    
     </ul>
     )
 }

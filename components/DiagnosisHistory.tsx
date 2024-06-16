@@ -35,15 +35,15 @@ const DiagnosisHistory = () => {
             <div className="flex items-center pb-10">
                 <h2 className="text-2xl font-medium" >Diagnosis History</h2>
             </div> 
-            <section className='grid grid-cols-1 grid-rows-1 gap-y-12 bg-blue-50 p-5 rounded-xl' >
-              <div className='grid col-span-2 row-span-1 gap-y-8'>
-                <div className='flex items-center justify-between h-12' >
-                    <h2 className="text-xl font-medium">Blood Pressure</h2>
-                    <p className='flex items-center text-sm mr-8'>
-                        Last 6 Months 
-                        <span className='ml-3'><ExpandMoreIcon />
-                        </span> 
-                    </p>
+            <section className='grid grid-cols-1 grid-rows-1 lg:grid-cols-3 gap-y-12 bg-blue-50 px-5 pt-2 rounded-xl' >
+              <div className='grid col-span-2 row-span-1 gap-y-8 lg:gap-0'>
+                <div className='grid grid-cols-2 grid-rows-1' >
+                    <h2 className="flex items-center text-xl font-medium">Blood Pressure</h2>
+                    <div className='grid grid-cols-1 text-sm md:mr-0 lg:mr-8'>
+                        <p className='flex justify-end items-center'>
+                            Last 6 Months <span className='ml-3'><ExpandMoreIcon /></span>
+                        </p>
+                    </div>
                 </div>
                 <div className='flex items-center w-10/12 lg:w-full'>
                     <Line options={options} data={data} /> 
@@ -77,7 +77,7 @@ const DiagnosisHistory = () => {
                 </div>
               </div>
             </section>
-            <section className='grid grid-cols-1 grid-rows-1 mt-5 gap-5 justify-center' >
+            <section className='grid grid-cols-1 grid-rows-1 mt-5 gap-5 justify-center lg:grid-cols-3 ' >
             { diagnosticHistoryCards.map( (cardPros, index) => {
                 return (<BaseCardDiagnosis key={index} cardProps={cardPros} />)
             })}
