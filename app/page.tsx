@@ -4,7 +4,48 @@ import DiagnosticList from "@/components/DiagnosticList";
 import PatientProfile from "@/components/PatientProfile";
 import LabResultsList from "@/components/LabResultList";
 
-export default function Home() {
+import getAllPatients from "@/lib/services/Patients";
+import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/lib/services/PatientsTypes";
+
+
+function getProfileData(patient: Patient) {
+  let profile: Partial<Patient> = {}
+
+  for (const key in patient) {
+    if (patient) {
+      const value = patient[key as keyof Patient]
+      if(!Array.isArray(value) ) {
+        //@ts-ignore
+        profile[key] = value
+      }
+    }
+  }
+
+  return profile
+}
+
+export default async function Home() {
+  const initialData = await getAllPatients()
+
+  const patient : Patient | undefined = initialData.find( (patient) => patient.name.match("Jessica Taylor") )
+  let profile!: PProfile
+  let diagnosisHistory! : DHistory[]
+  let diagnoticList! : Diagnostic[]
+  let labResults! : Array<String>
+
+  if (patient) {
+    profile = getProfileData(patient) as PProfile
+
+    if (patient.diagnosis_history)
+      diagnosisHistory = patient.diagnosis_history
+
+    if (patient.diagnostic_list)
+      diagnoticList = patient.diagnostic_list
+
+    if (patient.lab_results)
+      labResults = patient.lab_results
+  }
+
   return (
     <main className="flex flex-wrap justify-center lg:grid lg:grid-rows-1 lg:grid-flow-col lg:gap-x-8 lg:grid-cols-4 min-h-screen mx-4 mb-8">
       <section className="mb-8 lg:mb-0" > <PatientList/> </section>
@@ -13,7 +54,7 @@ export default function Home() {
         <DiagnosticList />
       </section>
       <section className="mb-8 lg:mb-0 grid grid-cols-1 gap-8">
-        <PatientProfile />
+        <PatientProfile patient={profile} />
         <LabResultsList />
       </section>
     </main>
