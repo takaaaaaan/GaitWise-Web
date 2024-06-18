@@ -2,7 +2,7 @@ import DownloadIcon from "./icons/DownloadIcon"
 import { labResults } from "./utils/labResultsMockData"
 
 
-const LabResultsList = () => {
+const LabResultsList = ({labResults} : {labResults: Array<string>}) => {
 
     const results = labResults.map( (result, index) => {return {result, isActive : (index === 1) ? true : false  }} )
 

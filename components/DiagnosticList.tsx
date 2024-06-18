@@ -1,6 +1,7 @@
+import { Diagnostic } from "@/lib/services/PatientsTypes";
 import { diagnosticTableMockData } from "./utils/diagnosticTableMockData";
 
-const DiagnosticList = () => {
+const DiagnosticList = ({ diagnostics } : { diagnostics : Diagnostic[]}) => {
     return (        
         <section role="list" className="rounded-3xl p-5 bg-white divide-y divide-gray-100">
             <div className="flex items-center pb-10">
@@ -17,7 +18,7 @@ const DiagnosticList = () => {
                     </thead>
                 <tbody>
                     
-                    {diagnosticTableMockData.map( (diagnostic, index) => {
+                    {diagnostics.map( (diagnostic, index) => {
                     return (
                     <tr key={index}>
                        <td className="break-normal py-4 pl-4 font-light text-pretty">{diagnostic.name}</td>
