@@ -1,7 +1,7 @@
 import Image from "next/image"
 import ArrowDownIcon from "./icons/ArrowDown"
 
-type BaseCardDiagnosis = {
+export type BaseCard = {
   src : string,
   width: number,
   height: number,
@@ -11,7 +11,7 @@ type BaseCardDiagnosis = {
   levels: string | undefined
 }
 
-const BaseCardDiagnosis = ({cardProps} : { cardProps: BaseCardDiagnosis}) => {
+const BaseCardDiagnosis = ({cardProps} : { cardProps: BaseCard}) => {
 
     if (cardProps.title.match('Heart Rate'))
         return (
