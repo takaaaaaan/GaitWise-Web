@@ -54,11 +54,11 @@ const styleDiastolic = {
 
 const DiagnosisHistory = ({ diagnosisHistory }: {diagnosisHistory : DiagnosisHistory[]}) => {
     
-    const diastolics = diagnosisHistory.map( (history) => history.blood_pressure.diastolic.value )
-    const systolics = diagnosisHistory.map( (history) => history.blood_pressure.systolic.value ) 
-    const respiratoryRates = diagnosisHistory.map( (history) => history.respiratory_rate.value )
-    const heartRates = diagnosisHistory.map( (history) => history.heart_rate.value )
-    const temperatureRates = diagnosisHistory.map( (history) => history.temperature.value )
+    const diastolics = diagnosisHistory.map( (history) => history.blood_pressure.diastolic.value ).reverse()
+    const systolics = diagnosisHistory.map( (history) => history.blood_pressure.systolic.value ).reverse()
+    const respiratoryRates = diagnosisHistory.map( (history) => history.respiratory_rate.value ).reverse()
+    const heartRates = diagnosisHistory.map( (history) => history.heart_rate.value ).reverse()
+    const temperatureRates = diagnosisHistory.map( (history) => history.temperature.value ).reverse()
 
     const systolicAverage = Math.floor( systolics.reduce( (acc, systolic) => acc + systolic, 0 ) / systolics.length )
     const diastolicAverage = Math.floor( diastolics.reduce( (acc, diastolic) => acc + diastolic, 0 ) / diastolics.length )
@@ -75,7 +75,7 @@ const DiagnosisHistory = ({ diagnosisHistory }: {diagnosisHistory : DiagnosisHis
             return {...card, value: temperatureRateAverage}
     }).filter( (element) => element !== undefined) as BaseCard[]
 
-    const labels = diagnosisHistory.map( (history) => `${history.month.slice(0,3)}, ${history.year}` )
+    const labels = diagnosisHistory.map( (history) => `${history.month.slice(0,3)}, ${history.year}` ).reverse()
     const dataChart = {
         labels : labels,
         datasets: [
