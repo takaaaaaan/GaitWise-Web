@@ -31,7 +31,7 @@ export default async function Home() {
   let profile!: PProfile
   let diagnosisHistory! : DHistory[]
   let diagnoticList! : Diagnostic[]
-  let labResults! : Array<String>
+  let labResults! : Array<string>
 
   if (patient) {
     profile = getProfileData(patient) as PProfile
