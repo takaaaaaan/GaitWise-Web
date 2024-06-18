@@ -38,7 +38,7 @@ function classNames(...classes) {
 const Navbar = () => {
 
   return (
-    <Disclosure as="nav" className="bg-white mt-4 mb-8 mx-4 rounded-none md:rounded-full">
+    <Disclosure as="nav" className="bg-white mt-4 mb-8 mx-4 rounded-none lg:rounded-full">
       {({ open }) => (
         <>
           <div className="sm:px-6 lg:px-8">
@@ -129,8 +129,10 @@ const Navbar = () => {
                                     className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                     aria-current={item.current ? 'page' : undefined}
                                 >
-                                    <div className='pr-2'>{ item.svgIcon }</div>
-                                    {item.name}
+                                    <div className='flex pr-2'>
+                                      <p className='mr-2'>{ item.svgIcon }</p> <p>{item.name}</p>
+                                      </div>
+                                    
                                 </a>
                                 )}
                         </MenuItem>
@@ -164,7 +166,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <DisclosurePanel className="sm:hidden">
+          <DisclosurePanel className="lg:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
                 <DisclosureButton
