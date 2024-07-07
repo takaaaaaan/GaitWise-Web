@@ -8,14 +8,15 @@ import getAllPatients from "@/lib/services/Patients";
 import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/lib/services/PatientsTypes";
 
 
-function getProfileData(patient: Patient) {
-  let profile: Partial<Patient> = {}
+function getProfileData<Patient>(patient: Patient) {
+  let profile: { 
+    [key : string] : NonNullable<NonNullable<Patient>[Extract<keyof Patient, string>]> 
+  } = {}
 
   for (const key in patient) {
     if (patient) {
-      const value = patient[key as keyof Patient]
-      if(!Array.isArray(value) ) {
-        //@ts-ignore
+      const value = patient[key]
+      if(value && !Array.isArray(value) ) {
         profile[key] = value
       }
     }
@@ -34,7 +35,7 @@ export default async function Home() {
   let labResults! : Array<string>
 
   if (patient) {
-    profile = getProfileData(patient) as PProfile
+    profile = getProfileData<Patient>(patient) as PProfile
 
     if (patient.diagnosis_history)
       diagnosisHistory = patient.diagnosis_history
