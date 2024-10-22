@@ -4,8 +4,8 @@ import DiagnosticList from "@/components/DiagnosticList";
 import PatientProfile from "@/components/PatientProfile";
 import LabResultsList from "@/components/LabResultList";
 
-import getAllPatients from "@/lib/services/Patients";
-import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/lib/services/PatientsTypes";
+import getAllPatients from "@/app/lib/services/Patients";
+import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/app/lib/services/PatientsTypes";
 
 
 function getProfileData<Patient>(patient: Patient) {
@@ -27,6 +27,8 @@ function getProfileData<Patient>(patient: Patient) {
 
 export default async function Home() {
   const initialData = await getAllPatients()
+
+  
 
   const patient : Patient | undefined = initialData.find( (patient) => patient.name.match("Jessica Taylor") )
   let profile!: PProfile

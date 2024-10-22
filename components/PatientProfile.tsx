@@ -4,7 +4,7 @@ import InsuranceIcon from "./icons/InsuranceIcon";
 import PhoneIcon from "./icons/PhoneIcon";
 import { formatDate } from "./utils/formatDate";
 import { patient } from './utils/patientsMockData';
-import type { PatientProfile } from "@/lib/services/PatientsTypes";
+import type { PatientProfile } from "@/app/lib/services/PatientsTypes";
 
 const PatientProfile = ({ patient }: { patient: PatientProfile}) => {
 

@@ -29,7 +29,7 @@ import { options, data } from './utils/chartMockData';
 import { diagnosticHistoryCards } from "./utils/diagnosisMockData";
 import BaseCardDiagnosis, { BaseCard } from './BaseCardDiagnosis';
 
-import type { DiagnosisHistory } from '@/lib/services/PatientsTypes';
+import type { DiagnosisHistory } from '@/app/lib/services/PatientsTypes';
 
 const styleSystolic = {
     borderColor: 'rgb(230, 111, 210)',
