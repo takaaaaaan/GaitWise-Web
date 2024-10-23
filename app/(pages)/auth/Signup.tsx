@@ -1,6 +1,6 @@
 'use client'
 
-import { Gaitwise } from '../../../../hospital-dashboard/public/images/svg'
+import { Gaitwise } from '../../../public/images/svg'
 import Image from 'next/image'
 import { useState } from 'react'
 import styled from 'styled-components'

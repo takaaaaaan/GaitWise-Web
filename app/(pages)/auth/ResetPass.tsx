@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Gaitwise } from '../../../../hospital-dashboard/public/images/svg'
+import { Gaitwise } from '../../../public/images/svg'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios' // axios를 임포트

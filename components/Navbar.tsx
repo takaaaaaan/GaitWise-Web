@@ -21,19 +21,9 @@ import CreditCardIcon from './icons/CreditCardIcon'
 import TestLogo from './icons/TestLogo'
 import SettingsIcon from './icons/SettingIcon'
 import MenuIcon from './icons/MenuIcon'
-import { Gaitwise } from '../public/images/svg'
-import { SurveyLogo } from '../public/images/svg'
+import { Gaitwise, SurveyLogo, UserLogo } from '../public/images/svg'
 import Image from 'next/image'
 import useAuth from '../components/utils/useAuth'
-// 네비게이션 항목 설정
-const navigation = [
-  { name: 'Overview', href: '#', current: false, svgIcon: <HomeIcon /> },
-  { name: 'Patients', href: '#', current: true, svgIcon: <GroupIcon /> },
-  { name: 'Schedules', href: '#', current: false, svgIcon: <CalendarTodayIcon /> },
-  { name: 'Messages', href: '#', current: false, svgIcon: <ChatBubbleIcon /> },
-  { name: 'Transactions', href: '#', current: false, svgIcon: <CreditCardIcon /> },
-  { name: 'Survey', href: '/survey', current: false, svgIcon: <Image src={SurveyLogo} alt="Survey Logo"/>},
-]
 
 // classNames 함수 정의
 //@ts-ignore
@@ -45,33 +35,44 @@ const Navbar = () => {
   const loginUser = useAuth()
   const router = useRouter();
   const [isAuthPage, setIsAuthPage] = useState(false);
+  const [currentPath, setCurrentPath] = useState('');
 
   // 경로 확인 후 auth 페이지인지 확인
   useEffect(() => {
-    const currentPath = window.location.pathname;
-    if (currentPath.startsWith('/auth')) {
+    const path = window.location.pathname;
+    setCurrentPath(path); // 현재 경로 저장
+    if (path.startsWith('/auth')) {
       setIsAuthPage(true); // auth 페이지일 경우 상태 설정
     } else {
       setIsAuthPage(false); // 그 외의 경우
     }
   }, []);
 
+  // 네비게이션 항목 설정
+  const navigation = [
+    { name: 'Overview', href: '/', current: currentPath === '/', svgIcon: <HomeIcon /> },
+    { name: 'Patients', href: '/main', current: currentPath === '/main', svgIcon: <GroupIcon /> },
+    { name: 'Schedules', href: '/schedules', current: currentPath === '/schedules', svgIcon: <CalendarTodayIcon /> },
+    { name: 'Messages', href: '/messages', current: currentPath === '/messages', svgIcon: <ChatBubbleIcon /> },
+    { name: 'Transactions', href: '/transactions', current: currentPath === '/transactions', svgIcon: <CreditCardIcon /> },
+    { name: 'Survey', href: '/createsurvey', current: currentPath === '/createsurvey', svgIcon: <Image src={SurveyLogo} alt="Survey Logo"/>},
+  ];
+
   // auth 경로라면 네비게이션 바를 숨김
   if (isAuthPage) {
     return null; // Navbar 렌더링 하지 않음
   }
 
-    // 로그아웃 함수 정의
-    const handleSignout = async () => {
-      try {
-        // API에 GET 요청을 보내서 로그아웃 처리
-        await axios.get('/api/analyst/signout');
-        window.location.href = ('/auth?type=sign-in'); // 로그아웃 후 로그인 페이지로 리다이렉트
-      } catch (error) {
-        console.error('로그아웃 실패:', error);
-      }
-    };
-  
+  // 로그아웃 함수 정의
+  const handleSignout = async () => {
+    try {
+      // API에 GET 요청을 보내서 로그아웃 처리
+      await axios.get('/api/analyst/signout');
+      window.location.href = ('/auth?type=sign-in'); // 로그아웃 후 로그인 페이지로 리다이렉트
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+    }
+  };
 
   return (
     <Disclosure as="nav" className="bg-white mt-4 mb-8 mx-4 rounded-none lg:rounded-full">
@@ -93,7 +94,7 @@ const Navbar = () => {
               </div>
               <div className="flex flex-1 md:items-center justify-center ">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image src={Gaitwise} alt="logo" width={250} height='auto' priority />
+                  <Image src={Gaitwise} alt="logo" width={250} priority />
                 </div>
                 <div className="hidden lg:w-full sm:ml-6 sm:block ">
                   <div className="hidden lg:flex justify-center space-x-4">
@@ -123,14 +124,14 @@ const Navbar = () => {
                     <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Image
                         className="h-4 w-4 lg:h-8 lg:w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src= {UserLogo} 
                         alt="User profile"
                       />
                     </MenuButton>
                     <div className="grid grid-cols-1 grid-row-1 mx-2">
-                      <p className="text-xs text font-medium">{loginUser.lastname+loginUser.firstname}</p>
+                      <p className="text-xs text font-medium">{loginUser.lastname + loginUser.firstname}</p>
                       <p className="text-xs font-light">{loginUser.role}</p>
                     </div>
                     <div className="border-slate-300 border mr-1 border-dotted"></div>

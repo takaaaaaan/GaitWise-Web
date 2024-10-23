@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -36,7 +36,7 @@ export default function SurveyPage() {
       options: type === 'multiple' ? ['Option 1', 'Option 2'] : [],
     };
     setQuestions([...questions, newQuestion]);
-    setSelectedQuestion(newQuestion); // 새로 추가된 질문을 선택
+    setSelectedQuestion(newQuestion);
   };
 
   // 질문 수정 핸들러
@@ -64,17 +64,22 @@ export default function SurveyPage() {
     }
   };
 
-  // Drag and Drop 순서 변경
+  // 옵션 텍스트 수정 핸들러
+  const updateOption = (index: number, value: string) => {
+    if (selectedQuestion) {
+      const updatedOptions = [...(selectedQuestion.options || [])];
+      updatedOptions[index] = value;
+      const updatedQuestion = { ...selectedQuestion, options: updatedOptions };
+      updateQuestion(updatedQuestion);
+    }
+  };
+
+  // 질문 순서 변경 핸들러
   const moveQuestion = (fromIndex: number, toIndex: number) => {
     const updatedQuestions = [...questions];
     const [movedItem] = updatedQuestions.splice(fromIndex, 1);
     updatedQuestions.splice(toIndex, 0, movedItem);
     setQuestions(updatedQuestions);
-  };
-
-  // 편집 중인 질문 선택
-  const handleSelectQuestion = (question: Question) => {
-    setSelectedQuestion(question);
   };
 
   return (
@@ -83,21 +88,28 @@ export default function SurveyPage() {
         {/* 미리보기 섹션 */}
         <PreviewSection>
           <PreviewTitle>Survey Preview</PreviewTitle>
-          {questions.map((question, index) => (
-            <DraggableQuestion
-              key={question.id}
-              question={question}
-              index={index}
-              moveQuestion={moveQuestion}
-              onSelectQuestion={handleSelectQuestion}
-            />
-          ))}
-          <AddQuestionButton onClick={() => addQuestion('text')}>+ Add Text Question</AddQuestionButton>
-          <AddQuestionButton onClick={() => addQuestion('multiple')}>+ Add Multiple Choice</AddQuestionButton>
+          {questions.length === 0 ? (
+            <NoQuestionMessage>
+              No questions added yet. Once you add a question, it will appear here.
+            </NoQuestionMessage>
+          ) : (
+            questions.map((question, index) => (
+              <DraggableQuestion
+                key={question.id}
+                question={question}
+                index={index}
+                moveQuestion={moveQuestion}
+                onSelectQuestion={() => setSelectedQuestion(question)}
+              />
+            ))
+          )}
         </PreviewSection>
 
         {/* 편집기 섹션 */}
         <EditorSection>
+          <AddQuestionButton onClick={() => addQuestion('text')} style={{marginRight:30}}>+ Add Text Question</AddQuestionButton>
+          <AddQuestionButton onClick={() => addQuestion('multiple')}>+ Add Multiple Choice</AddQuestionButton>
+
           {selectedQuestion ? (
             <QuestionEditor
               question={selectedQuestion}
@@ -106,9 +118,10 @@ export default function SurveyPage() {
               newOption={newOption}
               setNewOption={setNewOption}
               addOption={addOption}
+              updateOption={updateOption}
             />
           ) : (
-            <p>Select a question to edit</p>
+            <EditorMessage>Select a question to edit</EditorMessage>
           )}
         </EditorSection>
       </Container>
@@ -121,9 +134,9 @@ const DraggableQuestion: React.FC<{
   question: Question;
   index: number;
   moveQuestion: (dragIndex: number, hoverIndex: number) => void;
-  onSelectQuestion: (question: Question) => void;
+  onSelectQuestion: () => void;
 }> = ({ question, index, moveQuestion, onSelectQuestion }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop({
     accept: ItemType,
@@ -148,20 +161,19 @@ const DraggableQuestion: React.FC<{
   drag(drop(ref));
 
   return (
-    <PreviewQuestion ref={ref} onClick={() => onSelectQuestion(question)}>
+    <PreviewQuestion ref={ref} onClick={onSelectQuestion}>
       <h4>{question.question || 'Untitled Question'}</h4>
-      {question.type === 'multiple' ? (
+      {question.type === 'multiple' && (
         <ul>
           {question.options?.map((option, i) => (
             <li key={i}>
-              <input type="radio" name={`question-${question.id}`} />
+              <input type="radio" name={`question-${question.id}`} disabled />
               {option}
             </li>
           ))}
         </ul>
-      ) : (
-        <input type="text" placeholder="Your answer here..." disabled />
       )}
+      {question.type === 'text' && <input type="text" placeholder="Your answer here..." disabled />}
     </PreviewQuestion>
   );
 };
@@ -174,18 +186,14 @@ const QuestionEditor: React.FC<{
   newOption: string;
   setNewOption: React.Dispatch<React.SetStateAction<string>>;
   addOption: () => void;
-}> = ({ question, onUpdateQuestion, onDeleteQuestion, newOption, setNewOption, addOption }) => {
+  updateOption: (index: number, value: string) => void;
+}> = ({ question, onUpdateQuestion, onDeleteQuestion, newOption, setNewOption, addOption, updateOption }) => {
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onUpdateQuestion({ ...question, question: e.target.value });
   };
 
-  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onUpdateQuestion({ ...question, type: e.target.value as 'text' | 'multiple' });
-  };
-
   return (
     <EditorContainer>
-      <h3>Edit Question</h3>
       <label>Question:</label>
       <input
         type="text"
@@ -193,15 +201,19 @@ const QuestionEditor: React.FC<{
         onChange={handleQuestionChange}
         placeholder="Enter your question"
       />
-      <label>Type:</label>
-      <select value={question.type} onChange={handleTypeChange}>
-        <option value="text">Text</option>
-        <option value="multiple">Multiple Choice</option>
-      </select>
-
       {question.type === 'multiple' && (
         <div>
           <h4>Options</h4>
+          {question.options?.map((option, index) => (
+            <OptionItem key={index}>
+              <input
+                type="text"
+                value={option}
+                onChange={(e) => updateOption(index, e.target.value)}
+                placeholder="Edit option"
+              />
+            </OptionItem>
+          ))}
           <input
             type="text"
             value={newOption}
@@ -209,14 +221,8 @@ const QuestionEditor: React.FC<{
             placeholder="Add an option"
           />
           <button onClick={addOption}>Add Option</button>
-          <OptionList>
-            {question.options?.map((option, index) => (
-              <OptionItem key={index}>{option}</OptionItem>
-            ))}
-          </OptionList>
         </div>
       )}
-
       <DeleteButton onClick={() => onDeleteQuestion(question.id)}>Delete Question</DeleteButton>
     </EditorContainer>
   );
@@ -231,13 +237,20 @@ const Container = styled.div`
 
 const PreviewSection = styled.div`
   width: 60%;
-  padding: 20px;
+  padding: 30px;
   background-color: #fff;
   border-right: 1px solid #ddd;
 `;
 
 const PreviewTitle = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 600;
   margin-bottom: 20px;
+`;
+
+const NoQuestionMessage = styled.p`
+  font-size: 1.2rem;
+  color: #888;
 `;
 
 const PreviewQuestion = styled.div`
@@ -245,8 +258,9 @@ const PreviewQuestion = styled.div`
   margin-bottom: 10px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: #ececec;
@@ -254,6 +268,7 @@ const PreviewQuestion = styled.div`
 
   h4 {
     margin-bottom: 10px;
+    font-size: 1.1rem;
   }
 
   input[type='text'] {
@@ -274,23 +289,9 @@ const PreviewQuestion = styled.div`
   }
 `;
 
-const AddQuestionButton = styled.button`
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #218838;
-  }
-`;
-
 const EditorSection = styled.div`
   width: 40%;
-  padding: 20px;
+  padding: 30px;
   background-color: #f8f9fa;
 `;
 
@@ -299,27 +300,40 @@ const EditorContainer = styled.div`
   flex-direction: column;
 
   input[type='text'] {
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  select {
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
   }
 `;
 
-const OptionList = styled.ul`
-  list-style-type: none;
-  padding-left: 0;
+const OptionItem = styled.div`
+  margin-bottom: 10px;
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 `;
 
-const OptionItem = styled.li`
-  padding: 5px 0;
+const AddQuestionButton = styled.button`
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const EditorMessage = styled.p`
+  font-size: 1.2rem;
+  color: #555;
 `;
 
 const DeleteButton = styled.button`
