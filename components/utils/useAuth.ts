@@ -24,14 +24,14 @@ const useAuth = () => {
     const checkToken = async () => {
       // 1: 쿠키에서 토큰을 가져옴
       const token = Cookies.get('token') // 쿠키에서 토큰을 가져옴
-      console.log('Token:', token) // FIXME: Remove this line
+      //console.log('Token:', token) // FIXME: Remove this line
       // 2: 토큰의 유효성을 체크
       if (token) {
         try {
           const secretKey = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET || '')
           const { payload } = await jwtVerify(token, secretKey)
 
-          console.log('Payload:', payload) // FIXME: Remove this line
+          //console.log('Payload:', payload) // FIXME: Remove this line
 
           // 페이로드에 기대하는 프로퍼티가 존재하는지 체크
           if (

@@ -22,6 +22,7 @@ import TestLogo from './icons/TestLogo'
 import SettingsIcon from './icons/SettingIcon'
 import MenuIcon from './icons/MenuIcon'
 import { Gaitwise } from '../public/images/svg'
+import { SurveyLogo } from '../public/images/svg'
 import Image from 'next/image'
 import useAuth from '../components/utils/useAuth'
 // 네비게이션 항목 설정
@@ -31,6 +32,7 @@ const navigation = [
   { name: 'Schedules', href: '#', current: false, svgIcon: <CalendarTodayIcon /> },
   { name: 'Messages', href: '#', current: false, svgIcon: <ChatBubbleIcon /> },
   { name: 'Transactions', href: '#', current: false, svgIcon: <CreditCardIcon /> },
+  { name: 'Survey', href: '/survey', current: false, svgIcon: <Image src={SurveyLogo} alt="Survey Logo"/>},
 ]
 
 // classNames 함수 정의
@@ -91,7 +93,7 @@ const Navbar = () => {
               </div>
               <div className="flex flex-1 md:items-center justify-center ">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image src={Gaitwise} alt="logo" width={100} height={100} layout="responsive" />
+                  <Image src={Gaitwise} alt="logo" width={250} height='auto' priority />
                 </div>
                 <div className="hidden lg:w-full sm:ml-6 sm:block ">
                   <div className="hidden lg:flex justify-center space-x-4">

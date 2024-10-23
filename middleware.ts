@@ -11,8 +11,8 @@ export function middleware(req: NextRequest) {
   // 현재 경로를 가져옴
   const { pathname } = req.nextUrl
 
-  console.log('Token:', token)
-  console.log('Pathname:', pathname)
+  // console.log('Token:', token)
+  // console.log('Pathname:', pathname)
 
   // 로그인 불필요한 페이지는 그대로 다음으로 진행
   if (publicPaths.includes(pathname)) {
