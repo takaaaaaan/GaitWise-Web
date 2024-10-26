@@ -23,7 +23,7 @@ export default function SignUpView() {
     setIsLoading(true) // 로딩 상태 시작
 
     try {
-      // role 따라 적절한 엔드포인트 선택
+      // role 따라 적절한 엔드포인트 선택  /api/signup/{user type} 형식으로 바꿔야함.
       const endpoint =
         role === 'analyst'
           ? `${process.env.NEXT_PUBLIC_DOMAIN}/api/analyst/signup`
