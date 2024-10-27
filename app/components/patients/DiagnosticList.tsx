@@ -1,5 +1,5 @@
-import { Diagnostic } from "@/app/lib/services/PatientsTypes";
-import { diagnosticTableMockData } from "./utils/diagnosticTableMockData";
+import { Diagnostic } from "@/../lib/services/PatientsTypes";
+import { diagnosticTableMockData } from "../../../utils/diagnosticTableMockData";
 
 const DiagnosticList = ({ diagnostics } : { diagnostics : Diagnostic[]}) => {
     return (        

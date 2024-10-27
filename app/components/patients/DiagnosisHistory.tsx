@@ -11,9 +11,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import ExpandMoreIcon from './icons/ExpandMore';
-import ArrowUpIcon from './icons/ArrowUp';
-import ArrowDownIcon from './icons/ArrowDown';
+import ExpandMoreIcon from '../icons/ExpandMore';
+import ArrowUpIcon from '../icons/ArrowUp';
+import ArrowDownIcon from '../icons/ArrowDown';
 
 ChartJS.register(
   CategoryScale,
@@ -25,11 +25,11 @@ ChartJS.register(
   Legend
 );
 
-import { options, data } from './utils/chartMockData';
-import { diagnosticHistoryCards } from "./utils/diagnosisMockData";
+import { options, data } from '../../../utils/chartMockData';
+import { diagnosticHistoryCards } from "../../../utils/diagnosisMockData";
 import BaseCardDiagnosis, { BaseCard } from './BaseCardDiagnosis';
 
-import type { DiagnosisHistory } from '@/app/lib/services/PatientsTypes';
+import type { DiagnosisHistory } from '@/../lib/services/PatientsTypes';
 
 const styleSystolic = {
     borderColor: 'rgb(230, 111, 210)',

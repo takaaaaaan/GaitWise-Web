@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/patients/Navbar';
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');

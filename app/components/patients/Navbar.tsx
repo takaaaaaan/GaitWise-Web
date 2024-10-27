@@ -13,17 +13,17 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import HomeIcon from './icons/HomeIcon'
-import GroupIcon from './icons/groupIcon'
-import CalendarTodayIcon from './icons/CalendarIcon'
-import ChatBubbleIcon from './icons/ChatBubbleIcon'
-import CreditCardIcon from './icons/CreditCardIcon'
-import TestLogo from './icons/TestLogo'
-import SettingsIcon from './icons/SettingIcon'
-import MenuIcon from './icons/MenuIcon'
-import { Gaitwise, SurveyLogo, UserLogo } from '../public/images/svg'
+import HomeIcon from '../icons/HomeIcon'
+import GroupIcon from '../icons/groupIcon'
+import CalendarTodayIcon from '../icons/CalendarIcon'
+import ChatBubbleIcon from '../icons/ChatBubbleIcon'
+import CreditCardIcon from '../icons/CreditCardIcon'
+import TestLogo from '../icons/TestLogo'
+import SettingsIcon from '../icons/SettingIcon'
+import MenuIcon from '../icons/MenuIcon'
+import { Gaitwise, SurveyLogo, UserLogo } from '../../../public/images/svg'
 import Image from 'next/image'
-import useAuth from '../components/utils/useAuth'
+import useAuth from '../../../utils/useAuth'
 
 // classNames 함수 정의
 //@ts-ignore
@@ -51,7 +51,7 @@ const Navbar = () => {
   // 네비게이션 항목 설정
   const navigation = [
     { name: 'Overview', href: '/', current: currentPath === '/', svgIcon: <HomeIcon /> },
-    { name: 'Patients', href: '/main', current: currentPath === '/main', svgIcon: <GroupIcon /> },
+    { name: 'Patients', href: '/patients', current: currentPath === '/patients', svgIcon: <GroupIcon /> },
     { name: 'Schedules', href: '/schedules', current: currentPath === '/schedules', svgIcon: <CalendarTodayIcon /> },
     { name: 'Messages', href: '/messages', current: currentPath === '/messages', svgIcon: <ChatBubbleIcon /> },
     { name: 'Transactions', href: '/transactions', current: currentPath === '/transactions', svgIcon: <CreditCardIcon /> },

@@ -1,11 +1,10 @@
-import PatientList from "@/components/PatientList";
-import DiagnosisHistory from '@/components/DiagnosisHistory';
-import DiagnosticList from "@/components/DiagnosticList";
-import PatientProfile from "@/components/PatientProfile";
-import LabResultsList from "@/components/LabResultList";
-
-import getAllPatients from "@/app/lib/services/Patients";
-import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/app/lib/services/PatientsTypes";
+import PatientList from "@/patients/PatientList";
+import DiagnosisHistory from '@/patients/DiagnosisHistory';
+import DiagnosticList from "@/patients/DiagnosticList";
+import PatientProfile from "@/patients/PatientProfile";
+import LabResultsList from "@/patients/LabResultList";
+import getAllPatients from "@/../lib/services/Patients";
+import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/../lib/services/PatientsTypes";
 
 
 function getProfileData<Patient>(patient: Patient) {

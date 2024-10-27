@@ -1,5 +1,5 @@
-import DownloadIcon from "./icons/DownloadIcon"
-import { labResults } from "./utils/labResultsMockData"
+import DownloadIcon from "../icons/DownloadIcon"
+import { labResults } from "../../../utils/labResultsMockData"
 
 
 const LabResultsList = ({labResults} : {labResults: Array<string>}) => {

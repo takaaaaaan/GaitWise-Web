@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
-import CalendarTodayIcon from "./icons/CalendarIcon";
-import FemaleIcon from "./icons/FemaleIcon";
-import InsuranceIcon from "./icons/InsuranceIcon";
-import PhoneIcon from "./icons/PhoneIcon";
-import IdCard from "./icons/IdCard";
-import GenderMark from "./icons/GenderMark";
-import { formatDate } from "./utils/formatDate";
-import type { PatientProfile } from "@/app/lib/services/PatientsTypes";
-import PencilIcon from './icons/PencilIcon';
+import CalendarTodayIcon from "../icons/CalendarIcon";
+import FemaleIcon from "../icons/FemaleIcon";
+import InsuranceIcon from "../icons/InsuranceIcon";
+import PhoneIcon from "../icons/PhoneIcon";
+import IdCard from "../icons/IdCard";
+import GenderMark from "../icons/GenderMark";
+import { formatDate } from "../../../utils/formatDate";
+import type { PatientProfile } from "@/../lib/services/PatientsTypes";
+import PencilIcon from '../icons/PencilIcon';
 
 const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
     // 상태로 입력 필드 관리

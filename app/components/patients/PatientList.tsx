@@ -1,7 +1,7 @@
 'use client';
-import SearchIcon from "./icons/SearchIcon";
-import MenuIcon from './icons/MenuIcon';
-import { patients } from "./utils/patientsMockData";
+import SearchIcon from "../icons/SearchIcon";
+import MenuIcon from '../icons/MenuIcon';
+import { patients } from "../../../utils/patientsMockData";
 
 const PatientList = () => {
   const handleAddPatient = () => {
@@ -25,17 +25,17 @@ const PatientList = () => {
           }
         >
           <div className="flex min-w-0 gap-x-4">
-            <img
+            {/* <img
               className="h-12 w-12 flex-none rounded-full bg-gray-50"
               src={patient.image}
               alt=""
-            />
+            /> */}
             <div className="min-w-0 flex-auto">
               <p className="text-sm font-semibold leading-6 text-gray-900">
-                {patient.name}
+                patientId
               </p>
               <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                {patient.gender}, {patient.age}
+                {patient.name}, {patient.gender}, {patient.age}
               </p>
             </div>
           </div>

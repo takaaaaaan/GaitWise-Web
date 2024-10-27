@@ -1,5 +1,5 @@
 import Image from "next/image"
-import ArrowDownIcon from "./icons/ArrowDown"
+import ArrowDownIcon from "../icons/ArrowDown"
 
 export type BaseCard = {
   src : string,
