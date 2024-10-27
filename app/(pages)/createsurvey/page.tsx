@@ -3,23 +3,11 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import {Question, DragItem} from '@/../../types'
 // 드래그 타입 정의
 const ItemType = 'QUESTION';
 
-// 질문 타입 정의
-interface Question {
-  id: number;
-  type: 'multiple' | 'text';
-  question: string;
-  options?: string[];
-}
 
-interface DragItem {
-  index: number;
-  id: number;
-  type: string;
-}
 
 // 설문지 컴포넌트
 export default function SurveyPage() {

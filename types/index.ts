@@ -35,3 +35,23 @@ export type UrlQueryParams = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
+
+
+
+export type Project = {
+  id: number;
+  name: string;
+};
+
+export type Question = {
+  id: number;
+  type: 'multiple' | 'text';
+  question: string;
+  options?: string[];
+}
+
+export type DragItem = {
+  index: number;
+  id: number;
+  type: string;
+}

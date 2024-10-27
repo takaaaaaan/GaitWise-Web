@@ -2,7 +2,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import useAuth from '../../../components/utils/useAuth'
+import useAuth from '@/../../utils/useAuth'
 // '../../../../app/utils/useAuth'
 
 export default function Page() {

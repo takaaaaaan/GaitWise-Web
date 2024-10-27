@@ -5,6 +5,7 @@ import PatientProfile from "@/patients/PatientProfile";
 import LabResultsList from "@/patients/LabResultList";
 import getAllPatients from "@/../lib/services/Patients";
 import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/../lib/services/PatientsTypes";
+import ProjectList from "@/patients/ProjectList";
 
 
 function getProfileData<Patient>(patient: Patient) {
@@ -50,7 +51,10 @@ export default async function Home() {
 
   return (
     <main className="flex flex-wrap justify-center lg:grid lg:grid-rows-1 lg:grid-flow-col lg:gap-x-8 lg:grid-cols-4 min-h-screen mx-4 mb-8">
-      <section className="mb-8 lg:mb-0" > <PatientList/> </section>
+      <section className="mb-8 lg:mb-0" > 
+        <ProjectList/>
+        <PatientList/> 
+      </section>
       <section className="mb-8 lg:mb-0 grid grid-cols-1 col-start-2 col-end-4 gap-8">
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
         {//<DiagnosticList diagnostics={diagnoticList} />

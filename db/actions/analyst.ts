@@ -1,7 +1,7 @@
-import { CreateAnalystParams,UpdateAnalystParams } from '@/types';
-import {handleError} from '@/utils';
-import dbConnect from '@/db/dbConnect';
-import Analyst from '@/db/models/analyst';
+import { CreateAnalystParams,UpdateAnalystParams } from '@/../../types';
+import {handleError} from '@/../../utils';
+import dbConnect from '@/../../db/dbConnect';
+import Analyst from '@/../../db/models/analyst';
 
 /**
  * Create a new analyst
