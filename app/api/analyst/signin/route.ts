@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs' // bcrypt를 임포트
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
+import dbConnect from '@/../../db/dbConnect'
+import Analyst from '@/../../db/models/analyst'
 
 /**
  * POST 요청을 처리하는 함수
