@@ -6,7 +6,7 @@ import LabResultsList from "@/participants/LabResultList";
 import getAllPatients from "@/../lib/services/Patients";
 import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/../lib/services/PatientsTypes";
 import ProjectList from "@/participants/ProjectList";
-
+import ParticipantHeader from "@/participants/ParticipantHeader";
 function getProfileData<Patient>(participant: Patient) {
   let profile: { 
     [key : string] : NonNullable<NonNullable<Patient>[Extract<keyof Patient, string>]> 
