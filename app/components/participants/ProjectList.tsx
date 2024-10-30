@@ -1,9 +1,10 @@
 'use client'
 import React, { useState } from 'react';
-import {Project} from '@/../../types'
-
+import { useRouter } from 'next/navigation';
+import { Project } from '@/../../types'
 
 const ProjectList: React.FC = () => {
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([
     { id: 1, name: 'Project Alpha' },
     { id: 2, name: 'Project Beta' },
@@ -20,11 +21,7 @@ const ProjectList: React.FC = () => {
   };
 
   const handleAddProject = () => {
-    const newProject = {
-      id: projects.length + 1,
-      name: `Project ${String.fromCharCode(65 + projects.length)}`, // 자동으로 알파벳 순서 지정
-    };
-    setProjects([...projects, newProject]);
+    router.push('/createproject'); // Navigate to Create Project page
   };
 
   return (

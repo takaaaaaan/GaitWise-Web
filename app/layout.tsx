@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Navbar from '@/patients/Navbar'
+import Navbar from '@/participants/Navbar'
 
 import './globals.css'
 import Providers from './providers'

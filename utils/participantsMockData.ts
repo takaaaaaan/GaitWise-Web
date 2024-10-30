@@ -1,4 +1,4 @@
-export const patients = [
+export const participants = [
     {
       name: "Emily Williams",
       gender: "Female",
@@ -24,7 +24,7 @@ export const patients = [
       name: "Jessica Taylor",
       gender: "Female",
       age: 28,
-      image: "images/patientprofile.png",
+      image: "images/participantprofile.png",
       isActive: true
     },
     {
@@ -43,7 +43,7 @@ export const patients = [
     }
   ];
 
-export const patient = [
+export const participant = [
 	{
 		"name": "Jessica Taylor",
 		"gender": "Female",

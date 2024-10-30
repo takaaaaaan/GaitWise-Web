@@ -1,21 +1,20 @@
-import PatientList from "@/patients/PatientList";
-import DiagnosisHistory from '@/patients/DiagnosisHistory';
-import DiagnosticList from "@/patients/DiagnosticList";
-import PatientProfile from "@/patients/PatientProfile";
-import LabResultsList from "@/patients/LabResultList";
+import PatientList from "@/participants/ParticipantsList";
+import DiagnosisHistory from '@/participants/DiagnosisHistory';
+import DiagnosticList from "@/participants/DiagnosticList";
+import PatientProfile from "@/participants/ParticipantsProfile";
+import LabResultsList from "@/participants/LabResultList";
 import getAllPatients from "@/../lib/services/Patients";
 import type { DiagnosisHistory as DHistory, Diagnostic, Patient, PatientProfile as PProfile } from "@/../lib/services/PatientsTypes";
-import ProjectList from "@/patients/ProjectList";
+import ProjectList from "@/participants/ProjectList";
 
-
-function getProfileData<Patient>(patient: Patient) {
+function getProfileData<Patient>(participant: Patient) {
   let profile: { 
     [key : string] : NonNullable<NonNullable<Patient>[Extract<keyof Patient, string>]> 
   } = {}
 
-  for (const key in patient) {
-    if (patient) {
-      const value = patient[key]
+  for (const key in participant) {
+    if (participant) {
+      const value = participant[key]
       if(value && !Array.isArray(value) ) {
         profile[key] = value
       }
@@ -30,23 +29,23 @@ export default async function Home() {
 
   
 
-  const patient : Patient | undefined = initialData.find( (patient) => patient.name.match("Jessica Taylor") )
+  const participant : Patient | undefined = initialData.find( (participant) => participant.name.match("Jessica Taylor") )
   let profile!: PProfile
   let diagnosisHistory! : DHistory[]
   let diagnoticList! : Diagnostic[]
   let labResults! : Array<string>
 
-  if (patient) {
-    profile = getProfileData<Patient>(patient) as PProfile
+  if (participant) {
+    profile = getProfileData<Patient>(participant) as PProfile
 
-    if (patient.diagnosis_history)
-      diagnosisHistory = patient.diagnosis_history
+    if (participant.diagnosis_history)
+      diagnosisHistory = participant.diagnosis_history
 
-    if (patient.diagnostic_list)
-      diagnoticList = patient.diagnostic_list
+    if (participant.diagnostic_list)
+      diagnoticList = participant.diagnostic_list
 
-    if (patient.lab_results)
-      labResults = patient.lab_results
+    if (participant.lab_results)
+      labResults = participant.lab_results
   }
 
   return (
@@ -61,7 +60,7 @@ export default async function Home() {
         }
       </section>
       <section className="mb-8 lg:mb-0 grid grid-cols-1 gap-8">
-        <PatientProfile patient={profile} />
+        <PatientProfile participant={profile} />
         <LabResultsList labResults={labResults} />
       </section>
     </main>

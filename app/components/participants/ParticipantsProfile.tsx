@@ -10,15 +10,15 @@ import { formatDate } from "../../../utils/formatDate";
 import type { PatientProfile } from "@/../lib/services/PatientsTypes";
 import PencilIcon from '../icons/PencilIcon';
 
-const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
+const PatientProfile = ({ participant }: { participant: PatientProfile }) => {
     // 상태로 입력 필드 관리
-    const [patientData, setPatientData] = useState({
-        name: patient.name,
-        date_of_birth: formatDate(new Date(patient.date_of_birth)),
-        gender: patient.gender,
-        phone_number: patient.phone_number,
-        insurance_type: patient.insurance_type,
-        patient_code: "PT-00123" // 임의의 환자 코드
+    const [participantData, setPatientData] = useState({
+        name: participant.name,
+        date_of_birth: formatDate(new Date(participant.date_of_birth)),
+        gender: participant.gender,
+        phone_number: participant.phone_number,
+        insurance_type: participant.insurance_type,
+        participant_code: "PT-00123" // 임의의 환자 코드
     });
 
     const [isEditing, setIsEditing] = useState({
@@ -32,7 +32,7 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setPatientData({
-            ...patientData,
+            ...participantData,
             [name]: value,
         });
     };
@@ -57,7 +57,7 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
                     </div>
                     <div className="col-span-5">
                         <h3 className="font-light">Patient Code</h3>
-                        <p className="font-semibold">{patientData.patient_code}</p>
+                        <p className="font-semibold">{participantData.participant_code}</p>
                     </div>
 
                     {/* 생년월일 수정 가능 */}
@@ -70,12 +70,12 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
                             <input
                                 type="date"
                                 name="date_of_birth"
-                                value={patientData.date_of_birth}
+                                value={participantData.date_of_birth}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-2 rounded-md"
                             />
                         ) : (
-                            <p className="font-semibold">{patientData.date_of_birth}</p>
+                            <p className="font-semibold">{participantData.date_of_birth}</p>
                         )}
                     </div>
                     <div className="col-span-1 flex justify-center items-center">
@@ -93,16 +93,15 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
                         {isEditing.gender ? (
                             <select
                                 name="gender"
-                                value={patientData.gender}
+                                value={participantData.gender}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-2 rounded-md"
                             >
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Others">Others</option>
                             </select>
                         ) : (
-                            <p className="font-semibold">{patientData.gender}</p>
+                            <p className="font-semibold">{participantData.gender}</p>
                         )}
                     </div>
                     <div className="col-span-1 flex justify-center items-center">
@@ -121,12 +120,12 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
                             <input
                                 type="text"
                                 name="phone_number"
-                                value={patientData.phone_number}
+                                value={participantData.phone_number}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-2 rounded-md"
                             />
                         ) : (
-                            <p className="font-semibold">{patientData.phone_number}</p>
+                            <p className="font-semibold">{participantData.phone_number}</p>
                         )}
                     </div>
                     <div className="col-span-1 flex justify-center items-center">
@@ -145,12 +144,12 @@ const PatientProfile = ({ patient }: { patient: PatientProfile }) => {
                             <input
                                 type="text"
                                 name="insurance_type"
-                                value={patientData.insurance_type}
+                                value={participantData.insurance_type}
                                 onChange={handleInputChange}
                                 className="w-full border border-gray-300 p-2 rounded-md"
                             />
                         ) : (
-                            <p className="font-semibold">{patientData.insurance_type}</p>
+                            <p className="font-semibold">{participantData.insurance_type}</p>
                         )}
                     </div>
                     <div className="col-span-1 flex justify-center items-center">

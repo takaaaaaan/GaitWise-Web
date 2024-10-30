@@ -51,7 +51,7 @@ const Navbar = () => {
   // 네비게이션 항목 설정
   const navigation = [
     { name: 'Overview', href: '/', current: currentPath === '/', svgIcon: <HomeIcon /> },
-    { name: 'Patients', href: '/patients', current: currentPath === '/patients', svgIcon: <GroupIcon /> },
+    { name: 'Participant', href: '/participant', current: currentPath === '/participant', svgIcon: <GroupIcon /> },
     { name: 'Schedules', href: '/schedules', current: currentPath === '/schedules', svgIcon: <CalendarTodayIcon /> },
     { name: 'Messages', href: '/messages', current: currentPath === '/messages', svgIcon: <ChatBubbleIcon /> },
     { name: 'Transactions', href: '/transactions', current: currentPath === '/transactions', svgIcon: <CreditCardIcon /> },

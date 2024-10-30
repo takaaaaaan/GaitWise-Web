@@ -48,7 +48,7 @@ function AuthContent() {
           alert(jsondata.message)
 
           // 로그인 후 페이지로 리다이렉트 (예: '/test')
-          window.location.href = '/patients'
+          window.location.href = '/participant'
         }
       } else {
         alert(jsondata.message)
