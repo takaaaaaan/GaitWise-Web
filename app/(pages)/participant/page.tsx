@@ -55,6 +55,7 @@ export default async function Home() {
         <PatientList/> 
       </section>
       <section className="mb-8 lg:mb-0 grid grid-cols-1 col-start-2 col-end-4 gap-8">
+        <ParticipantHeader profile={profile} />
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
         {//<DiagnosticList diagnostics={diagnoticList} />
         }
