@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
 import dbConnect from '@/db/dbConnect'
+import bcrypt from 'bcryptjs'
+import { NextRequest, NextResponse } from 'next/server'
+
 import Doctor from '@/db/models/doctor'
 
 /**

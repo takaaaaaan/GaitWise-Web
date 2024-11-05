@@ -1,26 +1,29 @@
 'use client'
 
-import { useState, Suspense } from 'react'
-import styled from 'styled-components'
-import SignUpView from './Signup'
-import ForgetPasswordView from './ForgetPass'
-import { Gaitwise } from '../../../public/images/svg'
-import Image from 'next/image'
-import { useSearchParams, useRouter } from 'next/navigation' // useRouter를 임포트
+import { Gaitwise } from '@/public'
 import axios from 'axios' // axios를 임포트
 import Cookies from 'js-cookie' // js-cookie를 임포트
+import Image from 'next/image'
+import { useSearchParams } from 'next/navigation' // useRouter를 임포트
+import { Suspense, useState } from 'react'
+import styled from 'styled-components'
+
+
+import ForgetPasswordView from './ForgetPass'
 import ResetPassView from './ResetPass'
+import SignUpView from './Signup'
 
 function AuthContent() {
   const searchParams = useSearchParams() // URL의 쿼리 파라미터를 가져옴
   const type = searchParams.get('type') // 'type' 쿼리 파라미터를 가져옴
-  const router = useRouter() // useRouter 훅을 사용
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('analyst')
+  const [isLoading, setIsLoading] = useState(false)
 
   const signIn = async () => {
+    setIsLoading(true) // 로딩 중임을 표시
     try {
       // role에 따라 다른 엔드포인트로 요청을 보냄
       const endpoint =
@@ -57,6 +60,8 @@ function AuthContent() {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error(errorMessage)
       alert('로그인 실패')
+    } finally {
+      setIsLoading(false) // 로딩 중임을 해제
     }
   }
 
@@ -98,10 +103,13 @@ function AuthContent() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
-          <LoginButton onClick={signIn} disabled={!email.trim() || !password.trim()}>
-            Sign In
-          </LoginButton>
+          {isLoading ? (
+            <LoginButton disabled={true}>Sign In...</LoginButton>
+          ) : (
+            <LoginButton onClick={signIn} disabled={!email.trim() || !password.trim() || isLoading}>
+              Sign In
+            </LoginButton>
+          )}
 
           <Links>
             <a href="/auth?type=forgetpass">Forgot password?</a>

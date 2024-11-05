@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const HomeIcon = () => {
   return (
@@ -10,7 +10,7 @@ const HomeIcon = () => {
         fill="#072635"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default HomeIcon;
+export default HomeIcon

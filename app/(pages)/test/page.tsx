@@ -1,9 +1,7 @@
 'use client'
-import React from 'react'
+import useAuth from '@/utils/useAuth'
 import styled from 'styled-components'
 
-import useAuth from '@/../../utils/useAuth'
-// '../../../../app/utils/useAuth'
 
 export default function Page() {
   const loginUser = useAuth()
@@ -24,7 +22,6 @@ export default function Page() {
   )
 }
 
-// styled-components로 스타일 정의
 const Container = styled.div`
   display: flex;
   flex-direction: column;

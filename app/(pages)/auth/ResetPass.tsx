@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import styled from 'styled-components'
-import { Gaitwise } from '../../../public/images/svg'
+import { Gaitwise } from '@/public'
+import axios from 'axios' // axios를 임포트
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
-import axios from 'axios' // axios를 임포트
+import { useState } from 'react'
+import styled from 'styled-components'
+
 
 function ResetPassView() {
   const searchParams = useSearchParams()
@@ -13,7 +14,7 @@ function ResetPassView() {
   const email = searchParams.get('email') // URL에서 'email'을 가져옴
   const role = searchParams.get('role') // URL에서 'role'을 가져옴
   const router = useRouter() // useRouter 훅을 사용
-//newPassword, confirmPassword로 명칭 변경
+  //newPassword, confirmPassword로 명칭 변경
   const [repassword1, setRepassword1] = useState('') // 비밀번호1 상태
   const [repassword2, setRepassword2] = useState('') // 비밀번호2 상태
   const [loading, setLoading] = useState(false) // 로딩 상태 관리

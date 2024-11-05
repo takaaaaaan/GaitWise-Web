@@ -1,10 +1,12 @@
+import './globals.css'
+
+import StyledComponentsRegistry from '@/lib/registry'
+import { Navbar } from 'components'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Navbar from '@/participants/Navbar'
 
-import './globals.css'
+
 import Providers from './providers'
-import StyledComponentsRegistry from './lib/registry'
 
 const inter = Inter({ subsets: ['latin'] })
 

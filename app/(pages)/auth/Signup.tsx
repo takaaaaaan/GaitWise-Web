@@ -1,11 +1,12 @@
 'use client'
 
-import { Gaitwise } from '../../../public/images/svg'
+import { Gaitwise } from '@/public'
+import axios from 'axios'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
+
 
 export default function SignUpView() {
   const [firstname, setFirstname] = useState('')

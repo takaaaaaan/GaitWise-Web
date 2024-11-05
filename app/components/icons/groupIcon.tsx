@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const GroupIcon = () => {
   return (
@@ -10,7 +10,7 @@ const GroupIcon = () => {
         fill="#072635"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default GroupIcon;
+export default GroupIcon

@@ -5,6 +5,6 @@ export async function GET(req: NextRequest) {
   // 쿠키에서 토큰을 제거
   const response = NextResponse.json({ message: '로그아웃 성공', flg: true })
   response.cookies.delete('token') // 쿠키에서 'token' 삭제
-  
+
   return response
 }

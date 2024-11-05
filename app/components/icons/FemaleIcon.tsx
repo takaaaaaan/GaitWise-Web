@@ -1,13 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const FemaleIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="42"
-    height="42"
-    viewBox="0 0 42 42"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" {...props}>
     <g id="FemaleIcon" transform="translate(-1235 -471)">
       <circle
         id="Ellipse_9"
@@ -26,6 +20,6 @@ const FemaleIcon = (props: React.SVGProps<SVGSVGElement>) => (
       />
     </g>
   </svg>
-);
+)
 
-export default FemaleIcon;
+export default FemaleIcon

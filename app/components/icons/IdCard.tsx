@@ -1,17 +1,12 @@
-import React from 'react';
+import React from 'react'
 
 const IdCard = () => (
-  <svg
-    width="50"
-    height="50"
-    viewBox="0 0 45 45"
-    xmlSpace="preserve"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="50" height="50" viewBox="0 0 45 45" xmlSpace="preserve" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* IdCard 아이콘 */}
-    <g transform="translate(11, 11)"> {/* 아이콘을 중앙에 맞추기 위해 translate 사용 */}
-    <path
+    <g transform="translate(11, 11)">
+      {' '}
+      {/* 아이콘을 중앙에 맞추기 위해 translate 사용 */}
+      <path
         fillRule="evenodd"
         clipRule="evenodd"
         d="M3.5 7V17C3.5 18.1046 4.39543 19 5.5 19H19.5C20.6046 19 21.5 18.1046 21.5 17V7C21.5 5.89543 20.6046 5 19.5 5H5.5C4.39543 5 3.5 5.89543 3.5 7Z"
@@ -27,13 +22,9 @@ const IdCard = () => (
         stroke="#000000"
         strokeWidth="1.5"
       />
-      <path
-        d="M5.5 16C8.283 12.863 11.552 13.849 13.5 16"
-        stroke="#000000"
-        strokeWidth="1.5"
-      />
+      <path d="M5.5 16C8.283 12.863 11.552 13.849 13.5 16" stroke="#000000" strokeWidth="1.5" />
     </g>
   </svg>
-);
+)
 
-export default IdCard;
+export default IdCard

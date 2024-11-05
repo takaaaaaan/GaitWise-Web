@@ -1,7 +1,8 @@
-import { CreateAnalystParams,UpdateAnalystParams } from '@/../../types';
-import {handleError} from '@/../../utils';
-import dbConnect from '@/../../db/dbConnect';
-import Analyst from '@/../../db/models/analyst';
+import { CreateAnalystParams, UpdateAnalystParams } from 'types'
+
+import dbConnect from '@/db/dbConnect'
+import Analyst from '@/db/models/analyst'
+import { handleError } from '@/utils'
 
 /**
  * Create a new analyst
@@ -10,11 +11,11 @@ import Analyst from '@/../../db/models/analyst';
  */
 export async function createAnalyst(params: CreateAnalystParams): Promise<any> {
   try {
-    await dbConnect();
-    const analyst = await Analyst.create(params);
-    return analyst;
+    await dbConnect()
+    const analyst = await Analyst.create(params)
+    return analyst
   } catch (error) {
-    return handleError(error);
+    return handleError(error)
   }
 }
 /**
@@ -23,12 +24,11 @@ export async function createAnalyst(params: CreateAnalystParams): Promise<any> {
  * @returns {Promise<any>} Analyst information
  */
 export async function updateAnalyst(params: UpdateAnalystParams): Promise<any> {
-    try {
-        await dbConnect();
-        const analyst = await Analyst.findOneAndUpdate({ email: params.email }, params, { new: true });
-        return analyst;
-    } catch (error) {
-        return handleError(error);
-    }
+  try {
+    await dbConnect()
+    const analyst = await Analyst.findOneAndUpdate({ email: params.email }, params, { new: true })
+    return analyst
+  } catch (error) {
+    return handleError(error)
+  }
 }
-

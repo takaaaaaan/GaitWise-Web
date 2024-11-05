@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const ChatBubbleIcon = () => {
   return (
@@ -10,7 +10,7 @@ const ChatBubbleIcon = () => {
         fill="#072635"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default ChatBubbleIcon;
+export default ChatBubbleIcon

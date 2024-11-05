@@ -1,23 +1,23 @@
-import faker from 'faker';
+import faker from 'faker'
 
 export const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-          display: false,
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
       },
     },
-    scales: {
-      x: {
-        grid: {
-            display: false
-        }
-    },
-    }
-  };
-  
-const labels = ['Oct, 2023', 'Nov, 2023', 'Dec, 2023', 'Jan, 2024', 'Feb, 2024', 'Mar, 2024'];
-  
+  },
+}
+
+const labels = ['Oct, 2023', 'Nov, 2023', 'Dec, 2023', 'Jan, 2024', 'Feb, 2024', 'Mar, 2024']
+
 export const data = {
   labels,
   datasets: [
@@ -29,7 +29,7 @@ export const data = {
       pointBorderWidth: 2,
       pointBorderColor: 'rgba(255,255,255)',
       pointRadius: 7,
-      borderWidth: 2
+      borderWidth: 2,
     },
     {
       data: labels.map(() => faker.datatype.number({ min: 60, max: 100 })),
@@ -39,7 +39,7 @@ export const data = {
       pointBorderWidth: 2,
       pointBorderColor: 'rgba(255,255,255)',
       pointRadius: 7,
-      borderWidth: 2
+      borderWidth: 2,
     },
   ],
-};
+}

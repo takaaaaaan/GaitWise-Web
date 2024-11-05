@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import dbConnect from '@/db/dbConnect'
 import bcrypt from 'bcryptjs'
-import dbConnect from '@/../../db/dbConnect'
-import Analyst from '@/../../db/models/analyst'
+import { NextRequest, NextResponse } from 'next/server'
+
+import Analyst from '@/db/models/analyst'
 
 /**
  * POST 요청을 처리하는 함수 (Analyst 전용)

@@ -1,13 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-const DownloadIcon = (props : React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    {...props}
-  >
+const DownloadIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" {...props}>
     <path
       id="download_FILL0_wght300_GRAD0_opsz24_1_"
       data-name="download_FILL0_wght300_GRAD0_opsz24 (1)"
@@ -15,6 +9,6 @@ const DownloadIcon = (props : React.SVGProps<SVGSVGElement>) => (
       transform="translate(-180.001 779.999)"
     />
   </svg>
-);
+)
 
-export default DownloadIcon;
+export default DownloadIcon

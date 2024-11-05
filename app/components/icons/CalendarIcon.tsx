@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const CalendarTodayIcon = () => {
   return (
@@ -10,7 +10,7 @@ const CalendarTodayIcon = () => {
         fill="#072635"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CalendarTodayIcon;
+export default CalendarTodayIcon

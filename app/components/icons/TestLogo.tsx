@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const TestLogo = () => {
   return (
@@ -120,7 +120,7 @@ const TestLogo = () => {
         />
       </g>
     </svg>
-  );
-};
+  )
+}
 
-export default TestLogo;
+export default TestLogo

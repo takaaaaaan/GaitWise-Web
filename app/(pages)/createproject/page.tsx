@@ -1,31 +1,31 @@
-'use client';
-import { useState } from "react";
+'use client'
+import { useState } from 'react'
 
 const ProjectPage = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [participantId, setParticipantId] = useState("");
-  const [participants, setParticipants] = useState<string[]>([]);
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [participantId, setParticipantId] = useState('')
+  const [participants, setParticipants] = useState<string[]>([])
 
   const handleAddParticipant = () => {
     if (participantId.trim()) {
-      setParticipants([...participants, participantId.trim()]);
-      setParticipantId(""); // Clear the input field
+      setParticipants([...participants, participantId.trim()])
+      setParticipantId('') // Clear the input field
     }
-  };
+  }
 
   const handleSubmit = () => {
     // 프로젝트 저장 로직 추가 가능
-    console.log("Project Created:", {
+    console.log('Project Created:', {
       title,
       description,
       participants,
-    });
-  };
+    })
+  }
 
   return (
-    <div className="p-8 max-w-2xl mx-auto bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Create New Project</h1>
+    <div className="mx-auto max-w-2xl rounded-lg bg-white p-8 shadow-md">
+      <h1 className="mb-4 text-2xl font-bold">Create New Project</h1>
 
       {/* Project Title */}
       <div className="mb-4">
@@ -35,7 +35,7 @@ const ProjectPage = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter project title"
-          className="mt-1 p-2 border border-gray-300 rounded w-full"
+          className="mt-1 w-full rounded border border-gray-300 p-2"
         />
       </div>
 
@@ -46,7 +46,7 @@ const ProjectPage = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Enter project description"
-          className="mt-1 p-2 border border-gray-300 rounded w-full"
+          className="mt-1 w-full rounded border border-gray-300 p-2"
           rows={4}
         />
       </div>
@@ -60,11 +60,11 @@ const ProjectPage = () => {
             value={participantId}
             onChange={(e) => setParticipantId(e.target.value)}
             placeholder="Enter project member ID"
-            className="mt-1 p-2 border border-gray-300 rounded w-full"
+            className="mt-1 w-full rounded border border-gray-300 p-2"
           />
           <button
             onClick={handleAddParticipant}
-            className="ml-2 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded"
+            className="ml-2 rounded bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600"
           >
             Add
           </button>
@@ -76,24 +76,24 @@ const ProjectPage = () => {
         <h3 className="text-sm font-medium text-gray-700">Analysts:</h3>
         {participants.length > 0 ? (
           participants.map((id, index) => (
-            <li key={index} className="text-gray-600 text-sm p-2">
+            <li key={index} className="p-2 text-sm text-gray-600">
               {id}
             </li>
           ))
         ) : (
-          <p className="text-gray-500 text-sm">No analyst added yet.</p>
+          <p className="text-sm text-gray-500">No analyst added yet.</p>
         )}
       </ul>
 
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded w-full"
+        className="w-full rounded bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600"
       >
         Create Project
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ProjectPage;
+export default ProjectPage

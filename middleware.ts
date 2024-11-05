@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 // 로그인 불필요한 페이지 (예: /auth)를 제외
 const publicPaths = ['/auth']
@@ -32,5 +32,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/','/main', '/analysts/:path*', '/((?!api|_next|static|favicon.ico).*)'], // middleware를 적용할 경로 지정
+  matcher: ['/', '/main', '/analysts/:path*', '/((?!api|_next|static|favicon.ico).*)'], // middleware를 적용할 경로 지정
 }

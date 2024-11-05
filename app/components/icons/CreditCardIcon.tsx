@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const CreditCardIcon = () => {
   return (
@@ -10,7 +10,7 @@ const CreditCardIcon = () => {
         fill="#072635"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CreditCardIcon;
+export default CreditCardIcon

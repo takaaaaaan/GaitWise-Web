@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const GenderMark = () => (
   <svg
@@ -42,6 +42,6 @@ const GenderMark = () => (
       />
     </g>
   </svg>
-);
+)
 
-export default GenderMark;
+export default GenderMark

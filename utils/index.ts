@@ -1,6 +1,6 @@
 import qs from 'query-string'
 
-import { UrlQueryParams, RemoveUrlQueryParams } from '../types'
+import { RemoveUrlQueryParams, UrlQueryParams } from '../types'
 
 //Created by chatgpt
 export const formatDateTime = (dateString: Date) => {
@@ -8,7 +8,6 @@ export const formatDateTime = (dateString: Date) => {
     year: 'numeric',
     month: 'short', // abbreviated month name (e.g., 'Oct')
     day: 'numeric', // numeric day of the month (e.g., '25')
-   
   }
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
     weekday: 'short', // abbreviated weekday name (e.g., 'Mon')
@@ -35,7 +34,6 @@ export const formatDateTime = (dateString: Date) => {
   const formattedDateTime: string = new Date(dateString).toLocaleString('en-US', dateTimeOptions)
   const formattedDate: string = new Date(dateString).toLocaleString('en-US', dateOptions)
   const formattedTime: string = new Date(dateString).toLocaleString('en-US', timeOptions)
-
 
   return {
     dateYear: formattedDateYear,
@@ -73,7 +71,7 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
 export function removeKeysFromQuery({ params, keysToRemove }: RemoveUrlQueryParams) {
   const currentUrl = qs.parse(params)
 
-  keysToRemove.forEach(key => {
+  keysToRemove.forEach((key) => {
     delete currentUrl[key]
   })
 
@@ -94,31 +92,30 @@ export const handleError = (error: unknown) => {
 export function formatDate(date: Date) {
   // 주어진 날짜가 Date 객체인지 확인합니다.
   if (!(date instanceof Date)) {
-    throw new Error('Invalid date object');
+    throw new Error('Invalid date object')
   }
 
   // 연도, 월, 일을 추출합니다.
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0') // 월은 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, '0')
 
   // 'yyyy-mm-dd' 형식으로 반환합니다.
-  return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`
 }
 
-
-export function isJsonString(str:string) {
+export function isJsonString(str: string) {
   try {
-      JSON.parse(str);
+    JSON.parse(str)
   } catch (e) {
-      return false;
+    return false
   }
-  return true;
+  return true
 }
 
 // get Youtube video ID from URL
 export function getYoutubeVideoId(url: string) {
-  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  var match = url.match(regExp);
-  return (match&&match[7].length==11)? match[7] : false;
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+  const match = url.match(regExp)
+  return match && match[7].length == 11 ? match[7] : false
 }
