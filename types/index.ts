@@ -1,5 +1,35 @@
 import { ObjectId } from 'mongoose'
 
+import { Acc, Gyro, Rot } from './AccGyroRot'
+import { Analyst } from './Analyst'
+import { Organization } from './Organization'
+import { Post } from './Post'
+import { CustomSurvey, GProject, Selection, TextResponse } from './Project'
+import { EssentialSurvey, Survey } from './Survey'
+import { User } from './User'
+import { VerificationCode } from './VerificationCode'
+import { Walking } from './Walking'
+import { Weight } from './Weight'
+
+export type {
+  Acc,
+  Analyst,
+  CustomSurvey,
+  EssentialSurvey,
+  GProject,
+  Gyro,
+  Organization,
+  Post,
+  Rot,
+  Selection,
+  Survey,
+  TextResponse,
+  User,
+  VerificationCode,
+  Walking,
+  Weight,
+}
+
 // ====== analyst PARAMS
 export type CreateAnalystParams = {
   firstName: string
