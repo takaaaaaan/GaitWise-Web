@@ -1,5 +1,4 @@
 'use client'
-import { Gaitwise, SurveyLogo, UserLogo } from '@/public'
 import {
   Disclosure,
   DisclosureButton,
@@ -17,6 +16,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { Gaitwise, SurveyLogo, UserLogo } from '@/public'
 import useAuth from '@/utils/useAuth'
 
 // classNames 함수 정의

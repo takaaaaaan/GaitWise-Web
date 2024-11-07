@@ -1,12 +1,12 @@
 'use client'
 
-import { Gaitwise } from '@/public'
 import axios from 'axios' // axios를 임포트
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import { Gaitwise } from '@/public'
 
 function ResetPassView() {
   const searchParams = useSearchParams()

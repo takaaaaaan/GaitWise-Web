@@ -1,4 +1,3 @@
-import getAllPatients from '@/lib/services/Patients'
 import {
   DiagnosisHistory,
   LabResultsList,
@@ -9,6 +8,7 @@ import {
 } from 'components'
 import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from 'types'
 
+import getAllPatients from '@/lib/services/Patients'
 
 function getProfileData<Patient>(participant: Patient) {
   const profile: {

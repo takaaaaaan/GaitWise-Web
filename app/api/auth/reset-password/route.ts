@@ -1,9 +1,9 @@
+import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 
 import dbConnect from '@/db/dbConnect'
 import Analyst from '@/db/models/analyst'
 import Doctor from '@/db/models/doctor'
-import bcrypt from 'bcryptjs'
 
 /**
  * POST 요청을 처리하는 함수

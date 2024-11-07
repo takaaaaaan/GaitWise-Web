@@ -1,6 +1,5 @@
 'use client'
 
-import { Gaitwise } from '@/public'
 import axios from 'axios' // axios를 임포트
 import Cookies from 'js-cookie' // js-cookie를 임포트
 import Image from 'next/image'
@@ -8,6 +7,7 @@ import { useSearchParams } from 'next/navigation' // useRouter를 임포트
 import { Suspense, useState } from 'react'
 import styled from 'styled-components'
 
+import { Gaitwise } from '@/public'
 
 import ForgetPasswordView from './ForgetPass'
 import ResetPassView from './ResetPass'

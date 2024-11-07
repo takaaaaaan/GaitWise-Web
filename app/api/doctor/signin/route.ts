@@ -1,8 +1,8 @@
-import dbConnect from '@/db/dbConnect'
 import bcrypt from 'bcryptjs' // bcrypt를 임포트
 import { SignJWT } from 'jose'
 import { NextRequest, NextResponse } from 'next/server'
 
+import dbConnect from '@/db/dbConnect'
 import Doctor from '@/db/models/doctor'
 
 /**

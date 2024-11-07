@@ -1,7 +1,7 @@
 'use client'
-import useAuth from '@/utils/useAuth'
 import styled from 'styled-components'
 
+import useAuth from '@/utils/useAuth'
 
 export default function Page() {
   const loginUser = useAuth()

@@ -1,8 +1,8 @@
 'use client'
-import { participants as initialPatients } from '@/utils/participantsMockData'
 import { MenuIcon, SearchIcon } from 'icons'
 import { useState } from 'react'
 
+import { participants as initialPatients } from '@/utils/participantsMockData'
 
 const PatientList = () => {
   const [participants, setPatients] = useState(initialPatients)
