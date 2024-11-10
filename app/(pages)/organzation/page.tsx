@@ -1,14 +1,9 @@
-import {
-  DiagnosisHistory,
-  LabResultsList,
-  ParticipantHeader,
-  PatientList,
-  PatientProfile,
-  ProjectList,
-} from 'components'
+import { DiagnosisHistory, OrganzationTitle, ProjectCard } from 'components'
 import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from 'types'
 
 import getAllPatients from '@/lib/services/Patients'
+
+import { testOrganization } from './data'
 
 function getProfileData<Patient>(participant: Patient) {
   const profile: {
@@ -26,6 +21,8 @@ function getProfileData<Patient>(participant: Patient) {
 
   return profile
 }
+
+console.log(testOrganization)
 
 export default async function Home() {
   const initialData = await getAllPatients()
@@ -48,20 +45,24 @@ export default async function Home() {
 
   return (
     <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
-      <section className="mb-8 lg:mb-0">
-        {/*FIXME : <ProjectList />를 Header에 이동 */}
-        <PatientList />
-      </section>
+      <section className="mb-8 lg:mb-0">{/*FIXME : <ProjectList />를 Header에 이동 */}</section>
       <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <ParticipantHeader profile={profile} />
+        <OrganzationTitle Organzation={testOrganization} />
+        <div className="flex items-center pb-3">
+          <h2 className="text-2xl font-medium">Projects</h2>
+        </div>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <ProjectCard />
+          <ProjectCard />
+          <ProjectCard />
+          <ProjectCard />
+        </div>
+
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
-        {
-          //<DiagnosticList diagnostics={diagnoticList} />
-        }
       </section>
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <PatientProfile participant={profile} />
-        <LabResultsList labResults={labResults} />
+        {/* <PatientProfile participant={profile} /> */}
+        {/* <LabResultsList labResults={labResults} /> */}
       </section>
     </main>
   )
