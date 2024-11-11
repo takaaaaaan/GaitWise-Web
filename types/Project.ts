@@ -1,6 +1,6 @@
 export type GProject = {
   _id: string // MongoDB ObjectId
-  organizations: string[] // 関連する組織のIDリスト
+  organization: string // 関連する組織のIDリスト
   participants: string[] // 参加者のIDリスト
   surveys: string[] // 関連するサーベイのIDリスト
   analysts: string[] // 関与するアナリストのIDリスト
@@ -9,8 +9,8 @@ export type GProject = {
   custom_survey: CustomSurvey // カスタムサーベイの情報
   project_code: string // プロジェクトコード
   creator: string // プロジェクト作成者のID
-  createAt: Date // プロジェクト作成日時
-  updateAt: Date // プロジェクト更新日時
+  createdAt: Date // プロジェクト作成日時
+  updatedAt: Date // プロジェクト更新日時
 }
 
 // ====== CustomSurvey
