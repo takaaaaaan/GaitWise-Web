@@ -1,7 +1,7 @@
 'use client'
-import { MenuIcon, SearchIcon } from 'icons'
 import { useState } from 'react'
 
+import { MenuIcon, SearchIcon } from '@/components/icons'
 import { participants as initialPatients } from '@/utils/participantsMockData'
 
 const PatientList = () => {

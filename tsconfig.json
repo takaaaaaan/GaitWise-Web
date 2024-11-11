@@ -19,8 +19,8 @@
       }
     ],
     "paths": {
-      "components": ["./app/components/index"],
-      "icons": ["./app/components/icons/index"],
+      "components": ["./components/index"],
+      "icons": ["./components/icons/index"],
       "types": ["./types/index"],
       "@/*": ["./*"],
       "public": ["./public/index"],
@@ -28,7 +28,7 @@
       "@Models/*": ["./db/models/*"],
       "@/types/*": ["./types/*"],
       "@/utils/*": ["./utils/*"],
-      "@/components/*": ["./app/components/*"],
+      "@/components/*": ["./components/*"],
       "@/constants/*": ["./app/constants/*"],
       "@/context/*": ["./app/context/*"],
       "@/hooks/*": ["./app/hooks/*"],

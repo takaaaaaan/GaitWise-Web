@@ -1,8 +1,8 @@
 'use client'
-import { CalendarTodayIcon, GenderMark, IdCard, InsuranceIcon, PencilIcon, PhoneIcon } from 'icons'
 import { useState } from 'react'
 import { PatientProfileType } from 'types'
 
+import { CalendarTodayIcon, GenderMark, IdCard, InsuranceIcon, PencilIcon, PhoneIcon } from '@/components/icons'
 import { formatDate } from '@/utils/formatDate'
 
 const PatientProfile = ({ participant }: { participant: PatientProfileType }) => {

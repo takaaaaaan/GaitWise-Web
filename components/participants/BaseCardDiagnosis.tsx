@@ -1,6 +1,7 @@
-import { ArrowDownIcon } from 'icons'
 import Image from 'next/image'
 import { BaseCard } from 'types'
+
+import { ArrowDownIcon } from '@/components/icons'
 
 const BaseCardDiagnosis = ({ cardProps }: { cardProps: BaseCard }) => {
   if (cardProps.title.match('Heart Rate'))

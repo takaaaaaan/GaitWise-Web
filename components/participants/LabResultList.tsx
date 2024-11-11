@@ -1,4 +1,4 @@
-import { DownloadIcon } from 'icons'
+import { DownloadIcon } from '@/components/icons'
 
 const LabResultsList = ({ labResults }: { labResults: Array<string> }) => {
   const results = labResults.map((result, index) => {

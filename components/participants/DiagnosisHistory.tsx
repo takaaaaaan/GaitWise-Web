@@ -9,10 +9,10 @@ import {
   Title,
   Tooltip,
 } from 'chart.js'
-import { ArrowDownIcon, ArrowUpIcon, ExpandMoreIcon } from 'icons'
 import { Line } from 'react-chartjs-2'
 import { BaseCard, DiagnosisRecord } from 'types'
 
+import { ArrowDownIcon, ArrowUpIcon, ExpandMoreIcon } from '@/components/icons'
 import { options } from '@/utils/chartMockData'
 import { diagnosticHistoryCards } from '@/utils/diagnosisMockData'
 

@@ -11,11 +11,19 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
-import { CalendarTodayIcon, ChatBubbleIcon, CreditCardIcon, GroupIcon, HomeIcon, MenuIcon, SettingsIcon } from 'icons'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import {
+  CalendarTodayIcon,
+  ChatBubbleIcon,
+  CreditCardIcon,
+  GroupIcon,
+  HomeIcon,
+  MenuIcon,
+  SettingsIcon,
+} from '@/components/icons'
 import { Gaitwise, SurveyLogo, UserLogo } from '@/public'
 import useAuth from '@/utils/useAuth'
 
