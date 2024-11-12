@@ -1,7 +1,7 @@
 export type GProject = {
   _id: string // MongoDB ObjectId
   organization: string // 関連する組織のIDリスト
-  participants: string[] // 参加者のIDリスト
+  participants?: string[] // 参加者のIDリスト
   surveys: string[] // 関連するサーベイのIDリスト
   analysts: string[] // 関与するアナリストのIDリスト
   project_name: string // プロジェクト名

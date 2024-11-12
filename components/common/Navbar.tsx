@@ -24,8 +24,8 @@ import {
   MenuIcon,
   SettingsIcon,
 } from '@/components/icons'
+import useAuth from '@/hooks/useAuth'
 import { Gaitwise, SurveyLogo, UserLogo } from '@/public'
-import useAuth from '@/utils/useAuth'
 
 // classNames 함수 정의
 //@ts-ignore

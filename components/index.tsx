@@ -1,5 +1,6 @@
 import Divider from './common/Divider'
 import Navbar from './common/Navbar'
+import AnalystList from './organzation/AnalystList'
 import OrganzationTitle from './organzation/OrganzationTitle'
 import ProjectCard from './organzation/ProjectCard'
 import BaseCardDiagnosis from './participants/BaseCardDiagnosis'
@@ -12,6 +13,7 @@ import PatientProfile from './participants/ParticipantsProfile'
 import ProjectList from './participants/ProjectList'
 
 export {
+  AnalystList,
   BaseCardDiagnosis,
   DiagnosisHistory,
   DiagnosticList,
