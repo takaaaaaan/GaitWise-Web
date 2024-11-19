@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { Gaitwise } from '@/public'
 
 import ForgetPasswordView from './ForgetPass'
+import CreateOrganizationView from './organization'
 import ResetPassView from './ResetPass'
 import SignUpView from './Signup'
 
@@ -125,6 +126,8 @@ function AuthContent() {
       {type === 'forgetpass' && <ForgetPasswordView />}
 
       {type === 'reset-pass' && <ResetPassView />}
+
+      {type === 'organization' && <CreateOrganizationView />}
     </Container>
   )
 }
