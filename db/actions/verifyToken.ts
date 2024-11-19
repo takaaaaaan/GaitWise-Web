@@ -1,14 +1,22 @@
 import { jwtVerify } from 'jose'
+import mongoose from 'mongoose' // 追加
 
 import dbConnect from '@/db/dbConnect'
 import Analyst from '@/db/models/analyst'
+
+interface User {
+  id: mongoose.Types.ObjectId // ObjectId 型として指定
+  email: string
+  firstname: string
+  lastname: string
+}
 
 /**
  * 토큰을 검증하고 사용자 정보를 반환하는 함수
  * @param {string} token - JWT 토큰
  * @returns {Promise<{ user: object | null, error: string | null }>} 사용자 정보와 오류 메시지
  */
-export async function verifyTokenAndGetUser(token: string): Promise<{ user: object | null; error: string | null }> {
+export async function verifyTokenAndGetUser(token: string): Promise<{ user: User | null; error: string | null }> {
   try {
     // MongoDB 연결
     await dbConnect()
@@ -34,7 +42,7 @@ export async function verifyTokenAndGetUser(token: string): Promise<{ user: obje
     // 사용자 정보 반환
     return {
       user: {
-        id: analyst._id.toString() as string,
+        id: analyst._id,
         email: analyst.email as string,
         firstname: analyst.firstname as string,
         lastname: analyst.lastname as string,

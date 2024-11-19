@@ -33,8 +33,8 @@ const ProjectSchema = new mongoose.Schema(
       description: { type: String, default: '' }, // 설명
       status: { type: String, default: 'active' }, // 설문 상태 (예: "active", "completed")
     }, // 커스텀 설문 정보
-    project_code: { type: String, required: true, unique: true }, // 프로젝트 코드
-    creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // 프로젝트 생성자
+    project_code: { type: String, unique: true }, // 프로젝트 코드
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // 프로젝트 생성자
   },
   {
     timestamps: true,
