@@ -3,8 +3,6 @@ import mongoose from 'mongoose'
 
 import { getRandomDefaultImage } from '@/utils/RandomImage'
 
-import WeightSchema from './survey'
-
 // ====== User Schema
 const UserSchema = new mongoose.Schema(
   {
@@ -15,7 +13,10 @@ const UserSchema = new mongoose.Schema(
     lastName: { type: String, required: true }, // 사용자의 성
     gender: { type: String, required: true }, // 성별
     age: { type: Number, required: true }, // 나이
-    weight: { type: WeightSchema, required: true }, // 체중 정보 (Weight 타입)
+    weight: {
+      value: { type: Number, required: true }, // 체중 값
+      type: { type: String, required: true, default: 'kg' }, // 단위 (예: kg, lbs)
+    }, // 체중 정보
     height: { type: Number, required: true }, // 키
     job: { type: String, default: '' }, // 직업
     profile_image_url: { type: String, required: false, default: getRandomDefaultImage }, // 프로필 이미지 URL
