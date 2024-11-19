@@ -1,10 +1,9 @@
 'use client'
+import { Card } from '@mui/material'
 import { useState } from 'react'
 
 import { MenuIcon, SearchIcon } from '@/components/icons'
-import { Card } from '@mui/material'
-import Organization from '@/db/models/organization'
-import { useParams } from 'next/navigation'
+import { validateEmail } from '@/utils/emailCheck'
 
 interface AnalystListProps {
   organization_id: string
@@ -17,6 +16,7 @@ interface AnalystListProps {
 }
 
 const AnalystList = ({ analysts, organization_id }: AnalystListProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [analystList, setAnalystList] = useState(analysts || [])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newAnalystEmail, setNewAnalystEmail] = useState('')
@@ -42,13 +42,10 @@ const AnalystList = ({ analysts, organization_id }: AnalystListProps) => {
       return
     }
 
-    // Eメール形式の確認
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // シンプルなEメール形式の正規表現
-    if (!emailRegex.test(newAnalystEmail.trim())) {
+    if (!validateEmail(newAnalystEmail)) {
       setError('Invalid email format')
       return
     }
-
     try {
       const response = await fetch('/api/analyst/invite-email', {
         method: 'POST',

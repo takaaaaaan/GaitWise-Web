@@ -1,4 +1,5 @@
 import Divider from './common/Divider'
+import LoadingSpinner from './common/LoadingSpinner'
 import Navbar from './common/Navbar'
 import AnalystList from './organzation/AnalystList'
 import OrganzationTitle from './organzation/OrganzationTitle'
@@ -19,6 +20,7 @@ export {
   DiagnosticList,
   Divider,
   LabResultsList,
+  LoadingSpinner,
   Navbar,
   OrganzationTitle,
   ParticipantHeader,

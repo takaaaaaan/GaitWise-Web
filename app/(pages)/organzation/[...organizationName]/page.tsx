@@ -1,10 +1,10 @@
 'use client'
-import { Skeleton } from '@mui/material'
-import axios from 'axios'
+import { Card } from '@mui/material'
 import { AnalystList, OrganzationTitle, ProjectCard } from 'components'
+import { FolderPlusIcon } from 'lucide-react'
+import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { Analyst, GProject } from 'types'
+import { useEffect } from 'react'
 
 import useAuth from '@/hooks/useAuth'
 import useFetchOrganizationDetails from '@/hooks/useOrganizationDetails'
@@ -16,7 +16,7 @@ const OrganizationPage = () => {
   const { data, loading, error } = useFetchOrganizationDetails(validOrganizationName)
   const loginUser = useAuth()
 
-  //==== dev logs ====
+  // ==== Dev logs ====
   useEffect(() => {
     console.log('loginUser', loginUser)
     console.log('organizationName', organizationName)
@@ -38,10 +38,19 @@ const OrganizationPage = () => {
               <h2 className="text-2xl font-medium">Projects</h2>
             </div>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              {data?.projects ? (
-                data.projects.map((project) => <ProjectCard key={project._id} project={project} />)
+              {(data?.projects?.length ?? 0 > 0) ? (
+                data?.projects.map((project) => <ProjectCard key={project._id} project={project} />)
               ) : (
-                <Skeleton variant="rectangular" width={200} height={118} />
+                <Card variant="outlined" className="flex flex-col items-center rounded-3xl bg-white p-3 duration-300">
+                  <p>No projects available. Please create one.</p>
+                  <Link
+                    href={`/createproject/${organizationName}/`}
+                    className="mt-4 flex items-center justify-center gap-3 rounded bg-teal-500 px-4 py-3 font-bold text-white hover:bg-teal-600"
+                  >
+                    <FolderPlusIcon />
+                    Create Project
+                  </Link>
+                </Card>
               )}
             </div>
           </div>
