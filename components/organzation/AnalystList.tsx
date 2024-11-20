@@ -1,9 +1,9 @@
 'use client'
 import { Card } from '@mui/material'
 import { useState } from 'react'
+import { validateEmail } from 'utils'
 
 import { MenuIcon, SearchIcon } from '@/components/icons'
-import { validateEmail } from '@/utils/emailCheck'
 
 interface AnalystListProps {
   organization_id: string

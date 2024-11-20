@@ -1,7 +1,7 @@
 import { Card, CardActionArea } from '@mui/material'
 import type { Organization } from 'types'
 
-import DefaultImage from '@/utils/defaultImage'
+import { DefaultImage } from '@/utils'
 
 export default async function OrganzationTitle({ Organzation }: { Organzation: Organization }) {
   return (

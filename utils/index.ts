@@ -1,3 +1,4 @@
+import DefaultImage from './default/defaultImage'
 import { getRandomDefaultImage } from './default/RandomImage'
 import { handleError } from './error/errorUtils'
 import { formatDate, formatDateTime } from './format/dateUtils'
@@ -8,6 +9,7 @@ import isJsonString from './validation/validationUtils'
 import getYoutubeVideoId from './youtube/youtubeUtils'
 
 export {
+  DefaultImage,
   formatDate,
   formatDateTime,
   formatPrice,

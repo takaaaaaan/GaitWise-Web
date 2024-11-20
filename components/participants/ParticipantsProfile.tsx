@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react'
 import { PatientProfileType } from 'types'
+import { formatDate } from 'utils'
 
 import { CalendarTodayIcon, GenderMark, IdCard, InsuranceIcon, PencilIcon, PhoneIcon } from '@/components/icons'
-import { formatDate } from '@/utils/formatDate'
 
 const PatientProfile = ({ participant }: { participant: PatientProfileType }) => {
   // 상태로 입력 필드 관리
