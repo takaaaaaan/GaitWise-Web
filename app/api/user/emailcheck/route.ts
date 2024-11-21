@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/db/dbConnect'
 import User from '@/db/models/user'
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect()
     const email = req.nextUrl.searchParams.get('email')
