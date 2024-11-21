@@ -3,7 +3,7 @@ import type { Organization } from 'types'
 
 import { DefaultImage } from '@/utils'
 
-export default async function OrganzationTitle({ Organzation }: { Organzation: Organization }) {
+export default async function OrganizationTitle({ Organzation }: { Organzation: Organization }) {
   return (
     <CardActionArea>
       <Card variant="outlined" className="rounded-3xl bg-white duration-300">
