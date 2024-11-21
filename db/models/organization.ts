@@ -1,7 +1,7 @@
 // db\models\organization.ts
 import mongoose from 'mongoose'
 
-import { getRandomDefaultImage } from '@/utils/RandomImage'
+import { getRandomDefaultImage } from '@/utils'
 
 const OrganizationSchema = new mongoose.Schema(
   {

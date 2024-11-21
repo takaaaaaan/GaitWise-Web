@@ -3,28 +3,46 @@
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Gaitwise } from '@/public'
 
-export default function SignUpView() {
+interface SignUpViewProps {
+  organization: string | null
+  project: string | null
+}
+
+export default function SignUpView({ organization, project }: SignUpViewProps) {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('analyst')
-  const [errorMessage, setErrorMessage] = useState('')
-  const [isLoading, setIsLoading] = useState(false) // 로딩 상태
+  const [isLoading, setIsLoading] = useState(false)
+
+  // UI 状態を管理
+  const [mode, setMode] = useState<'default' | 'orginvitation' | 'projectinvitation' | 'invalidConfig'>('default')
 
   const router = useRouter()
 
+  // 初期チェック: UI 状態を設定
+  useEffect(() => {
+    if (!organization && !project) {
+      setMode('default') // デフォルトの状態
+    } else if (organization && !project) {
+      setMode('orginvitation') // Organization のみある状態
+    } else if (organization && project) {
+      setMode('projectinvitation') // Organization と Project 両方がある状態
+    } else if (!organization && project) {
+      setMode('invalidConfig') // 不正な設定
+    }
+  }, [organization, project])
+
   const signUp = async () => {
-    setErrorMessage('')
-    setIsLoading(true) // 로딩 상태 시작
+    setIsLoading(true)
 
     try {
-      // role 따라 적절한 엔드포인트 선택  /api/signup/{user type} 형식으로 바꿔야함.
       const endpoint =
         role === 'analyst'
           ? `${process.env.NEXT_PUBLIC_DOMAIN}/api/analyst/signup`
@@ -35,50 +53,80 @@ export default function SignUpView() {
         lastname,
         email,
         password,
+        organization, // 必要に応じて送信
+        project, // 必要に応じて送信
       })
 
       if (res.status === 200) {
-        alert('계정 생성 성공')
-        router.push('/auth?type=sign-in') // 로그인 페이지로 이동
+        alert('Account successfully created')
+        router.push('/auth?type=sign-in')
       } else if (res.status === 203) {
-        setErrorMessage(res.data.message || '이 이메일 주소는 이미 사용 중입니다')
+        alert(res.data.message || 'This email is already in use')
       } else if (res.status === 500) {
-        setErrorMessage(res.data.message || '회원가입 실패')
+        alert(res.data.message || 'Signup failed')
       }
     } catch {
-      setErrorMessage('서버 오류가 발생했습니다')
+      alert('A server error occurred')
     } finally {
-      setIsLoading(false) // 로딩 상태 종료
+      setIsLoading(false)
     }
   }
 
+  // UI の条件付きレンダリング
+  if (mode === 'invalidConfig') {
+    return (
+      <MessageBox>
+        <p>Invalid configuration: Project cannot exist without an Organization. Please correct the issue.</p>
+      </MessageBox>
+    )
+  }
+  // UI の条件付きレンダリング
+  let messageContent
+  if (mode === 'orginvitation') {
+    messageContent = (
+      <p>
+        You have been invited to join the organization: <strong>{organization}</strong>.
+      </p>
+    )
+  } else if (mode === 'projectinvitation') {
+    messageContent = (
+      <p>
+        You have been invited to join the project: <strong>{project}</strong> under the organization:{' '}
+        <strong>{organization}</strong>.
+      </p>
+    )
+  }
+  // Default sign-up form
   return (
     <SignUpBox>
       <Image src={Gaitwise} alt="logo" width={100} height={100} layout="responsive" />
       <Title>Create Account</Title>
-      <Subtitle>Doctor must authenticate after Login</Subtitle>
-      <RoleSelect>
-        <label>
-          <input
-            type="radio"
-            name="role"
-            value="analyst"
-            checked={role === 'analyst'}
-            onChange={(e) => setRole(e.target.value)}
-          />
-          Analyst
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="role"
-            value="doctor"
-            checked={role === 'doctor'}
-            onChange={(e) => setRole(e.target.value)}
-          />
-          Doctor
-        </label>
-      </RoleSelect>
+      <Subtitle>Welcome! Please fill out the form below to create an account.</Subtitle>
+      {messageContent && <Subtitle>{messageContent}</Subtitle>}
+      {mode === 'default' && (
+        <RoleSelect>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="analyst"
+              checked={role === 'analyst'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Analyst
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="doctor"
+              checked={role === 'doctor'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Doctor
+          </label>
+        </RoleSelect>
+      )}
       <InputField
         type="text"
         placeholder="First Name"
@@ -93,21 +141,43 @@ export default function SignUpView() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <SignUpButton
         onClick={signUp}
         disabled={isLoading || !firstname.trim() || !lastname.trim() || !email.trim() || !password.trim()}
       >
         {isLoading ? 'Signing Up...' : 'Sign Up'}
       </SignUpButton>
-      <Links>
-        <p>
-          Already have an account?<a href="/auth?type=sign-in"> Sign In</a>
-        </p>
-      </Links>
+      {mode === 'default' && (
+        <Links>
+          <p>
+            Already have an account?<a href="/auth?type=sign-in"> Sign In</a>
+          </p>
+        </Links>
+      )}
     </SignUpBox>
   )
 }
+
+// UI メッセージ用のスタイル
+const MessageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  text-align: center;
+
+  p {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+
+    strong {
+      font-weight: bold;
+      color: #2d3748;
+    }
+  }
+`
 
 const SignUpBox = styled.div`
   background: white;
@@ -167,11 +237,6 @@ const SignUpButton = styled.button`
     background-color: #ccc;
     cursor: not-allowed;
   }
-`
-
-const ErrorMessage = styled.p`
-  color: red;
-  margin-bottom: 1rem;
 `
 
 const Links = styled.div`

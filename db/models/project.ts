@@ -5,7 +5,7 @@ const ProjectSchema = new mongoose.Schema(
     organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: '' }, // 관련 조직
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // 참가자
     surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Survey', default: [] }], // 설문 목록
-    analysts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // 분석가
+    analysts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Analyst', default: [] }], // 분석가
     project_name: { type: String, required: true }, // 프로젝트 이름
     project_description: { type: String, default: '' }, // 프로젝트 설명
     custom_survey: {
