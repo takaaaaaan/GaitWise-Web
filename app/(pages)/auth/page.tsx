@@ -16,13 +16,9 @@ function AuthContent() {
   const organization = searchParams.get('organization')
   const project = searchParams.get('project')
 
-  const handleSignIn = () => {
-    window.location.href = '/participant'
-  }
-
   return (
     <Container>
-      {type === 'sign-in' && <SigninView onSignIn={handleSignIn} />}
+      {type === 'sign-in' && <SigninView organization={organization} project={project} />}
       {type === 'sign-up' && <SignUpView organization={organization} project={project} />}
       {type === 'forgetpass' && <ForgetPasswordView />}
       {type === 'reset-pass' && <ResetPassView />}

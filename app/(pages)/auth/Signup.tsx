@@ -3,9 +3,10 @@
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
+import { useSigninMode } from '@/hooks/useSigninMode'
 import { Gaitwise } from '@/public'
 
 interface SignUpViewProps {
@@ -22,22 +23,9 @@ export default function SignUpView({ organization, project }: SignUpViewProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   // UI 状態を管理
-  const [mode, setMode] = useState<'default' | 'orginvitation' | 'projectinvitation' | 'invalidConfig'>('default')
+  const mode = useSigninMode(organization, project)
 
   const router = useRouter()
-
-  // 初期チェック: UI 状態を設定
-  useEffect(() => {
-    if (!organization && !project) {
-      setMode('default') // デフォルトの状態
-    } else if (organization && !project) {
-      setMode('orginvitation') // Organization のみある状態
-    } else if (organization && project) {
-      setMode('projectinvitation') // Organization と Project 両方がある状態
-    } else if (!organization && project) {
-      setMode('invalidConfig') // 不正な設定
-    }
-  }, [organization, project])
 
   const signUp = async () => {
     setIsLoading(true)

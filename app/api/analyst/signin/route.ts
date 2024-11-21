@@ -2,8 +2,11 @@ import bcrypt from 'bcryptjs' // bcrypt를 임포트
 import { SignJWT } from 'jose'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { getOrganizationIdByName, getProjectIdByName } from '@/db/actions'
 import dbConnect from '@/db/dbConnect'
 import Analyst from '@/db/models/analyst'
+import Organization from '@/db/models/organization'
+import Project from '@/db/models/project'
 
 /**
  * POST 요청을 처리하는 함수
@@ -12,13 +15,13 @@ import Analyst from '@/db/models/analyst'
  */
 export async function POST(request: NextRequest) {
   const body = await request.json()
-
+  const { email, password, organization, project } = body
   try {
     // MongoDB에 접속
     await dbConnect()
 
     // 이메일 주소로 사용자를 검색
-    const analyst = await Analyst.findOne({ email: body.email })
+    const analyst = await Analyst.findOne({ email: email })
 
     if (!analyst) {
       // 사용자가 존재하지 않는 경우
@@ -26,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 비밀번호를 비교 (해시화된 비밀번호와 입력된 비밀번호를 비교)
-    const isPasswordCorrect = await bcrypt.compare(body.password, analyst.password)
+    const isPasswordCorrect = await bcrypt.compare(password, analyst.password)
 
     if (!isPasswordCorrect) {
       // 비밀번호가 틀린 경우
@@ -50,6 +53,36 @@ export async function POST(request: NextRequest) {
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('2h') // 유효 기간 2시간
       .sign(secretKey)
+
+    const newAnalystId = analyst._id
+
+    // Organization에 newAnalystId 추가 (organizationが存在する場合のみ)
+    if (organization) {
+      const organizationId = await getOrganizationIdByName(organization)
+      const updatedOrganization = await Organization.findByIdAndUpdate(
+        organizationId,
+        { $push: { analysts: newAnalystId } },
+        { new: true }
+      )
+
+      if (!updatedOrganization) {
+        return NextResponse.json({ message: 'Organization 업데이트 실패', success: false }, { status: 400 })
+      }
+    }
+
+    // Project에 newAnalystId 추가 (projectが存在する場合のみ)
+    if (project) {
+      const projectId = await getProjectIdByName(project)
+      const updatedProject = await Project.findByIdAndUpdate(
+        projectId,
+        { $push: { analysts: newAnalystId } },
+        { new: true }
+      )
+
+      if (!updatedProject) {
+        return NextResponse.json({ message: 'Project 업데이트 실패', success: false }, { status: 400 })
+      }
+    }
 
     // 로그인 성공 시 응답
     return NextResponse.json({ message: '로그인 성공', flg: true, token: token })

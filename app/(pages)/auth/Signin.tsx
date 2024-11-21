@@ -6,17 +6,35 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import { useSigninMode } from '@/hooks/useSigninMode'
 import { Gaitwise } from '@/public'
 
-interface LoginBoxProps {
-  onSignIn: () => void
+interface SigninViewProps {
+  organization: string | null
+  project: string | null
 }
 
-export default function SigninView({ onSignIn }: LoginBoxProps) {
+export default function SigninView({ organization, project }: SigninViewProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('analyst')
   const [isLoading, setIsLoading] = useState(false)
+
+  const mode = useSigninMode(organization, project)
+
+  const handleSignIn = () => {
+    let redirectUrl = '/participant'
+
+    if (mode === 'orginvitation') {
+      redirectUrl = `/organization/${organization}` // Organization 招待の場合
+    } else if (mode === 'projectinvitation') {
+      redirectUrl = `/organization/${organization}/project/${project}` // Project 招待の場合
+    } else if (mode === 'invalidConfig') {
+      redirectUrl = '/error' // 不正な設定の場合
+    }
+
+    window.location.href = redirectUrl
+  }
 
   const signIn = async () => {
     setIsLoading(true)
@@ -26,7 +44,7 @@ export default function SigninView({ onSignIn }: LoginBoxProps) {
           ? `${process.env.NEXT_PUBLIC_DOMAIN}/api/analyst/signin`
           : `${process.env.NEXT_PUBLIC_DOMAIN}/api/doctor/signin`
 
-      const res = await axios.post(endpoint, { email, password })
+      const res = await axios.post(endpoint, { email, password, organization, project })
       const jsondata = res.data
 
       if (jsondata.flg && jsondata.token) {
@@ -36,17 +54,41 @@ export default function SigninView({ onSignIn }: LoginBoxProps) {
           sameSite: 'Strict',
         })
         alert(jsondata.message)
-        onSignIn()
+        handleSignIn()
       } else {
         alert(jsondata.message)
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error(errorMessage)
-      alert('ログイン失敗')
+      alert('ログ인 실패')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (mode === 'invalidConfig') {
+    return (
+      <MessageBox>
+        <p>Invalid configuration: Project cannot exist without an Organization. Please correct the issue.</p>
+      </MessageBox>
+    )
+  }
+
+  let messageContent
+  if (mode === 'orginvitation') {
+    messageContent = (
+      <p>
+        You have been invited to join the organization: <strong>{organization}</strong>.
+      </p>
+    )
+  } else if (mode === 'projectinvitation') {
+    messageContent = (
+      <p>
+        You have been invited to join the project: <strong>{project}</strong> under the organization:
+        <strong>{organization}</strong>.
+      </p>
+    )
   }
 
   return (
@@ -54,30 +96,31 @@ export default function SigninView({ onSignIn }: LoginBoxProps) {
       <Image src={Gaitwise} alt="logo" width={100} height={100} layout="responsive" />
       <Title>Hi, Welcome Back!</Title>
       <Subtitle>Please select a Type</Subtitle>
-
-      <RoleSelect>
-        <label>
-          <input
-            type="radio"
-            name="role"
-            value="analyst"
-            checked={role === 'analyst'}
-            onChange={(e) => setRole(e.target.value)}
-          />
-          Analysts
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="role"
-            value="doctor"
-            checked={role === 'doctor'}
-            onChange={(e) => setRole(e.target.value)}
-          />
-          Doctor
-        </label>
-      </RoleSelect>
-
+      {messageContent && <Subtitle>{messageContent}</Subtitle>}
+      {mode === 'default' && (
+        <RoleSelect>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="analyst"
+              checked={role === 'analyst'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Analysts
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="role"
+              value="doctor"
+              checked={role === 'doctor'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Doctor
+          </label>
+        </RoleSelect>
+      )}
       <InputField type="email" placeholder="Your Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <InputField
         type="password"
@@ -92,16 +135,42 @@ export default function SigninView({ onSignIn }: LoginBoxProps) {
           Sign In
         </LoginButton>
       )}
-
-      <Links>
-        <a href="/auth?type=forgetpass">Forgot password?</a>
-        <p>
-          Don’t have an account yet? <a href="/auth?type=sign-up">Sign up</a>
-        </p>
-      </Links>
+      {mode === 'default' && (
+        <Links>
+          <a href="/auth?type=forgetpass">Forgot password?</a>
+          <p>
+            Don’t have an account yet? <a href="/auth?type=sign-up">Sign up</a>
+          </p>
+        </Links>
+      )}
+      {mode !== 'default' && (
+        <Links>
+          <a href="/auth?type=forgetpass">Forgot password?</a>
+        </Links>
+      )}
     </LoginBox>
   )
 }
+
+const MessageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  text-align: center;
+
+  p {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+
+    strong {
+      font-weight: bold;
+      color: #2d3748;
+    }
+  }
+`
 
 const LoginBox = styled.div`
   background: white;
