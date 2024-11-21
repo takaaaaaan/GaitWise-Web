@@ -1,7 +1,7 @@
 // db\models\user.ts
 import mongoose from 'mongoose'
 
-import { getRandomDefaultImage } from '@/utils/RandomImage'
+import { getRandomDefaultImage } from '@/utils'
 
 // ====== User Schema
 const UserSchema = new mongoose.Schema(
