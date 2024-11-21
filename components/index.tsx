@@ -1,9 +1,9 @@
 import Divider from './common/Divider'
 import LoadingSpinner from './common/LoadingSpinner'
 import Navbar from './common/Navbar'
-import AnalystList from './organzation/AnalystList'
-import OrganzationTitle from './organzation/OrganzationTitle'
-import ProjectCard from './organzation/ProjectCard'
+import AnalystList from './org/AnalystList'
+import OrganizationTitle from './org/OrganzationTitle'
+import ProjectCard from './org/ProjectCard'
 import BaseCardDiagnosis from './participants/BaseCardDiagnosis'
 import DiagnosisHistory from './participants/DiagnosisHistory'
 import DiagnosticList from './participants/DiagnosticList'
@@ -22,7 +22,7 @@ export {
   LabResultsList,
   LoadingSpinner,
   Navbar,
-  OrganzationTitle,
+  OrganizationTitle,
   ParticipantHeader,
   PatientList,
   PatientProfile,
