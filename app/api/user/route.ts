@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     // JSON 본문 파싱
     const body = await req.json()
-    const { age, gender, height, weight, profile } = body
+    const { age, gender, height, weight, profile, email } = body
 
     // 必須フィールドのチェック
     if (
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
       !profile?.passwd ||
       !gender ||
       !age ||
+      !email ||
       !weight.value ||
       !weight.type ||
       !height
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
       newUser = await User.create({
         firstName: profile.firstName,
         lastName: profile.lastName,
+        email,
         gender,
         age,
         weight: {

@@ -1,8 +1,6 @@
 // db\models\user.ts
 import mongoose from 'mongoose'
 
-import { getRandomDefaultImage } from '@/utils'
-
 // ====== User Schema
 const UserSchema = new mongoose.Schema(
   {
@@ -19,8 +17,9 @@ const UserSchema = new mongoose.Schema(
     }, // 체중 정보
     height: { type: Number, required: true }, // 키
     job: { type: String, default: '' }, // 직업
-    profile_image_url: { type: String, required: false, default: getRandomDefaultImage }, // 프로필 이미지 URL
+    profile_image_url: { type: String, default: '' }, // 프로필 이미지 URL
     password: { type: String, required: true }, // 해시화된 비밀번호
+    email: { type: String, required: true, unique: true }, // 이메일 주소
   },
   {
     timestamps: true,
