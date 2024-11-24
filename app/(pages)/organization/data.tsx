@@ -1,4 +1,4 @@
-import { Organization } from 'types'
+import { Organization } from '@/app/types'
 
 export const testOrganization: Organization = {
   _id: '648a1c2d9f0b123456789012', // MongoDB ObjectId

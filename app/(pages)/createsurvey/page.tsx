@@ -3,7 +3,8 @@ import React, { useRef, useState } from 'react'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import styled from 'styled-components'
-import { DragItem, Question } from 'types'
+
+import { DragItem, Question } from '@/app/types'
 // 드래그 타입 정의
 const ItemType = 'QUESTION'
 

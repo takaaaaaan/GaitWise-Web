@@ -1,5 +1,4 @@
-import { CreateAnalystParams, UpdateAnalystParams } from 'types'
-
+import { CreateAnalystParams, UpdateAnalystParams } from '@/app/types'
 import dbConnect from '@/db/dbConnect'
 import Analyst from '@/db/models/analyst'
 import { handleError } from '@/utils'

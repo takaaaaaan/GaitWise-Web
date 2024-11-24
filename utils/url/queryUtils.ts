@@ -1,6 +1,6 @@
 import qs from 'query-string'
 
-import { RemoveUrlQueryParams, UrlQueryParams } from '../../types'
+import { RemoveUrlQueryParams, UrlQueryParams } from '../../app/types'
 
 export function formUrlQuery({ params, key, value }: UrlQueryParams) {
   const currentUrl = qs.parse(params)

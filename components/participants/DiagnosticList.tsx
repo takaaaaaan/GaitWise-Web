@@ -1,4 +1,4 @@
-import { Diagnostic } from 'types'
+import { Diagnostic } from '@/app/types'
 
 const DiagnosticList = ({ diagnostics }: { diagnostics: Diagnostic[] }) => {
   return (

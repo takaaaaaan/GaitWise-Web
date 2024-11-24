@@ -10,8 +10,8 @@ import {
   Tooltip,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { BaseCard, DiagnosisRecord } from 'types'
 
+import { BaseCard, DiagnosisRecord } from '@/app/types'
 import { ArrowDownIcon, ArrowUpIcon, ExpandMoreIcon } from '@/components/icons'
 import { options } from '@/utils/chartMockData'
 import { diagnosticHistoryCards } from '@/utils/diagnosisMockData'

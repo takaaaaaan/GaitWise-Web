@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { BaseCard } from 'types'
 
+import { BaseCard } from '@/app/types'
 import { ArrowDownIcon } from '@/components/icons'
 
 const BaseCardDiagnosis = ({ cardProps }: { cardProps: BaseCard }) => {

@@ -1,7 +1,8 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { Project } from 'types'
+
+import { Project } from '@/app/types'
 
 const ProjectList: React.FC = () => {
   const router = useRouter()

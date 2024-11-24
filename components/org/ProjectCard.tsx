@@ -4,7 +4,8 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link' // Link をインポート
 import React from 'react'
-import { GProject } from 'types'
+
+import { GProject } from '@/app/types'
 
 // ==== コンポーネント Props ====
 interface ProjectCardProps {

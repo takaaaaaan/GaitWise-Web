@@ -1,4 +1,4 @@
-import type { PatientProfileType } from 'types'
+import type { PatientProfileType } from '@/app/types'
 
 export default async function ParticipantHeader({ profile }: { profile: PatientProfileType }) {
   return (

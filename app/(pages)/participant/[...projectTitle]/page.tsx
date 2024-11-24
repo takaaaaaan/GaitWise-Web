@@ -6,8 +6,8 @@ import {
   PatientProfile,
   ProjectList,
 } from 'components'
-import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from 'types'
 
+import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from '@/app/types'
 import getAllPatients from '@/lib/services/Patients'
 
 function getProfileData<Patient>(participant: Patient) {

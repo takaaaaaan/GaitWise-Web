@@ -1,4 +1,4 @@
-import { Patient } from 'types'
+import { Patient } from '@/app/types'
 
 import { API_AUTHORIZATION_PASSWORD, API_AUTHORIZATION_USERNAME, API_URL } from './const'
 
