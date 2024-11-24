@@ -1,5 +1,5 @@
+import Analyst from '@/db/models/analyst'
 import Organization from '@/db/models/organization'
-import User from '@/db/models/user'
 
 /**
  * 指定されたメールアドレスが有効なユーザーであり、指定された組織に属しているかを確認します。
@@ -14,7 +14,8 @@ export async function checkAnalysts(emails: string[], organizationId: string) {
   const nonMemberUsers: { email: string; userId: string }[] = [] // 組織に属していないユーザーのメールとID
 
   for (const email of emails) {
-    const user = await User.findOne({ email }) // ユーザーが存在するか確認
+    const user = await Analyst.findOne({ email }) // ユーザーが存在するか確認
+    console.log('user:', user)
     if (!user) {
       nonExistentUsers.push(email) // 存在しない場合、配列に追加
       continue
@@ -33,11 +34,13 @@ export async function checkAnalysts(emails: string[], organizationId: string) {
     // 有効な場合、有効なユーザーリストに追加
     validUsers.push({ email, userId: user._id })
   }
-
+  console.log('이미 이 Org의 팀원:', validUsers)
+  console.log('이 Org에 소속돼 있지 않은 분석가:', nonMemberUsers)
+  console.log('등록돼 있지 않은 분석가:', nonExistentUsers)
   return {
-    validUsers, // メールアドレスとユーザーIDのペアを持つ有効なユーザーリスト
-    nonExistentUsers, // 存在しないユーザーのメールアドレスリスト
-    nonMemberUsers, // メールアドレスとユーザーIDのペアを持つ組織に属していないユーザーリスト
+    validUsers,
+    nonExistentUsers,
+    nonMemberUsers,
   }
 }
 //====== Response Example ======//
