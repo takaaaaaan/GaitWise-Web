@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { NextRequest, NextResponse } from 'next/server'
 
-import dbConnect from '@/db/dbConnect'
-import Doctor from '@/db/models/doctor'
+import { dbConnect, Doctor } from '@/db/models'
 
 /**
  * POST 요청을 처리하는 함수 (Doctor 전용)

@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
-import Doctor from '@/db/models/doctor'
-import VerificationCode from '@/db/models/VerificationCode'
+import { Analyst, dbConnect, Doctor, VerificationCode } from '@/db/models'
 
 /**
  * 랜덤한 숫자를 생성하는 함수

@@ -1,13 +1,9 @@
-import bcrypt from 'bcryptjs' // bcrypt를 임포트
+import bcrypt from 'bcryptjs'
 import { SignJWT } from 'jose'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { getOrganizationIdByName, getProjectIdByName } from '@/db/actions'
-import { getOrganizationsAndProjectsByAnalyst } from '@/db/actions/analyst/fetchRelations'
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
-import Organization from '@/db/models/organization'
-import Project from '@/db/models/project'
+import { getOrganizationIdByName, getOrganizationsAndProjectsByAnalyst, getProjectIdByName } from '@/db/actions'
+import { Analyst, dbConnect, Organization, Project } from '@/db/models'
 
 /**
  * POST 요청을 처리하는 함수

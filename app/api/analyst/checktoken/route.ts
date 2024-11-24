@@ -1,8 +1,7 @@
 import { jwtVerify } from 'jose'
 import { NextRequest, NextResponse } from 'next/server'
 
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
+import { Analyst, dbConnect } from '@/db/models'
 
 /**
  * 사용자 토큰을 검증하고 사용자 정보를 반환

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
-import Organization from '@/db/models/organization'
-import Project from '@/db/models/project'
+import { Analyst, dbConnect, Organization, Project } from '@/db/models'
 
 /**
  * @description 조직 이름으로 조직 세부 정보를 가져옵니다.

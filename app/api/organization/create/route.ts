@@ -2,9 +2,8 @@ import { promises as fs } from 'fs'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 
-import { verifyTokenAndGetUser } from '@/db/actions/verifyToken'
-import dbConnect from '@/db/dbConnect'
-import Organization from '@/db/models/organization'
+import { verifyTokenAndGetUser } from '@/db/actions'
+import { dbConnect, Organization } from '@/db/models'
 
 // アップロードされたファイルを保存
 async function saveFile(file: File): Promise<string> {

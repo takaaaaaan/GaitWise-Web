@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import dbConnect from '@/db/dbConnect'
-import VerificationCode from '@/db/models/VerificationCode'
+import { dbConnect, VerificationCode } from '@/db/models'
 
 /**
  * POST 요청을 처리하는 함수

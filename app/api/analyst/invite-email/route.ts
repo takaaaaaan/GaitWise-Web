@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
-import dbConnect from '@/db/dbConnect'
-import Analyst from '@/db/models/analyst'
-import Organization from '@/db/models/organization'
+import { Analyst, dbConnect, Organization } from '@/db/models'
 
 export async function POST(request: NextRequest) {
   try {

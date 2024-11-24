@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import dbConnect from '@/db/dbConnect'
-import Project from '@/db/models/project'
+import { dbConnect, Project } from '@/db/models'
 
 /**
  * @description 프로젝트 데이터를 가져오면서 조직 정보를 제한된 필드로 포함합니다.

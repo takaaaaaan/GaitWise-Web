@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { checkAnalysts } from '@/db/actions/checkAnalysts'
-import { sendEmail } from '@/db/actions/emailSender'
-import { verifyTokenAndGetUser } from '@/db/actions/verifyToken'
-import dbConnect from '@/db/dbConnect'
-import Organization from '@/db/models/organization'
-import Project from '@/db/models/project'
+import { checkAnalysts, sendEmail, verifyTokenAndGetUser } from '@/db/actions'
+import { dbConnect, Organization, Project } from '@/db/models'
 
 export async function POST(req: NextRequest) {
   try {
