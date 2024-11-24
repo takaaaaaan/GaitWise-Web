@@ -61,6 +61,10 @@ export async function POST(req: NextRequest) {
     // 이메일 주소 분류
     const { validUsers, nonExistentUsers, nonMemberUsers } = await checkAnalysts(analysts_email, organization._id)
 
+    console.log('이미 이 Org의 팀원:', validUsers)
+    console.log('이 Org에 소속돼 있지 않은 사용자:', nonMemberUsers)
+    console.log('비회원:', nonExistentUsers)
+
     // 초대 메일 보내기
     for (const email of nonExistentUsers) {
       await sendEmail({
@@ -77,7 +81,7 @@ export async function POST(req: NextRequest) {
         type: 'invitation',
         invitationType: 'project',
         recipientName: '',
-        actionLink: `${process.env.NEXT_PUBLIC_DOMAIN}/auth?type=sign-in&project=${title}`,
+        actionLink: `${process.env.NEXT_PUBLIC_DOMAIN}/auth?type=sign-in&organization=${organization.organization_name}&project=${title}`,
       })
     }
 

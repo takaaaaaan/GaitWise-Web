@@ -41,9 +41,10 @@ export async function POST(request: NextRequest) {
     })
 
     const newAnalystId = newAnalyst._id
-    const organizationId = await getOrganizationIdByName(organization)
-    // Organization에 newAnalystId 추가
+
+    // Organization에 newAnalystId 추가 (organization이 있는 경우만)
     if (organization) {
+      const organizationId = await getOrganizationIdByName(organization)
       const updatedOrganization = await Organization.findByIdAndUpdate(
         organizationId,
         { $push: { analysts: newAnalystId } },
@@ -54,9 +55,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: 'Organization 업데이트 실패', success: false }, { status: 400 })
       }
     }
-    const projectId = await getProjectIdByName(project)
-    // Project에 newAnalystId 추가
+
+    // Project에 newAnalystId 추가 (project가 있는 경우만)
     if (project) {
+      const projectId = await getProjectIdByName(project)
       const updatedProject = await Project.findByIdAndUpdate(
         projectId,
         { $push: { analysts: newAnalystId } },

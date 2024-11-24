@@ -11,19 +11,19 @@ export async function POST(request: NextRequest) {
 
     // 요청 내용 가져오기
     const body = await request.json()
-    const { email, _id } = body
+    const { email, _id: orgid } = body
 
     // 유효성 검사
     if (!email) {
       return NextResponse.json({ message: '이메일 주소가 누락되었습니다.', flg: false }, { status: 400 })
     }
-    if (!_id) {
-      return NextResponse.json({ error: '_id 필수입니다.' }, { status: 400 })
+    if (!orgid) {
+      return NextResponse.json({ error: 'orgid 필수입니다.' }, { status: 400 })
     }
     // 데이터베이스에 연결
     // 데이터베이스에서 조직 검색
     const organization = await Organization.findOne({
-      _id: _id,
+      _id: orgid,
     })
     console.log(organization.analysts)
     // 데이터베이스에서 여러 프로젝트 검색

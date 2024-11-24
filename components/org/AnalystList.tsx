@@ -52,7 +52,7 @@ const AnalystList = ({ analysts, organization_id }: AnalystListProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: newAnalystEmail, _id: organization_id }),
+        body: JSON.stringify({ email: newAnalystEmail, orgid: organization_id }),
       })
 
       if (!response.ok) {

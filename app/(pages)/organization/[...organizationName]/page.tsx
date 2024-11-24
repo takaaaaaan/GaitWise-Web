@@ -1,5 +1,5 @@
 'use client'
-import { AnalystList, OrganzationTitle, ProjectCard } from 'components'
+import { AnalystList, OrganizationTitle, ProjectCard } from 'components'
 import { FolderPlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -31,7 +31,7 @@ const OrganizationPage = () => {
         <section className="col-start-2 col-end-5 mb-8 flex-col lg:mb-0">
           {loading && <p>Loading...</p>}
           {error && <p style={{ color: 'red' }}>Error: {error.message || 'Failed to fetch data.'}</p>}
-          {data && <OrganzationTitle Organzation={data} />}
+          {data && <OrganizationTitle Organzation={data} />}
           <div className="flex-col items-center">
             <div className="mb-6 mt-8">
               <h2 className="text-2xl font-medium">Projects</h2>

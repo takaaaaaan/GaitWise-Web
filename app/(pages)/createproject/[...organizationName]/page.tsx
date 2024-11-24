@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { LoadingSpinner } from '@/components'
-import { validateEmail } from '@/utils/emailCheck'
+import { validateEmail } from '@/utils'
 
 const ProjectPage = () => {
   const router = useRouter()
