@@ -3,6 +3,7 @@ import { SignJWT } from 'jose'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { getOrganizationIdByName, getProjectIdByName } from '@/db/actions'
+import { getOrganizationsAndProjectsByAnalyst } from '@/db/actions/analyst/fetchRelations'
 import dbConnect from '@/db/dbConnect'
 import Analyst from '@/db/models/analyst'
 import Organization from '@/db/models/organization'
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     if (!analyst) {
       // 사용자가 존재하지 않는 경우
-      return NextResponse.json({ message: '사용자가 존재하지 않습니다', flg: false })
+      return NextResponse.json({ message: '사용자가 존재하지 않습니다', success: false })
     }
 
     // 비밀번호를 비교 (해시화된 비밀번호와 입력된 비밀번호를 비교)
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     if (!isPasswordCorrect) {
       // 비밀번호가 틀린 경우
-      return NextResponse.json({ message: '비밀번호가 틀렸습니다', flg: false })
+      return NextResponse.json({ message: '비밀번호가 틀렸습니다', success: false })
     }
 
     // 1: JWT용 시크릿 키를 생성
@@ -84,11 +85,26 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // 관련 Organization 및 Project 검색
+    const { organizations } = await getOrganizationsAndProjectsByAnalyst(analyst._id.toString())
+    const org_only = organizations.map((org) => org.name)
+
+    let redirectUrl
+    if (!organization && !project) {
+      redirectUrl = `/organization/${org_only[0]}`
+    } else if (organization && !project) {
+      redirectUrl = `/organization/${organization}`
+    } else if (organization && project) {
+      redirectUrl = `/organization/project/${project}`
+    } else if (!organization && project) {
+      redirectUrl = '/error' // 不正な設定の場合
+    }
+    console.log('redirectUrl:', redirectUrl)
     // 로그인 성공 시 응답
-    return NextResponse.json({ message: '로그인 성공', flg: true, token: token })
+    return NextResponse.json({ message: '로그인 성공', success: true, token: token, redirectUrl })
   } catch (error: unknown) {
     // 예기치 않은 오류가 발생한 경우의 처리
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ message: '로그인 실패', flg: false, error: errorMessage })
+    return NextResponse.json({ message: '로그인 실패', success: false, error: errorMessage })
   }
 }

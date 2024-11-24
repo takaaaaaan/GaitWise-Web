@@ -43,7 +43,7 @@ export default function CreateOrganizationView() {
         },
       })
 
-      if (res.status === 200) {
+      if (res.data.success) {
         alert('組織が正常に作成されました')
         router.push(`/organization/${organizationName}`) // ダッシュボードなど適切なページにリダイレクト
       } else {

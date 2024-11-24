@@ -1,6 +1,5 @@
-import './globals.css'
+import '@/styles/globals.css'
 
-import { Navbar } from 'components'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -22,12 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="public/svg/gaitwise-logo.svg=v1.0" />
+      </head>
       <body className={inter.className}>
         <Providers>
-          <StyledComponentsRegistry>
-            <Navbar />
-            {children}
-          </StyledComponentsRegistry>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </Providers>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -20,21 +21,8 @@ export default function SigninView({ organization, project }: SigninViewProps) {
   const [role, setRole] = useState('analyst')
   const [isLoading, setIsLoading] = useState(false)
 
+  const router = useRouter()
   const mode = useSigninMode(organization, project)
-
-  const handleSignIn = () => {
-    let redirectUrl = '/participant'
-
-    if (mode === 'orginvitation') {
-      redirectUrl = `/organization/${organization}` // Organization 招待の場合
-    } else if (mode === 'projectinvitation') {
-      redirectUrl = `/organization/${organization}/project/${project}` // Project 招待の場合
-    } else if (mode === 'invalidConfig') {
-      redirectUrl = '/error' // 不正な設定の場合
-    }
-
-    window.location.href = redirectUrl
-  }
 
   const signIn = async () => {
     setIsLoading(true)
@@ -47,21 +35,21 @@ export default function SigninView({ organization, project }: SigninViewProps) {
       const res = await axios.post(endpoint, { email, password, organization, project })
       const jsondata = res.data
 
-      if (jsondata.flg && jsondata.token) {
+      if (jsondata.success && jsondata.token) {
         Cookies.set('token', jsondata.token, {
           expires: 1,
           secure: process.env.NEXT_PUBLIC_SECURE === 'true',
           sameSite: 'Strict',
         })
         alert(jsondata.message)
-        handleSignIn()
+        router.push(jsondata.redirectUrl)
       } else {
         alert(jsondata.message)
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error(errorMessage)
-      alert('ログ인 실패')
+      alert('Login failed')
     } finally {
       setIsLoading(false)
     }
