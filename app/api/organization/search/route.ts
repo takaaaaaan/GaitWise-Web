@@ -1,37 +1,85 @@
+// app/api/organization-projects/route.ts
 import { NextRequest, NextResponse } from 'next/server'
+import { Organization as OrgDataType } from 'types'
 
-import { dbConnect, Organization } from '@/db/models'
+import { verifyTokenAndGetUser } from '@/db/actions'
+import { dbConnect, Organization, Project } from '@/db/models'
 
-/**
- * @description 조직 이름으로 조직 세부 정보를 가져옵니다.
- * @searchParams organizationName
- */
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    // 데이터베이스 연결
+    // Extract token from request headers
+    const token = req.headers.get('Authorization')?.replace('Bearer ', '')
+    if (!token) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Token is required',
+        },
+        { status: 401 }
+      )
+    }
+
+    // Verify the token and get user information
+    const { user, error } = await verifyTokenAndGetUser(token)
+    if (error || !user) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: error || 'Unable to identify the user',
+        },
+        { status: 403 }
+      )
+    }
+
+    // Connect to MongoDB
     await dbConnect()
 
-    // 쿼리 매개변수에서 organizationName 가져오기
-    const organizationName = req.nextUrl.searchParams.get('organizationName')
-
-    if (!organizationName) {
-      return NextResponse.json({ error: 'organizationName은 필수입니다.' }, { status: 400 })
+    // Find organizations the analyst belongs to
+    const organizations = (await Organization.find({ analysts: user.id })
+      .select('organization_name projects')
+      .lean()) as OrgDataType[]
+    if (!organizations || organizations.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'No organizations found for the user',
+        },
+        { status: 404 }
+      )
     }
 
-    // 데이터베이스에서 조직 검색
-    const organization = await Organization.findOne({
-      organization_name: organizationName,
-    })
+    // Get project IDs from organizations and find related projects
+    const projectIds = organizations.flatMap((org) => org.projects)
+    const projects = await Project.find({ _id: { $in: projectIds } })
+      .select('project_name')
+      .lean()
+    console.log('Projects:', projects)
 
-    if (!organization) {
-      return NextResponse.json({ error: '제공된 이름으로 조직을 찾을 수 없습니다.' }, { status: 404 })
-    }
+    // Group organizations and projects
+    const response = organizations.map((org) => ({
+      organization_name: org.organization_name,
+      projects: projects
+        .filter((project) => org.projects.some((id: string) => id.toString() === project._id.toString()))
+        .map((project) => project.project_name),
+    }))
+    console.log('Response:', response)
 
-    // 조직 세부 정보 반환
-    return NextResponse.json(organization, { status: 200 })
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Data retrieved successfully',
+        data: response,
+      },
+      { status: 200 }
+    )
   } catch (error) {
-    console.error('조직 정보를 가져오는 중 오류 발생:', error)
-
-    return NextResponse.json({ error: '예기치 않은 오류가 발생했습니다. 나중에 다시 시도해주세요.' }, { status: 500 })
+    console.error('Error:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Internal server error',
+      },
+      { status: 500 }
+    )
   }
 }

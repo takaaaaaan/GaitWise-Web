@@ -33,7 +33,7 @@
       "@/constants/*": ["./app/constants/*"],
       "@/context/*": ["./app/context/*"],
       "@/hooks/*": ["./app/hooks/*"],
-      "@/lib/*": ["./app/lib/*"],
+      "@/lib/*": ["./lib/*"],
       "@/api/*": ["./app/api/*"],
       "@/styles/*": ["./app/styles/*"],
     },

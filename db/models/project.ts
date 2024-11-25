@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const ProjectSchema = new mongoose.Schema(
   {
-    organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: '' }, // 관련 조직
+    organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: null }, // 관련 조직
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // 참가자
     surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Survey', default: [] }], // 설문 목록
     analysts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Analyst', default: [] }], // 분석가
