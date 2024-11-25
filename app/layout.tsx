@@ -24,7 +24,7 @@ export default function RootLayout({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="public/svg/gaitwise-logo.svg=v1.0" />
+        <link rel="icon" href="/svg/gaitwise-logo.svg?v=1.0" />
       </head>
       <body className={inter.className}>
         <Providers>
