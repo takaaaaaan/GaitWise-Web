@@ -17,7 +17,6 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
   background: #F6F7F8;
 }
 
@@ -43,5 +42,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }
 

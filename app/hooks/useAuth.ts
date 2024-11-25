@@ -1,5 +1,5 @@
 import { jwtVerify } from 'jose'
-import Cookies from 'js-cookie' // js-cookie를 임포트
+import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
 /**

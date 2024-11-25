@@ -12,71 +12,37 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import axios from 'axios'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import {
-  CalendarTodayIcon,
-  ChatBubbleIcon,
-  CreditCardIcon,
-  GroupIcon,
-  HomeIcon,
-  MenuIcon,
-  SettingsIcon,
-} from '@/components/icons'
+import { GroupIcon, HomeIcon, MenuIcon } from '@/components/icons'
 import useAuth from '@/hooks/useAuth'
-import { Gaitwise, SurveyLogo, UserLogo } from '@/public'
+import { Gaitwise, UserLogo } from '@/public'
+
+import { CDropdownMenu } from './Dorpdown'
 
 // classNames 함수 정의
-//@ts-ignore
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 const Navbar = () => {
   const loginUser = useAuth()
-  const router = useRouter()
-  const [isAuthPage, setIsAuthPage] = useState(false)
   const [currentPath, setCurrentPath] = useState('')
 
-  // 경로 확인 후 auth 페이지인지 확인
+  // 현재 경로 저장
   useEffect(() => {
     const path = window.location.pathname
-    setCurrentPath(path) // 현재 경로 저장
-    if (path.startsWith('/auth')) {
-      setIsAuthPage(true) // auth 페이지일 경우 상태 설정
-    } else {
-      setIsAuthPage(false) // 그 외의 경우
-    }
+    setCurrentPath(path)
   }, [])
 
   // 네비게이션 항목 설정
   const navigation = [
     { name: 'Overview', href: '/organization', current: currentPath === '/organization', svgIcon: <HomeIcon /> },
     { name: 'Participant', href: '/participant', current: currentPath === '/participant', svgIcon: <GroupIcon /> },
-    { name: 'Schedules', href: '/schedules', current: currentPath === '/schedules', svgIcon: <CalendarTodayIcon /> },
-    { name: 'Messages', href: '/messages', current: currentPath === '/messages', svgIcon: <ChatBubbleIcon /> },
-    {
-      name: 'Transactions',
-      href: '/transactions',
-      current: currentPath === '/transactions',
-      svgIcon: <CreditCardIcon />,
-    },
-    {
-      name: 'Survey',
-      href: '/createsurvey',
-      current: currentPath === '/createsurvey',
-      svgIcon: <Image src={SurveyLogo} alt="Survey Logo" />,
-    },
   ]
 
-  // auth 경로라면 네비게이션 바를 숨김
-  if (isAuthPage) {
-    return null // Navbar 렌더링 하지 않음
-  }
-
   // 로그아웃 함수 정의
-  const handleSignout = async () => {
+  const Signout = async () => {
     try {
       // API에 GET 요청을 보내서 로그아웃 처리
       await axios.get('/api/analyst/signout')
@@ -108,6 +74,9 @@ const Navbar = () => {
                 <div className="flex flex-shrink-0 items-center">
                   <Image src={Gaitwise} alt="logo" width={250} priority />
                 </div>
+                <div className="sm:block">
+                  <CDropdownMenu />
+                </div>
                 <div className="hidden sm:ml-6 sm:block lg:w-full">
                   <div className="hidden justify-center space-x-4 lg:flex">
                     {navigation.map((item) => (
@@ -133,22 +102,18 @@ const Navbar = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div className="flex">
-                    <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <div className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       <Image className="h-4 w-4 rounded-full lg:h-8 lg:w-8" src={UserLogo} alt="User profile" />
-                    </MenuButton>
+                    </div>
                     <div className="grid-row-1 mx-2 grid grid-cols-1">
                       <p className="text text-xs font-medium">{loginUser.lastname + loginUser.firstname}</p>
                       <p className="text-xs font-light">{loginUser.role}</p>
                     </div>
-                    <div className="mr-1 border border-dotted border-slate-300"></div>
-                    <button type="button" className="px-2">
-                      <SettingsIcon className="h-5 w-5" />
-                    </button>
-                    <button type="button" className="">
+                    <MenuButton>
                       <MenuIcon className="h-5 w-5" />
-                    </button>
+                    </MenuButton>
                   </div>
                   <Transition
                     enter="transition ease-out duration-100"
@@ -159,7 +124,7 @@ const Navbar = () => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {navigation.map((item, index) => (
+                      {/* {navigation.map((item, index) => (
                         <MenuItem key={index}>
                           {({ focus }) => (
                             <a
@@ -177,7 +142,7 @@ const Navbar = () => {
                             </a>
                           )}
                         </MenuItem>
-                      ))}
+                      ))} */}
 
                       <MenuItem>
                         {({ focus }) => (
@@ -194,7 +159,7 @@ const Navbar = () => {
                           <a
                             href="#"
                             className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            onClick={handleSignout} // 로그아웃 함수 호출
+                            onClick={Signout} // 로그아웃 함수 호출
                           >
                             Sign out
                           </a>
@@ -206,7 +171,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-
+          {/* lg:hidden */}
           <DisclosurePanel className="lg:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
