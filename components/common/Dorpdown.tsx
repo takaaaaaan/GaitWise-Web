@@ -1,8 +1,10 @@
+'use client'
 import { Check, Mail, MessageSquare, Plus, PlusCircle, UserPlus, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@/components/ui/button'
+import useNavPage from '@/hooks/useNavPage'
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -14,8 +16,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import useNavPage from '@/hooks/useNavPage'
+} from '@/ui'
 
 export function CDropdownMenu() {
   const router = useRouter()

@@ -1,6 +1,7 @@
-import Divider from './common/Divider'
+import { CDropdownMenu } from './common/Dorpdown'
 import LoadingSpinner from './common/LoadingSpinner'
 import Navbar from './common/Navbar'
+import { SideTabs } from './common/SideTabs'
 import AnalystList from './org/AnalystList'
 import OrganizationTitle from './org/OrganzationTitle'
 import ProjectCard from './org/ProjectCard'
@@ -16,9 +17,9 @@ import ProjectList from './participants/ProjectList'
 export {
   AnalystList,
   BaseCardDiagnosis,
+  CDropdownMenu,
   DiagnosisHistory,
   DiagnosticList,
-  Divider,
   LabResultsList,
   LoadingSpinner,
   Navbar,
@@ -28,4 +29,5 @@ export {
   PatientProfile,
   ProjectCard,
   ProjectList,
+  SideTabs,
 }

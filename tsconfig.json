@@ -25,6 +25,7 @@
       "utils": ["./utils/index"],
       "public": ["./public/index"],
       "@/*": ["./*"],
+      "@/ui": ["./components/ui/index"],
       "@DB/*": ["./db/*"],
       "@Models/*": ["./db/models/*"],
       "@/types/*": ["./app/types/*"],
