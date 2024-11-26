@@ -43,7 +43,6 @@ const PatientProfile = ({ participant }: { participant: PatientProfileType }) =>
   return (
     <section role="list" className="divide-y divide-gray-100 rounded-3xl bg-white p-5">
       <div className="grid grid-cols-1 justify-items-center gap-6 pb-4">
-        <h2 className="text-2xl font-medium">Patient Profile</h2>
         <div className="grid w-full grid-cols-6 grid-rows-1 gap-8">
           {/* 아이콘 크기를 맞추기 위한 공통 스타일 */}
           {/* 환자 코드 */}

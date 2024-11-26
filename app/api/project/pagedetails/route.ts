@@ -3,31 +3,40 @@ import { NextRequest, NextResponse } from 'next/server'
 import { dbConnect, Project } from '@/db/models'
 
 /**
- * @description プロジェクト名でプロジェクト詳細を取得します。
+ * @description Get project details by project name.
  * @searchParams project_name
  */
 export async function GET(req: NextRequest) {
   try {
     await dbConnect()
-    // クエリパラメータから project_name を取得
+    // Get project_name from query parameters
     const projectName = req.nextUrl.searchParams.get('project_name')
 
     if (!projectName) {
-      return NextResponse.json({ error: 'project_name は必須です。' }, { status: 400 })
+      return NextResponse.json({ message: 'project_name is required.', success: false }, { status: 400 })
     }
 
-    // データベースからプロジェクトを検索
+    // Search for the project in the database
     const project = await Project.findOne({ project_name: projectName })
-      .populate('organization') // 組織情報を取得
-      .populate('participants') // 参加者情報を取得
-      .populate('analysts') // 分析者情報を取得
-      .populate('surveys') // 関連する調査情報を取得
+      .populate('organization') // Get organization details
+      .populate({
+        path: 'participants',
+        select: '-password', // Exclude the password field
+      })
+      .populate({
+        path: 'analysts',
+        select: '-password', // Exclude the password field
+      })
+      .populate('surveys') // Get related survey information
 
     if (!project) {
-      return NextResponse.json({ error: '指定された名前のプロジェクトが見つかりません。' }, { status: 404 })
+      return NextResponse.json(
+        { message: 'No project found with the specified name.', success: false },
+        { status: 404 }
+      )
     }
 
-    // 必要なデータを返す（スキーマのすべてのフィールドを含む）
+    // Return the required data (including all schema fields)
     const projectData = {
       project_id: project._id,
       project_name: project.project_name,
@@ -57,13 +66,16 @@ export async function GET(req: NextRequest) {
           }
         : null,
       creator: project.creator,
-      createdAt: project.createdAt, // 作成日時
-      updatedAt: project.updatedAt, // 更新日時
+      createdAt: project.createdAt, // Creation date
+      updatedAt: project.updatedAt, // Update date
     }
 
-    return NextResponse.json(projectData, { status: 200 })
+    return NextResponse.json({ message: 'Data retrieved successfully.', success: true, projectData }, { status: 200 })
   } catch (error) {
-    console.error('プロジェクト情報を取得中にエラーが発生しました:', error)
-    return NextResponse.json({ error: '予期しないエラーが発生しました。後でもう一度お試しください。' }, { status: 500 })
+    console.error('An error occurred while fetching project information:', error)
+    return NextResponse.json(
+      { message: 'An unexpected error occurred. Please try again later.', success: false },
+      { status: 500 }
+    )
   }
 }

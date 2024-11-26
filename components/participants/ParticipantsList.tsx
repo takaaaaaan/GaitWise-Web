@@ -1,16 +1,47 @@
 'use client'
+import { Search } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { User } from 'types'
 
-import { MenuIcon, SearchIcon } from '@/components/icons'
-import { participants as initialPatients } from '@/utils/participantsMockData'
+import { MenuIcon } from '@/components/icons'
+import { Button, Card, CardFooter, Input } from '@/ui'
 
-const PatientList = () => {
-  const [participants, setPatients] = useState(initialPatients)
+interface PatientListProps {
+  participants: User[] // 親コンポーネントから受け取るprops
+  projectTitle: string // 親コンポーネントから受け取るプロジェクトタイトル
+}
+
+const PatientList: React.FC<PatientListProps> = ({ participants: initialParticipants, projectTitle }) => {
+  const router = useRouter()
+  const [participants, setParticipants] = useState(initialParticipants)
+  const [filteredParticipants, setFilteredParticipants] = useState(initialParticipants) // フィルタリング用
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('') // 検索クエリ
   const [newPatientId, setNewPatientId] = useState('')
 
+  const handleSearch = () => {
+    if (searchQuery.trim() === '') {
+      setFilteredParticipants(participants) // 検索クエリが空の場合は全データ表示
+    } else {
+      // 検索クエリに一致するデータをフィルタリング
+      const filtered = participants.filter(
+        (participant) =>
+          participant.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          participant.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      setFilteredParticipants(filtered)
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch() // Enterキーで検索
+    }
+  }
+
   const handleAddPatientClick = () => {
-    setIsModalOpen(true) // 모달을 열기
+    setIsModalOpen(true) // モーダルを開く
   }
 
   const handleCloseModal = () => {
@@ -22,37 +53,55 @@ const PatientList = () => {
     if (newPatientId.trim()) {
       const newPatient = {
         id: newPatientId,
-        name: 'New Patient', // 기본 이름
-        gender: 'Unknown', // 기본 성별
-        age: 'Unknown', // 기본 나이
-        isActive: false,
+        firstName: 'New',
+        lastName: 'Patient', // デフォルト値
+        gender: 'Unknown', // デフォルト値
+        age: 'Unknown', // デフォルト値
+        _id: newPatientId, // デフォルトで新しいIDを設定
       }
-      //setPatients([...participants, newPatient]); // 새로운 환자 추가
-      handleCloseModal() // 모달 닫기
+      setParticipants([...participants, newPatient]) // 新しい患者を追加
+      setFilteredParticipants([...participants, newPatient]) // フィルタリング結果も更新
+      handleCloseModal() // モーダルを閉じる
     }
   }
 
+  const handleParticipantClick = (participantId: string) => {
+    // リダイレクト先のURLを生成
+    const redirectTo = `/participant/${projectTitle}/${participantId}`
+    router.push(redirectTo)
+  }
+
   return (
-    <div>
+    <Card className="h-full">
       <ul role="list" className="divide-y divide-gray-100 rounded-3xl bg-white">
-        <li className="flex items-center justify-between gap-x-6 p-5">
-          <h2 className="text-2xl font-medium">Patients</h2>
-          <SearchIcon />
+        {/* 検索バー */}
+        <li className="flex w-full items-center justify-between gap-x-6 p-5">
+          <Input
+            type="text"
+            placeholder="Search patients by first or last name"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // 入力変更をトラッキング
+            onKeyDown={handleKeyDown} // Enterキーを押した時の動作
+            className="w-full"
+          />
+          <Button type="button" className="bg-teal-500 px-4 py-2 hover:bg-teal-600" onClick={handleSearch}>
+            <Search />
+          </Button>
         </li>
-        {participants.map((participant, index) => (
+        {/* フィルタリングされた参加者のリスト */}
+        {filteredParticipants.map((participant, index) => (
           <li
             key={index}
-            className={
-              participant.isActive
-                ? 'flex items-center justify-between gap-x-6 bg-gray-200 p-5'
-                : 'flex items-center justify-between gap-x-6 p-5'
-            }
+            className="flex cursor-pointer items-center justify-between gap-x-6 p-5 hover:bg-gray-200"
+            onClick={() => handleParticipantClick(participant._id)} // クリック時にリダイレクト
           >
             <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6 text-gray-900">participant ID</p>
-                <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                  {participant.name}, {participant.gender}, {participant.age}
+                <p className="text-sm font-semibold leading-6 text-gray-900">
+                  {participant.firstName} {participant.lastName}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-gray-500">
+                  Gender: {participant.gender}, Age: {participant.age}
                 </p>
               </div>
             </div>
@@ -64,12 +113,14 @@ const PatientList = () => {
 
         {/* Add Patient Button */}
         <li className="flex items-center justify-center p-5">
-          <button
-            onClick={handleAddPatientClick}
-            className="rounded-full bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600"
-          >
-            + Add Patient
-          </button>
+          <CardFooter>
+            <Button
+              onClick={handleAddPatientClick}
+              className="rounded-full bg-teal-500 px-4 py-2 font-bold text-white hover:bg-teal-600"
+            >
+              + Add Patient
+            </Button>
+          </CardFooter>
         </li>
       </ul>
 
@@ -102,7 +153,7 @@ const PatientList = () => {
           </div>
         </div>
       )}
-    </div>
+    </Card>
   )
 }
 

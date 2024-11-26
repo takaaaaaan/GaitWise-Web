@@ -6,10 +6,7 @@ const LabResultsList = ({ labResults }: { labResults: Array<string> }) => {
   })
 
   return (
-    <ul role="list" className="divide-y divide-gray-100 rounded-3xl bg-white px-5 pb-4">
-      <li className="flex items-center justify-between gap-x-6 p-5">
-        <h2 className="text-2xl font-medium">Lab Results</h2>
-      </li>
+    <ul role="list" className="w-full divide-y divide-gray-100 rounded-3xl bg-white px-5 pb-4">
       {results.map((result, index) => {
         return (
           <li

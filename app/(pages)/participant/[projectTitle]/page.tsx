@@ -1,14 +1,23 @@
-import {
-  DiagnosisHistory,
-  LabResultsList,
-  ParticipantHeader,
-  PatientList,
-  PatientProfile,
-  ProjectList,
-} from 'components'
+import { DiagnosisHistory, PatientList } from 'components'
 
-import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from '@/app/types'
+import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType, User } from '@/app/types'
+import { SideTabs } from '@/components/common/SideTabs'
 import getAllPatients from '@/lib/services/Patients'
+
+async function fetchProjectData(projectTitle: string) {
+  const query = new URLSearchParams({ project_name: projectTitle }).toString()
+  const baseUrl = process.env.SERVER_DOMAIN
+  const response = await fetch(`${baseUrl}/api/project/pagedetails/?${query}`, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data for project: ${projectTitle}`)
+  }
+
+  const data = await response.json()
+  return data.projectData
+}
 
 function getProfileData<Patient>(participant: Patient) {
   const profile: {
@@ -27,10 +36,26 @@ function getProfileData<Patient>(participant: Patient) {
   return profile
 }
 
-export default async function Home() {
+export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
+  const { projectTitle, username } = params
+  console.log('SSR params:', projectTitle)
+  console.log('SSR params 2:', username)
+
+  // API からプロジェクトデータを取得
+  const projectData = await fetchProjectData(projectTitle)
+
+  let participants!: User[]
+
+  if (projectData.participants) {
+    participants = projectData.participants
+  }
+  // 全患者データを取得
   const initialData = await getAllPatients()
 
+  // 条件に合う患者データを探す
   const participant: Patient | undefined = initialData.find((participant) => participant.name.match('Jessica Taylor'))
+
+  // 必要なデータを設定
   let profile!: PatientProfileType
   let diagnosisHistory!: DiagnosisRecord[]
   let diagnoticList!: Diagnostic[]
@@ -49,19 +74,13 @@ export default async function Home() {
   return (
     <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
       <section className="mb-8 lg:mb-0">
-        {/*FIXME : <ProjectList />를 Header에 이동 */}
-        <PatientList />
+        <PatientList participants={participants} projectTitle={projectTitle} />
       </section>
       <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <ParticipantHeader profile={profile} />
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
-        {
-          //<DiagnosticList diagnostics={diagnoticList} />
-        }
       </section>
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <PatientProfile participant={profile} />
-        <LabResultsList labResults={labResults} />
+        <SideTabs profile={profile} labResults={labResults} />
       </section>
     </main>
   )
