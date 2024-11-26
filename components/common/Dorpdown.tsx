@@ -88,7 +88,7 @@ export function CDropdownMenu() {
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/auth?type=organization')}>
               <Plus />
               <span>New Org</span>
             </DropdownMenuItem>

@@ -1,11 +1,4 @@
-import {
-  DiagnosisHistory,
-  LabResultsList,
-  ParticipantHeader,
-  PatientList,
-  PatientProfile,
-  ProjectList,
-} from 'components'
+import { DiagnosisHistory, LabResultsList, ParticipantHeader, PatientList, PatientProfile } from 'components'
 
 import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType } from '@/app/types'
 import getAllPatients from '@/lib/services/Patients'

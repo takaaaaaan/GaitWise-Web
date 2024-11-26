@@ -18,9 +18,9 @@ export default function CreateOrganizationView() {
   const router = useRouter()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] // 'files' が null の可能性を考慮
+    const file = e.target.files?.[0]
     if (file) {
-      setOrganizationProfileImage(file) // ファイルを状態にセット
+      setOrganizationProfileImage(file)
     }
   }
 
