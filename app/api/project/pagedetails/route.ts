@@ -6,6 +6,7 @@ import { dbConnect, Project } from '@/db/models'
  * @description Get project details by project name.
  * @searchParams project_name
  */
+
 export async function GET(req: NextRequest) {
   try {
     await dbConnect()

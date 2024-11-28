@@ -4,13 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import LabResultsList from '../participants/LabResultList'
 import PatientProfile from '../participants/ParticipantsProfile'
 
-export function SideTabs({ profile, labResults }: { profile: any; labResults: Array<string> }) {
+export function SideTabs({ profile, labResults, walkingData }: { profile: any; labResults: Array<string> }) {
   return (
     <Tabs defaultValue="Profile" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="Profile">Patient Profile</TabsTrigger>
         <TabsTrigger value="Results">Lab Results</TabsTrigger>
       </TabsList>
+
       <TabsContent value="Profile">
         <Card>
           <CardHeader className="flex justify-items-center">
@@ -22,6 +23,7 @@ export function SideTabs({ profile, labResults }: { profile: any; labResults: Ar
           </CardContent>
         </Card>
       </TabsContent>
+
       <TabsContent value="Results">
         <Card>
           <CardHeader>
@@ -29,7 +31,7 @@ export function SideTabs({ profile, labResults }: { profile: any; labResults: Ar
             <CardDescription>View and manage lab results here.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <LabResultsList labResults={labResults} />
+            <LabResultsList labResults={labResults} walkingData={walkingData} />
           </CardContent>
         </Card>
       </TabsContent>

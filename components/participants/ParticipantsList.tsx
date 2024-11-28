@@ -66,7 +66,6 @@ const PatientList: React.FC<PatientListProps> = ({ participants: initialParticip
   }
 
   const handleParticipantClick = (participantId: string) => {
-    // リダイレクト先のURLを生成
     const redirectTo = `/participant/${projectTitle}/${participantId}`
     router.push(redirectTo)
   }
