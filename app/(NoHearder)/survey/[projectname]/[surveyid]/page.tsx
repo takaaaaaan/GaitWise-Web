@@ -1,28 +1,35 @@
 'use client'
-import { CopyPlus, Plus, Save, Trash2 } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { Pencil, Plus, Save, Trash2 } from 'lucide-react'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import styled from 'styled-components'
+import { DragItem, Question } from 'types'
 
-import { DragItem, Question } from '@/app/types'
-import { Button } from '@/components/ui'
+import { Label } from '@/components/ui'
+import { transformSurveyData } from '@/utils/format/surveyFormat'
 
+// 드래그 타입 정의
 const ItemType = 'QUESTION'
 
+// 설문지 컴포넌트
 export default function SurveyPage() {
+  const router = useRouter()
+  const params = useParams()
+  const { projectname } = params || {}
+  const validprojectTitle = Array.isArray(projectname) ? projectname[0] : projectname || ''
+  console.log('validprojectTitle', validprojectTitle)
   const [questions, setQuestions] = useState<Question[]>([])
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null)
   const [newOption, setNewOption] = useState<string>('') // 新しい選択肢の入力状態
   const { surveyid } = useParams()
 
-  console.log('surveyId:', surveyid)
-
+  // params부터 surveyid를 사용해서 데이터 가져오기
   useEffect(() => {
     const fetchSurveyData = async () => {
       try {
-        const response = await fetch(`/api/customsurvey/search?surveyid=${surveyid}`)
+        const response = await fetch(`/api/customsurvey?surveyid=${surveyid}`)
         const json = await response.json()
 
         if (json.success && json.Responsetype === 'surveyid') {
@@ -61,6 +68,7 @@ export default function SurveyPage() {
     }
   }, [surveyid])
 
+  // 질문 추가 핸들러
   const addQuestion = (type: 'multiple' | 'text') => {
     const newQuestion: Question = {
       id: questions.length + 1,
@@ -72,17 +80,53 @@ export default function SurveyPage() {
     setSelectedQuestion(newQuestion)
   }
 
+  // 질문 수정 핸들러
   const updateQuestion = (updatedQuestion: Question) => {
     const updatedQuestions = questions.map((q) => (q.id === updatedQuestion.id ? updatedQuestion : q))
     setQuestions(updatedQuestions)
     setSelectedQuestion(updatedQuestion)
   }
 
+  const handleSave = async () => {
+    console.log('Survey Questions:', questions)
+
+    // Survey data を変換
+    const outputdata = transformSurveyData(questions)
+    console.log('outputdata', outputdata)
+
+    try {
+      // PUT リクエストを送信
+      const response = await fetch(`/api/customsurvey?surveyid=${surveyid}`, {
+        method: 'PUT', // HTTP メソッドを PUT に設定
+        headers: {
+          'Content-Type': 'application/json', // JSON データを送信
+        },
+        body: JSON.stringify(outputdata), // データを文字列化してリクエストに含める
+      })
+
+      // レスポンスの確認
+      if (response.ok) {
+        const result = await response.json()
+        console.log('Update successful:', result)
+        alert('Survey successfully saved and updated.')
+      } else {
+        const error = await response.json()
+        console.error('Update failed:', error)
+        alert('Failed to save survey data.')
+      }
+    } catch (error) {
+      console.error('Error during update:', error)
+      alert('An error occurred while saving survey data.')
+    }
+  }
+
+  // 질문 삭제 핸들러
   const deleteQuestion = (id: number) => {
     setQuestions(questions.filter((q) => q.id !== id))
     setSelectedQuestion(null)
   }
 
+  // 질문 순서 변경 핸들러
   const moveQuestion = (fromIndex: number, toIndex: number) => {
     const updatedQuestions = [...questions]
     const [movedItem] = updatedQuestions.splice(fromIndex, 1)
@@ -90,6 +134,7 @@ export default function SurveyPage() {
     setQuestions(updatedQuestions)
   }
 
+  // 선택지 추가 핸들러 (객관식 질문용)
   const addOption = () => {
     if (selectedQuestion && newOption.trim()) {
       const updatedQuestion: Question = {
@@ -101,6 +146,7 @@ export default function SurveyPage() {
     }
   }
 
+  // 옵션 텍스트 수정 핸들러
   const updateOption = (index: number, value: string) => {
     if (selectedQuestion) {
       const updatedOptions = [...(selectedQuestion.options || [])]
@@ -113,6 +159,7 @@ export default function SurveyPage() {
   return (
     <DndProvider backend={HTML5Backend}>
       <Container>
+        {/* 미리보기 섹션 */}
         <PreviewSection>
           <PreviewTitle>Survey Preview</PreviewTitle>
           {questions.length === 0 ? (
@@ -128,10 +175,25 @@ export default function SurveyPage() {
               />
             ))
           )}
+          <SaveButton
+            className="flex w-full items-center justify-center gap-3 bg-teal-500 hover:bg-teal-700"
+            onClick={handleSave} // 質問リストを出力
+          >
+            <Save />
+            <span>Save Survey Question List</span>
+          </SaveButton>
+          <button
+            onClick={() => router.push(`/survey/${validprojectTitle}`)}
+            className={`mr-3 mt-5 w-full rounded bg-gray-300 px-4 py-2 font-bold text-white hover:bg-gray-400`}
+          >
+            Cancel
+          </button>
         </PreviewSection>
 
+        {/* 편집기 섹션 */}
         <EditorSection>
-          <h1>Survey Editor</h1>
+          <PreviewTitle>Survey Editor</PreviewTitle>
+          <Label>Select a question to edit :</Label>
           <div className="flex w-full">
             <AddQuestionButton onClick={() => addQuestion('text')} style={{ marginRight: 30 }}>
               <Plus />
@@ -161,6 +223,7 @@ export default function SurveyPage() {
   )
 }
 
+// 드래그 가능한 질문 컴포넌트
 const DraggableQuestion: React.FC<{
   question: Question
   index: number
@@ -190,14 +253,26 @@ const DraggableQuestion: React.FC<{
   })
 
   drag(drop(ref))
-  console.log('question:', question)
   return (
     <PreviewQuestion ref={ref} onClick={onSelectQuestion}>
-      <h4>{question.question || 'Untitled Question'}</h4>
+      <div className="flex justify-items-center gap-4">
+        <h4 className="font-bold">
+          Question{question.id} : {question.question || 'Untitled Question'}
+        </h4>
+        {question.type === 'multiple' && (
+          <h4>
+            Max : {question.max} Min : {question.min}
+          </h4>
+        )}
+        <div className="ml-auto flex items-start justify-center gap-3">
+          <Trash2 />
+          <Pencil />
+        </div>
+      </div>
       {question.type === 'multiple' && (
         <ul>
           {question.options?.map((option, i) => (
-            <li key={i}>
+            <li key={i} className="flex items-center justify-start gap-2">
               <input type="radio" name={`question-${question.id}`} disabled />
               {option}
             </li>
@@ -209,6 +284,7 @@ const DraggableQuestion: React.FC<{
   )
 }
 
+// 질문 편집기 컴포넌트
 const QuestionEditor: React.FC<{
   question: Question
   onUpdateQuestion: (question: Question) => void
@@ -222,13 +298,45 @@ const QuestionEditor: React.FC<{
     onUpdateQuestion({ ...question, question: e.target.value })
   }
 
+  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const min = parseInt(e.target.value, 10)
+    onUpdateQuestion({ ...question, min })
+  }
+
+  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const max = parseInt(e.target.value, 10)
+    onUpdateQuestion({ ...question, max })
+  }
+
   return (
     <EditorContainer>
-      <label>Question:</label>
+      <Label>Question:</Label>
+      {/* <label>Question:</label> */}
       <input type="text" value={question.question} onChange={handleQuestionChange} placeholder="Enter your question" />
       {question.type === 'multiple' && (
         <div>
-          <h4>Options</h4>
+          {/* Min and Max Inputs */}
+          <div className="flex w-full items-center justify-center">
+            <div className="w-full">
+              <Label>Min:</Label>
+              <input
+                type="number"
+                value={question.min ?? ''}
+                onChange={handleMinChange}
+                placeholder="Minimum choices"
+              />
+            </div>
+            <div className="w-full">
+              <Label>Max:</Label>
+              <input
+                type="number"
+                value={question.max ?? ''}
+                onChange={handleMaxChange}
+                placeholder="Maximum choices"
+              />
+            </div>
+          </div>
+          <Label>Options:</Label>
           {question.options?.map((option, index) => (
             <OptionItem key={index}>
               <input
@@ -254,10 +362,7 @@ const QuestionEditor: React.FC<{
           </AddOptionButton>
         </div>
       )}
-      <SaveButton className="flex w-full items-center justify-center gap-3 bg-teal-500 hover:bg-teal-700">
-        <Save />
-        <span>Save Survey Question List</span>
-      </SaveButton>
+
       <DeleteButton
         className="flex w-full items-center justify-center gap-3"
         onClick={() => onDeleteQuestion(question.id)}
@@ -339,7 +444,8 @@ const EditorContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  input[type='text'] {
+  input[type='text'],
+  input[type='number'] {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;

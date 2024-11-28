@@ -125,6 +125,9 @@ export async function PUT(req: NextRequest) {
 
     // リクエストボディを解析
     const body = await req.json()
+    console.log('body', body)
+    console.log('body.selection', body.selection)
+    console.log('body.text_response', body.text_response)
 
     if (!body || Object.keys(body).length === 0) {
       return NextResponse.json(
@@ -139,7 +142,12 @@ export async function PUT(req: NextRequest) {
     // surveyid を使って CustomSurvey を更新
     const updatedSurvey = await CustomSurvey.findOneAndUpdate(
       { $or: [{ _id: surveyid }, { surveyid }] }, // _id または surveyid を条件に検索
-      { $set: body }, // リクエストボディでデータを更新
+      {
+        $set: {
+          selection: body.selection, // selection フィールドを更新
+          text_response: body.text_response, // text_response フィールドを更新
+        },
+      },
       { new: true, runValidators: true } // 更新後のデータを返すオプション
     ).lean()
 

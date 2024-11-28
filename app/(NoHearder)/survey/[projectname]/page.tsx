@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 type Survey = {
   id: string
+  _id: string
   status: string
   description: string
   title: string
@@ -61,10 +62,10 @@ export default function SurveyTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/customsurvey/search?project_name=${validProjectName}`)
+        const response = await fetch(`/api/customsurvey?project_name=${validProjectName}`)
         const json = await response.json()
         if (json.success) {
-          const surveys = json.data.map((item: any) => ({
+          const surveys = json.data.map((item: Survey) => ({
             id: item._id,
             status: item.status,
             description: item.description,
@@ -81,7 +82,7 @@ export default function SurveyTable() {
       }
     }
     fetchData()
-  }, [])
+  }, [validProjectName])
 
   const table = useReactTable({
     data,

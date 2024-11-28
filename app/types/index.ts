@@ -68,7 +68,9 @@ export type Question = {
   id: number
   type: 'multiple' | 'text'
   question: string
-  options?: string[]
+  options: string[]
+  max?: number
+  min?: number
 }
 
 export type DragItem = {

@@ -81,7 +81,7 @@ const ProjectPage = () => {
     setAnalysts(analysts_email.filter((_, i) => i !== index))
   }
   return (
-    <div className="flex min-h-[calc(100vh-10rem)] w-full items-center justify-center">
+    <div className="flex min-h-[100vh] w-full items-center justify-center">
       <Card variant="outlined" className="max-w-2xl flex-col rounded-3xl bg-white p-8 duration-300">
         <h1 className="mb-4 text-2xl font-bold">Create New Project</h1>
 
@@ -163,26 +163,38 @@ const ProjectPage = () => {
             <p className="text-sm text-gray-500">No analysts added yet.</p>
           )}
         </ul>
-
-        {/* Submit Button */}
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className={`w-full rounded px-4 py-2 font-bold text-white ${
-            loading ? 'cursor-not-allowed bg-gray-400' : 'bg-teal-500 hover:bg-teal-600'
-          }`}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-              <span className="ml-2">Loading...</span>
-            </div>
-          ) : (
-            'Create Project'
-          )}
-        </button>
-        {/* API エラーメッセージ表示 */}
-        {APIerror && <p className="mt-4 text-sm text-red-500">{APIerror}</p>}
+        <div className="flex w-full items-center justify-center">
+          <button
+            onClick={() => router.push(`/organization/${validOrganizationName}`)}
+            disabled={loading}
+            className={`mr-3 w-full rounded px-4 py-2 font-bold text-white ${
+              loading ? 'cursor-not-allowed bg-gray-300' : 'bg-gray-300 hover:bg-gray-400'
+            }`}
+          >
+            Cancel
+          </button>
+          <div className="w-full">
+            {/* Submit Button */}
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className={`w-full whitespace-nowrap rounded px-4 py-2 font-bold text-white ${
+                loading ? 'cursor-not-allowed bg-gray-400' : 'bg-teal-500 hover:bg-teal-600'
+              }`}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <LoadingSpinner />
+                  <span className="ml-2">Loading...</span>
+                </div>
+              ) : (
+                <span>Create Project</span>
+              )}
+            </button>
+            {/* API エラーメッセージ表示 */}
+            {APIerror && <p className="mt-4 text-sm text-red-500">{APIerror}</p>}
+          </div>
+        </div>
       </Card>
     </div>
   )
