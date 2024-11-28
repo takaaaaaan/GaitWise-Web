@@ -1,6 +1,7 @@
 import dbConnect from '../dbConnect'
 import { Acc, Gyro, Rot } from './accGyroRot'
 import Analyst from './analyst'
+import CustomSurvey from './custom_survey'
 import Doctor from './doctor'
 import Organization from './organization'
 import Post from './post'
@@ -14,6 +15,7 @@ import Walking from './walking'
 export {
   Acc,
   Analyst,
+  CustomSurvey,
   dbConnect,
   Doctor,
   Gyro,

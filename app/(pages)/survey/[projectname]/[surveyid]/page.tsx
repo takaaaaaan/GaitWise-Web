@@ -1,0 +1,412 @@
+'use client'
+import { CopyPlus, Plus, Save, Trash2 } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import React, { useEffect, useRef, useState } from 'react'
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import styled from 'styled-components'
+
+import { DragItem, Question } from '@/app/types'
+import { Button } from '@/components/ui'
+
+const ItemType = 'QUESTION'
+
+export default function SurveyPage() {
+  const [questions, setQuestions] = useState<Question[]>([])
+  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null)
+  const [newOption, setNewOption] = useState<string>('') // 新しい選択肢の入力状態
+  const { surveyid } = useParams()
+
+  console.log('surveyId:', surveyid)
+
+  useEffect(() => {
+    const fetchSurveyData = async () => {
+      try {
+        const response = await fetch(`/api/customsurvey/search?surveyid=${surveyid}`)
+        const json = await response.json()
+
+        if (json.success && json.Responsetype === 'surveyid') {
+          const fetchedQuestions: Question[] = []
+
+          // Selection questions (multi-choice)
+          json.data.selection.forEach((item: any) => {
+            fetchedQuestions.push({
+              id: fetchedQuestions.length + 1,
+              type: 'multiple',
+              question: item.content,
+              options: item.options,
+            })
+          })
+
+          // Text response questions
+          json.data.text_response.forEach((item: any) => {
+            fetchedQuestions.push({
+              id: fetchedQuestions.length + 1,
+              type: 'text',
+              question: item.content,
+              options: [],
+            })
+          })
+
+          setQuestions(fetchedQuestions)
+          setSelectedQuestion(fetchedQuestions.length > 0 ? fetchedQuestions[0] : null)
+        }
+      } catch (error) {
+        console.error('Error fetching survey data:', error)
+      }
+    }
+
+    if (surveyid) {
+      fetchSurveyData()
+    }
+  }, [surveyid])
+
+  const addQuestion = (type: 'multiple' | 'text') => {
+    const newQuestion: Question = {
+      id: questions.length + 1,
+      type,
+      question: '',
+      options: type === 'multiple' ? ['Option 1', 'Option 2'] : [],
+    }
+    setQuestions([...questions, newQuestion])
+    setSelectedQuestion(newQuestion)
+  }
+
+  const updateQuestion = (updatedQuestion: Question) => {
+    const updatedQuestions = questions.map((q) => (q.id === updatedQuestion.id ? updatedQuestion : q))
+    setQuestions(updatedQuestions)
+    setSelectedQuestion(updatedQuestion)
+  }
+
+  const deleteQuestion = (id: number) => {
+    setQuestions(questions.filter((q) => q.id !== id))
+    setSelectedQuestion(null)
+  }
+
+  const moveQuestion = (fromIndex: number, toIndex: number) => {
+    const updatedQuestions = [...questions]
+    const [movedItem] = updatedQuestions.splice(fromIndex, 1)
+    updatedQuestions.splice(toIndex, 0, movedItem)
+    setQuestions(updatedQuestions)
+  }
+
+  const addOption = () => {
+    if (selectedQuestion && newOption.trim()) {
+      const updatedQuestion: Question = {
+        ...selectedQuestion,
+        options: [...(selectedQuestion.options || []), newOption],
+      }
+      updateQuestion(updatedQuestion)
+      setNewOption('')
+    }
+  }
+
+  const updateOption = (index: number, value: string) => {
+    if (selectedQuestion) {
+      const updatedOptions = [...(selectedQuestion.options || [])]
+      updatedOptions[index] = value
+      const updatedQuestion: Question = { ...selectedQuestion, options: updatedOptions }
+      updateQuestion(updatedQuestion)
+    }
+  }
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <Container>
+        <PreviewSection>
+          <PreviewTitle>Survey Preview</PreviewTitle>
+          {questions.length === 0 ? (
+            <NoQuestionMessage>No questions added yet. Once you add a question, it will appear here.</NoQuestionMessage>
+          ) : (
+            questions.map((question, index) => (
+              <DraggableQuestion
+                key={question.id}
+                question={question}
+                index={index}
+                moveQuestion={moveQuestion}
+                onSelectQuestion={() => setSelectedQuestion(question)}
+              />
+            ))
+          )}
+        </PreviewSection>
+
+        <EditorSection>
+          <h1>Survey Editor</h1>
+          <div className="flex w-full">
+            <AddQuestionButton onClick={() => addQuestion('text')} style={{ marginRight: 30 }}>
+              <Plus />
+              Add Text Question
+            </AddQuestionButton>
+            <AddQuestionButton onClick={() => addQuestion('multiple')}>
+              <Plus />
+              Add Multiple Choice
+            </AddQuestionButton>
+          </div>
+          {selectedQuestion ? (
+            <QuestionEditor
+              question={selectedQuestion}
+              onUpdateQuestion={updateQuestion}
+              onDeleteQuestion={deleteQuestion}
+              newOption={newOption}
+              setNewOption={setNewOption}
+              addOption={addOption}
+              updateOption={updateOption}
+            />
+          ) : (
+            <EditorMessage>Select a question to edit</EditorMessage>
+          )}
+        </EditorSection>
+      </Container>
+    </DndProvider>
+  )
+}
+
+const DraggableQuestion: React.FC<{
+  question: Question
+  index: number
+  moveQuestion: (dragIndex: number, hoverIndex: number) => void
+  onSelectQuestion: () => void
+}> = ({ question, index, moveQuestion, onSelectQuestion }) => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const [, drop] = useDrop({
+    accept: ItemType,
+    hover(item: DragItem) {
+      if (!ref.current) return
+
+      const dragIndex = item.index
+      const hoverIndex = index
+
+      if (dragIndex === hoverIndex) return
+
+      moveQuestion(dragIndex, hoverIndex)
+      item.index = hoverIndex
+    },
+  })
+
+  const [, drag] = useDrag({
+    type: ItemType,
+    item: { id: question.id, index },
+  })
+
+  drag(drop(ref))
+  console.log('question:', question)
+  return (
+    <PreviewQuestion ref={ref} onClick={onSelectQuestion}>
+      <h4>{question.question || 'Untitled Question'}</h4>
+      {question.type === 'multiple' && (
+        <ul>
+          {question.options?.map((option, i) => (
+            <li key={i}>
+              <input type="radio" name={`question-${question.id}`} disabled />
+              {option}
+            </li>
+          ))}
+        </ul>
+      )}
+      {question.type === 'text' && <input type="text" placeholder="Your answer here..." disabled />}
+    </PreviewQuestion>
+  )
+}
+
+const QuestionEditor: React.FC<{
+  question: Question
+  onUpdateQuestion: (question: Question) => void
+  onDeleteQuestion: (id: number) => void
+  newOption: string
+  setNewOption: React.Dispatch<React.SetStateAction<string>>
+  addOption: () => void
+  updateOption: (index: number, value: string) => void
+}> = ({ question, onUpdateQuestion, onDeleteQuestion, newOption, setNewOption, addOption, updateOption }) => {
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdateQuestion({ ...question, question: e.target.value })
+  }
+
+  return (
+    <EditorContainer>
+      <label>Question:</label>
+      <input type="text" value={question.question} onChange={handleQuestionChange} placeholder="Enter your question" />
+      {question.type === 'multiple' && (
+        <div>
+          <h4>Options</h4>
+          {question.options?.map((option, index) => (
+            <OptionItem key={index}>
+              <input
+                type="text"
+                value={option}
+                onChange={(e) => updateOption(index, e.target.value)}
+                placeholder="Edit option"
+              />
+            </OptionItem>
+          ))}
+          <input
+            type="text"
+            value={newOption}
+            onChange={(e) => setNewOption(e.target.value)}
+            placeholder="Add an option"
+          />
+          <AddOptionButton
+            className="flex w-full items-center justify-center gap-3 bg-teal-500 hover:bg-teal-700"
+            onClick={addOption}
+          >
+            <Plus />
+            Add Option
+          </AddOptionButton>
+        </div>
+      )}
+      <SaveButton className="flex w-full items-center justify-center gap-3 bg-teal-500 hover:bg-teal-700">
+        <Save />
+        <span>Save Survey Question List</span>
+      </SaveButton>
+      <DeleteButton
+        className="flex w-full items-center justify-center gap-3"
+        onClick={() => onDeleteQuestion(question.id)}
+      >
+        <Trash2 />
+        <span>Delete Question</span>
+      </DeleteButton>
+    </EditorContainer>
+  )
+}
+
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f4;
+`
+
+const PreviewSection = styled.div`
+  width: 60%;
+  padding: 30px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+`
+
+const PreviewTitle = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+`
+
+const NoQuestionMessage = styled.p`
+  font-size: 1.2rem;
+  color: #888;
+`
+
+const PreviewQuestion = styled.div`
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #ececec;
+  }
+
+  h4 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin: 5px 0;
+  }
+`
+
+const EditorSection = styled.div`
+  width: 40%;
+  padding: 30px;
+  background-color: #f8f9fa;
+`
+
+const EditorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  input[type='text'] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+`
+
+const OptionItem = styled.div`
+  margin-bottom: 10px;
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+`
+
+const AddQuestionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`
+
+const EditorMessage = styled.p`
+  font-size: 1.2rem;
+  color: #555;
+`
+
+const DeleteButton = styled.button`
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #c82333;
+  }
+`
+const SaveButton = styled.button`
+  margin-top: 20px;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`
+const AddOptionButton = styled.button`
+  margin-top: 20px;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`

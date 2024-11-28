@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     await dbConnect()
     // Get project_name from query parameters
     const projectName = req.nextUrl.searchParams.get('project_name')
-
+    console.log('projectName:', projectName)
     if (!projectName) {
       return NextResponse.json({ message: 'project_name is required.', success: false }, { status: 400 })
     }
@@ -28,11 +28,11 @@ export async function GET(req: NextRequest) {
         select: '-password', // Exclude the password field
       })
       .populate('surveys') // Get related survey information
-
+    console.log('project data:', project)
     if (!project) {
       return NextResponse.json(
         { message: 'No project found with the specified name.', success: false },
-        { status: 404 }
+        { status: 203 }
       )
     }
 
@@ -46,25 +46,7 @@ export async function GET(req: NextRequest) {
       participants: project.participants,
       surveys: project.surveys,
       analysts: project.analysts,
-      custom_survey: project.custom_survey
-        ? {
-            title: project.custom_survey.title,
-            description: project.custom_survey.description,
-            status: project.custom_survey.status,
-            selection: project.custom_survey.selection.map(
-              (sel: { content: string; options: string[]; type: string; min: number; max: number }) => ({
-                content: sel.content,
-                options: sel.options,
-                type: sel.type,
-                min: sel.min,
-                max: sel.max,
-              })
-            ),
-            text_response: project.custom_survey.text_response.map((text: { content: string }) => ({
-              content: text.content,
-            })),
-          }
-        : null,
+      custom_survey: project.custom_survey,
       creator: project.creator,
       createdAt: project.createdAt, // Creation date
       updatedAt: project.updatedAt, // Update date
