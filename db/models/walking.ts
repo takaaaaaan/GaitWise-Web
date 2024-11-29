@@ -19,6 +19,6 @@ const WalkingSchema = new mongoose.Schema(
   }
 )
 
-const Walking = mongoose.models.walking || mongoose.model('walking', WalkingSchema)
+const Walking = mongoose.models.Walking || mongoose.model('Walking', WalkingSchema)
 
 export default Walking

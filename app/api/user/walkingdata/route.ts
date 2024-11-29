@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     .populate('acc')
     .populate('gyro')
     .populate('rot')
-    .select('acc gyro rot event_time step_count createdAt')
+    .select('acc gyro rot walking_time event_time step_count createdAt')
 
   if (!walkingData) {
     return NextResponse.json(
@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
     acc: walkingData.acc,
     gyro: walkingData.gyro,
     rot: walkingData.rot,
+    walking_time: walkingData.walking_time,
     event_time: walkingData.event_time,
     step_count: walkingData.step_count,
     createdAt: walkingData.createdAt,

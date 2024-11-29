@@ -1,43 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server'
-
-import { dbConnect, Project } from '@/db/models'
-
-/**
- * @description Get project details by project name.
- * @searchParams project_name
- */
+import { NextRequest, NextResponse } from 'next/server';
+import { dbConnect, Project, Survey, Walking } from '@/db/models';
 
 export async function GET(req: NextRequest) {
   try {
-    await dbConnect()
-    // Get project_name from query parameters
-    const projectName = req.nextUrl.searchParams.get('project_name')
+    await dbConnect();
 
+    const projectName = req.nextUrl.searchParams.get('project_name');
     if (!projectName) {
-      return NextResponse.json({ message: 'project_name is required.', success: false }, { status: 400 })
+      return NextResponse.json(
+        { message: 'project_name is required.', success: false },
+        { status: 400 }
+      );
     }
 
-    // Search for the project in the database
     const project = await Project.findOne({ project_name: projectName })
-      .populate('organization') // Get organization details
+      .populate('organization')
       .populate({
         path: 'participants',
-        select: '-password', // Exclude the password field
+        select: '-password',
+        populate: [
+          { path: 'walking_history', model: Walking, select: 'walking_time createdAt _id'}, 
+          { path: 'surveys', model: Survey },        
+        ],
       })
-      .populate({
-        path: 'analysts',
-        select: '-password', // Exclude the password field
-      })
-      .populate('surveys') // Get related survey information
+      .populate('analysts')
+      .populate('surveys');
 
     if (!project) {
       return NextResponse.json(
         { message: 'No project found with the specified name.', success: false },
         { status: 404 }
-      )
+      );
     }
 
-    // Return the required data (including all schema fields)
     const projectData = {
       project_id: project._id,
       project_name: project.project_name,
@@ -47,36 +42,27 @@ export async function GET(req: NextRequest) {
       participants: project.participants,
       surveys: project.surveys,
       analysts: project.analysts,
-      custom_survey: project.custom_survey
-        ? {
-            title: project.custom_survey.title,
-            description: project.custom_survey.description,
-            status: project.custom_survey.status,
-            selection: project.custom_survey.selection.map(
-              (sel: { content: string; options: string[]; type: string; min: number; max: number }) => ({
-                content: sel.content,
-                options: sel.options,
-                type: sel.type,
-                min: sel.min,
-                max: sel.max,
-              })
-            ),
-            text_response: project.custom_survey.text_response.map((text: { content: string }) => ({
-              content: text.content,
-            })),
-          }
-        : null,
+      custom_survey: project.custom_survey,
       creator: project.creator,
       createdAt: project.createdAt, // Creation date
       updatedAt: project.updatedAt, // Update date
     }
 
-    return NextResponse.json({ message: 'Data retrieved successfully.', success: true, projectData }, { status: 200 })
+    const response = NextResponse.json(
+      { message: 'Data retrieved successfully.', success: true, projectData },
+      { status: 200 }
+    );
+
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+
+    return response;
   } catch (error) {
-    console.error('An error occurred while fetching project information:', error)
+    console.error('Error while fetching project information:', error);
     return NextResponse.json(
-      { message: 'An unexpected error occurred. Please try again later.', success: false },
+      { message: 'Internal server error.', success: false },
       { status: 500 }
-    )
+    );
   }
 }

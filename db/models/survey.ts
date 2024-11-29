@@ -47,6 +47,6 @@ const SurveySchema = new mongoose.Schema(
   }
 )
 
-const Survey = mongoose.models.Survey || mongoose.model('Survey', SurveySchema)
+const Survey = mongoose.models.Survey || mongoose.model('Survey', SurveySchema);
 
 export default Survey
