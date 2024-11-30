@@ -8,7 +8,7 @@ const ProjectSchema = new mongoose.Schema(
     analysts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Analyst', default: [] }], // 분석가
     project_name: { type: String, required: true }, // 프로젝트 이름
     project_description: { type: String, default: '' }, // 프로젝트 설명
-    custom_survey: { type: mongoose.Schema.Types.ObjectId, ref: 'custom_survey' }, // カスタムアンケートの参照ID // 커스텀 설문 정보
+    custom_survey: { type: mongoose.Schema.Types.ObjectId, ref: 'CustomSurvey' }, // カスタムアンケートの参照ID // 커스텀 설문 정보
     project_code: { type: String, unique: true }, // 프로젝트 코드
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // 프로젝트 생성자
   },

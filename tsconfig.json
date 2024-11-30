@@ -26,6 +26,7 @@
       "public": ["./public/index"],
       "@/*": ["./*"],
       "@/ui": ["./components/ui/index"],
+      "@/dialog": ["./components/dialog/index"],
       "@DB/*": ["./db/*"],
       "@Models/*": ["./db/models/*"],
       "@/types/*": ["./app/types/*"],

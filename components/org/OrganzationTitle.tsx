@@ -1,16 +1,12 @@
 import { Card, CardActionArea } from '@mui/material'
+import { Organization } from 'types'
 
-import type { Organization } from '@/app/types'
 import { DefaultImage } from '@/utils'
 
 export default async function OrganizationTitle({ Organzation }: { Organzation: Organization }) {
   return (
     <CardActionArea>
       <Card variant="outlined" className="rounded-3xl bg-white duration-300">
-        {/* <Card
-        variant="outlined"
-        className="rounded-3xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-2xl"
-      > */}
         <div className="flex flex-col items-center space-y-4 p-6 md:flex-row md:space-x-6 md:space-y-0">
           {/* プロフィール画像 */}
           <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-100 shadow-md md:h-24 md:w-24">

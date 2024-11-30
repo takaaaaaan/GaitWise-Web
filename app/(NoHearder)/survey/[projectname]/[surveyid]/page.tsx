@@ -7,7 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import styled from 'styled-components'
 import { DragItem, Question } from 'types'
 
-import { Label } from '@/components/ui'
+import { Label } from '@/ui'
 import { transformSurveyData } from '@/utils/format/surveyFormat'
 
 // 드래그 타입 정의

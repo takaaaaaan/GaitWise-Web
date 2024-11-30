@@ -1,10 +1,13 @@
+//======== common =======
 import { CDropdownMenu } from './common/Dorpdown'
 import LoadingSpinner from './common/LoadingSpinner'
 import Navbar from './common/Navbar'
 import { SideTabs } from './common/SideTabs'
+//======== org =======
 import AnalystList from './org/AnalystList'
 import OrganizationTitle from './org/OrganzationTitle'
 import ProjectCard from './org/ProjectCard'
+//======== participants =======
 import BaseCardDiagnosis from './participants/BaseCardDiagnosis'
 import DiagnosisHistory from './participants/DiagnosisHistory'
 import DiagnosticList from './participants/DiagnosticList'
