@@ -215,7 +215,10 @@ export async function PUT(req: NextRequest) {
 
 /**
  * @description customsurvey ルートの POST リクエストハンドラ
- * - 新しい Survey を作成する
+ * - 新しい Survey を作成または編集する
+ * - type パラメータによって作成または編集を判断
+ * - type が "save" の場合、新しい Survey を作成
+ * - type が "edit" の場合、既存の Survey を編集
  * @param req
  * @returns
  */
@@ -226,7 +229,10 @@ export async function POST(req: NextRequest) {
 
     // リクエストボディを解析
     const body = await req.json()
-    const { project_name, title, description } = body
+    const { project_name, title, description, surveyid } = body
+    const type = req.nextUrl.searchParams.get('type') // リクエストパラメータから type を取得
+    console.log('type:', type)
+    console.log('surveyid:', surveyid)
 
     // 必須フィールドが存在するか確認
     if (!project_name || !title || !description) {
@@ -252,23 +258,68 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // `create` を使用して新しい Survey を作成
-    const newSurvey = await CustomSurvey.create({
-      projectid: projectId, // 関連プロジェクトID
-      title, // リクエストボディから取得
-      description, // リクエストボディから取得
-      status: 'active', // 初期状態を "active" に設定
-    })
+    if (type === 'save') {
+      // 新しい Survey を作成
+      const newSurvey = await CustomSurvey.create({
+        projectid: projectId, // 関連プロジェクトID
+        title, // リクエストボディから取得
+        description, // リクエストボディから取得
+        status: 'active', // 初期状態を "active" に設定
+      })
 
-    // 成功レスポンスを返す
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Survey created successfully',
-        data: newSurvey,
-      },
-      { status: 201 }
-    )
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Survey created successfully',
+          data: newSurvey,
+        },
+        { status: 201 }
+      )
+    } else if (type === 'edit') {
+      if (!surveyid) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Survey ID is required for editing',
+          },
+          { status: 400 }
+        )
+      }
+
+      // Survey を検索してアップデート
+      const updatedSurvey = await CustomSurvey.findOneAndUpdate(
+        { _id: surveyid, projectid: projectId }, // 条件: ID と プロジェクト ID
+        { title, description }, // 更新内容
+        { new: true } // 更新後のドキュメントを返す
+      )
+
+      if (!updatedSurvey) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Survey not found or could not be updated',
+          },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Survey updated successfully',
+          data: updatedSurvey,
+        },
+        { status: 200 }
+      )
+    } else {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Invalid type parameter',
+        },
+        { status: 400 }
+      )
+    }
   } catch (error) {
     console.error('Error:', error)
     return NextResponse.json(

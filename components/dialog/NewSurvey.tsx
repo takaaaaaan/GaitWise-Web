@@ -34,7 +34,7 @@ export function NewSurvey({ onSurveyCreated }: NewSurveyProps) {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/customsurvey', {
+      const response = await fetch('/api/customsurvey?type=save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,11 +1,11 @@
 'use client'
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { EllipsisVertical } from 'lucide-react'
+import { EllipsisVertical, NotebookPen } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { CustomAlertDialog } from '@/dialog'
+import { CustomAlertDialog, EditSurvey } from '@/dialog'
 import {
   Button,
   DropdownMenu,
@@ -119,25 +119,28 @@ export default function SurveyTable({ data, projectName, visibleColumns, onDelet
                       <DropdownMenuItem
                         onClick={(event) => {
                           event.stopPropagation() // イベント伝播を停止
-                          console.log('Delete Survey clicked')
+                          event.preventDefault() // デフォルトのイベントをキャンセル
                         }}
                       >
-                        Edit Basic Data
+                        <EditSurvey data={row.original} onEditComplete={onDeleteComplete} />
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={(event) => {
                           event.stopPropagation() // イベント伝播を停止
-                          console.log('Delete Survey clicked')
+                          event.preventDefault() // デフォルトのイベントをキャンセル
+                          const redirectUrl = `/survey/${projectName}/${row.original.id}`
+                          router.push(redirectUrl)
                         }}
                       >
+                        <NotebookPen />
                         Edit Survey
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-red-600"
                         onClick={(event) => {
                           event.stopPropagation() // イベント伝播を停止
-                          console.log('Edit Survey:', row.original)
                           event.preventDefault() // デフォルトのイベントをキャンセル
+                          console.log('Delete Survey clicked')
                         }}
                       >
                         <CustomAlertDialog deletedata={row.original} onDeleteComplete={onDeleteComplete} />

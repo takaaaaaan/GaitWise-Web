@@ -1,6 +1,6 @@
 'use client'
 
-import { SquarePlus } from 'lucide-react'
+import { PencilLine } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
 
@@ -17,46 +17,55 @@ import {
   Label,
 } from '@/ui'
 
-type NewSurveyProps = {
-  onSurveyCreated: () => void
+type EditProps = {
+  id: string
+  title: string
+  description: string
 }
 
-export function EditSurvey({ onSurveyCreated }: NewSurveyProps) {
-  const param = useParams()
+type EditSurveyProps = {
+  onEditComplete: () => void
+  data: EditProps
+}
 
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
+export function EditSurvey({ data, onEditComplete }: EditSurveyProps) {
+  const param = useParams()
+  const [title, setTitle] = useState(data.title)
+  const [description, setDescription] = useState(data.description)
   const [loading, setLoading] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const surveyid = data.id
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
+    console.log('handleSubmit start')
     try {
-      const response = await fetch('/api/customsurvey', {
+      const response = await fetch('/api/customsurvey?type=edit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          surveyid,
           project_name: param.projectname,
           title,
           description,
         }),
       })
 
-      const data = await response.json()
+      const responseData = await response.json()
 
       if (response.ok) {
-        console.log('Survey created successfully:', data)
-        setIsDialogOpen(false)
-        onSurveyCreated() // データリフレッシュ
+        console.log('Survey updated successfully:', responseData)
+        setIsDialogOpen(false) // ダイアログを閉じる
+        onEditComplete() // データをリフレッシュ
       } else {
-        console.error('Failed to create survey:', data.message)
+        console.error('Failed to update survey:', responseData.message)
       }
     } catch (error) {
-      console.error('Error creating survey:', error)
+      console.error('Error updating survey:', error)
     } finally {
       setLoading(false)
     }
@@ -65,21 +74,35 @@ export function EditSurvey({ onSurveyCreated }: NewSurveyProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">
-          <SquarePlus /> New Survey
-        </Button>
+        <button
+          onClick={() => {
+            setIsDialogOpen(true) // ダイアログを開く
+            console.log('Dialog opened')
+          }}
+          className="flex items-center justify-center gap-x-2"
+        >
+          <PencilLine />
+          Edit Base Info
+        </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create a New Survey</DialogTitle>
+          <DialogTitle>Edit Base Info Survey</DialogTitle>
           <DialogDescription>
-            Enter the survey details below. Click &quot;Create&quot; to save your new survey.
+            Update the survey details below. Click &quot;Save&quot; to apply your changes.
           </DialogDescription>
         </DialogHeader>
-        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-4 items-center gap-4">
+        <form
+          className="grid gap-4 py-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            console.log('Form submit triggered') // 発火確認
+            handleSubmit(e)
+          }}
+        >
+          <div>
             <Label htmlFor="title" className="text-right">
-              Title
+              Title:
             </Label>
             <Input
               id="title"
@@ -90,10 +113,8 @@ export function EditSurvey({ onSurveyCreated }: NewSurveyProps) {
               required
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
+          <div>
+            <Label htmlFor="description">Description:</Label>
             <Input
               id="description"
               placeholder="Brief description of the survey"
@@ -104,8 +125,15 @@ export function EditSurvey({ onSurveyCreated }: NewSurveyProps) {
             />
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Creating...' : 'Create'}
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                console.log('Button clicked')
+                handleSubmit(e)
+              }}
+              disabled={loading}
+            >
+              {loading ? 'Saving...' : 'Save'}
             </Button>
           </DialogFooter>
         </form>
