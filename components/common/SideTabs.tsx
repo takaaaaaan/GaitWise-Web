@@ -4,10 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import LabResultsList from '../participants/LabResultList'
 import PatientProfile from '../participants/ParticipantsProfile'
 
-export function SideTabs({
-  profile}: {
-  profile: any
-}) {
+export function SideTabs({ profile }: { profile: any }) {
   return (
     <Tabs defaultValue="Profile" className="w-full">
       <TabsList className="grid w-full grid-cols-2">

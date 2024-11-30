@@ -2,6 +2,7 @@
 
 import axios from 'axios'
 import React, { useState } from 'react'
+
 import { DownloadIcon } from '@/components/icons'
 
 // API 호출 함수
@@ -135,12 +136,11 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
         {participant.walkingHistory.filter(filterByDate).map((history, index) => (
           <li
             key={history._id}
-            className="flex items-center justify-between px-6 py-4 hover:bg-gray-100 transition ease-in-out duration-200"
+            className="flex items-center justify-between px-6 py-4 transition duration-200 ease-in-out hover:bg-gray-100"
           >
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium text-gray-800">
-                <strong>Created At:</strong>{' '}
-                {`${new Date(history.createdAt).getFullYear().toString().slice(-2)}.`}
+                <strong>Created At:</strong> {`${new Date(history.createdAt).getFullYear().toString().slice(-2)}.`}
                 {new Date(history.createdAt).toLocaleString('ko-KR', {
                   month: '2-digit',
                   day: '2-digit',
@@ -159,8 +159,8 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
               <button
                 onClick={() => handleDownload(history._id, index)}
                 disabled={isDownloading === history._id}
-                className={`inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 transition ease-in-out duration-200 ${
-                  isDownloading === history._id ? 'opacity-50 cursor-not-allowed' : ''
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition duration-200 ease-in-out hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 ${
+                  isDownloading === history._id ? 'cursor-not-allowed opacity-50' : ''
                 }`}
               >
                 {isDownloading === history._id ? '...' : <DownloadIcon />}

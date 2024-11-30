@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import { CalendarTodayIcon, GenderMark, IdCard, PhoneIcon } from '@/components/icons'
 
 const PatientProfile = ({ participant }) => {
@@ -16,8 +17,8 @@ const PatientProfile = ({ participant }) => {
   })
 
   return (
-    <section className="max-w-lg mx-auto divide-y divide-gray-200 rounded-lg bg-white shadow-lg p-6">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">Essential survey</h3>
+    <section className="mx-auto max-w-lg divide-y divide-gray-200 rounded-lg bg-white p-6 shadow-lg">
+      <h3 className="mb-4 text-xl font-bold text-gray-800">Essential survey</h3>
       {/* Profile Information */}
       <div className="space-y-4">
         {[
@@ -29,13 +30,8 @@ const PatientProfile = ({ participant }) => {
           { label: 'Weight', value: participantData.weight, icon: <IdCard /> },
           { label: 'Job', value: participantData.job, icon: <IdCard /> },
         ].map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center space-x-4 p-4 rounded-md bg-gray-50 shadow-sm"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-              {item.icon}
-            </div>
+          <div key={index} className="flex items-center space-x-4 rounded-md bg-gray-50 p-4 shadow-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">{item.icon}</div>
             <div>
               <h3 className="text-sm font-light text-gray-500">{item.label}</h3>
               <p className="text-sm font-semibold text-gray-800">{item.value}</p>
@@ -46,14 +42,10 @@ const PatientProfile = ({ participant }) => {
 
       {/* Surveys */}
       <div className="mt-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">Custom Survey</h3>
+        <h3 className="mb-4 text-xl font-bold text-gray-800">Custom Survey</h3>
         <div className="space-y-6">
           {participantData.surveys.map((survey, index) => (
-            <div
-              key={index}
-              className="p-6 rounded-md bg-white shadow-md border border-gray-200"
-            >
-              
+            <div key={index} className="rounded-md border border-gray-200 bg-white p-6 shadow-md">
               {/* Custom Survey */}
               <div className="space-y-2">
                 <p className="text-sm text-gray-700">
@@ -70,7 +62,7 @@ const PatientProfile = ({ participant }) => {
               {/* Selection */}
               <div className="mt-4">
                 <h6 className="text-md font-medium text-gray-600">Selection</h6>
-                <ul className="list-disc pl-5 text-sm text-gray-700 space-y-2">
+                <ul className="list-disc space-y-2 pl-5 text-sm text-gray-700">
                   {survey.custom_survey.selection.map((item, idx) => (
                     <li key={idx}>
                       <p>
@@ -90,7 +82,7 @@ const PatientProfile = ({ participant }) => {
               {/* Text Response */}
               <div className="mt-4">
                 <h6 className="text-md font-medium text-gray-600">Text Response</h6>
-                <ul className="list-disc pl-5 text-sm text-gray-700 space-y-2">
+                <ul className="list-disc space-y-2 pl-5 text-sm text-gray-700">
                   {survey.custom_survey.text_response.map((response, idx) => (
                     <li key={idx}>
                       <p>
@@ -105,7 +97,7 @@ const PatientProfile = ({ participant }) => {
               </div>
 
               {/* Survey Created Date */}
-              <p className="text-sm text-gray-500 mt-6">
+              <p className="mt-6 text-sm text-gray-500">
                 <strong>Created At:</strong>{' '}
                 {new Date(survey.createdAt).toLocaleString('ko-KR', {
                   year: 'numeric',
@@ -117,7 +109,6 @@ const PatientProfile = ({ participant }) => {
                   hour12: false,
                 })}
               </p>
-
             </div>
           ))}
         </div>

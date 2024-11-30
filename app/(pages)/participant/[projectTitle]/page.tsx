@@ -1,7 +1,6 @@
 import { DiagnosisHistory, PatientList } from 'components'
 
 import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType, User } from '@/app/types'
-import { SideTabs } from '@/components/common/SideTabs'
 import getAllPatients from '@/lib/services/Patients'
 
 async function fetchProjectData(projectTitle: string) {
@@ -58,7 +57,6 @@ export default async function Home({ params }: { params: { projectTitle: string;
 
   // 条件に合う患者データを探す
   const participant: Patient | undefined = initialData.find((participant) => participant.name.match('Jessica Taylor'))
-
 
   // 必要なデータを設定
   let profile!: PatientProfileType
