@@ -1,160 +1,117 @@
 'use client'
+
 import { useState } from 'react'
-import { formatDate } from 'utils'
 
-import { PatientProfileType } from '@/app/types'
-import { CalendarTodayIcon, GenderMark, IdCard, InsuranceIcon, PencilIcon, PhoneIcon } from '@/components/icons'
+import { CalendarTodayIcon, GenderMark, IdCard, PhoneIcon } from '@/components/icons'
 
-const PatientProfile = ({ participant }: { participant: PatientProfileType }) => {
-  // 상태로 입력 필드 관리
-  const [participantData, setPatientData] = useState({
-    name: participant.name,
-    date_of_birth: formatDate(new Date(participant.date_of_birth)),
+const PatientProfile = ({ participant }) => {
+  const [participantData] = useState({
+    name: `${participant.firstName} ${participant.lastName}`,
     gender: participant.gender,
-    phone_number: participant.phone_number,
-    insurance_type: participant.insurance_type,
-    participant_code: 'PT-00123', // 임의의 환자 코드
+    age: participant.age || 0,
+    email: participant.email || 'Not Provided',
+    height: participant.height || 'Unknown',
+    job: participant.job || 'Unemployed',
+    weight: `${participant.weight.value} ${participant.weight.type}`,
+    surveys: participant.survey.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)), // 최신순 정렬
   })
-
-  const [isEditing, setIsEditing] = useState({
-    date_of_birth: false,
-    gender: false,
-    phone_number: false,
-    insurance_type: false,
-  })
-
-  // 입력 값 변경 핸들러
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setPatientData({
-      ...participantData,
-      [name]: value,
-    })
-  }
-
-  // 수정 모드 토글
-  const toggleEditMode = (field: keyof typeof isEditing) => {
-    setIsEditing((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }))
-  }
 
   return (
-    <section role="list" className="divide-y divide-gray-100 rounded-3xl bg-white p-5">
-      <div className="grid grid-cols-1 justify-items-center gap-6 pb-4">
-        <div className="grid w-full grid-cols-6 grid-rows-1 gap-8">
-          {/* 아이콘 크기를 맞추기 위한 공통 스타일 */}
-          {/* 환자 코드 */}
-          <div className="col-span-1 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-            <IdCard />
+    <section className="mx-auto max-w-lg divide-y divide-gray-200 rounded-lg bg-white p-6 shadow-lg">
+      <h3 className="mb-4 text-xl font-bold text-gray-800">Essential survey</h3>
+      {/* Profile Information */}
+      <div className="space-y-4">
+        {[
+          { label: 'Full Name', value: participantData.name, icon: <IdCard /> },
+          { label: 'Gender', value: participantData.gender, icon: <GenderMark /> },
+          { label: 'Age', value: participantData.age, icon: <CalendarTodayIcon /> },
+          { label: 'Email', value: participantData.email, icon: <PhoneIcon /> },
+          { label: 'Height', value: participantData.height, icon: <IdCard /> },
+          { label: 'Weight', value: participantData.weight, icon: <IdCard /> },
+          { label: 'Job', value: participantData.job, icon: <IdCard /> },
+        ].map((item, index) => (
+          <div key={index} className="flex items-center space-x-4 rounded-md bg-gray-50 p-4 shadow-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">{item.icon}</div>
+            <div>
+              <h3 className="text-sm font-light text-gray-500">{item.label}</h3>
+              <p className="text-sm font-semibold text-gray-800">{item.value}</p>
+            </div>
           </div>
-          <div className="col-span-5">
-            <h3 className="font-light">Patient Code</h3>
-            <p className="font-semibold">{participantData.participant_code}</p>
-          </div>
+        ))}
+      </div>
 
-          {/* 생년월일 수정 가능 */}
-          <div className="col-span-1 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-            <CalendarTodayIcon />
-          </div>
-          <div className="col-span-4">
-            <h3 className="font-light">Date Of Birth</h3>
-            {isEditing.date_of_birth ? (
-              <input
-                type="date"
-                name="date_of_birth"
-                value={participantData.date_of_birth}
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-              />
-            ) : (
-              <p className="font-semibold">{participantData.date_of_birth}</p>
-            )}
-          </div>
-          <div className="col-span-1 flex items-center justify-center">
-            <button onClick={() => toggleEditMode('date_of_birth')}>
-              <PencilIcon />
-            </button>
-          </div>
+      {/* Surveys */}
+      <div className="mt-8">
+        <h3 className="mb-4 text-xl font-bold text-gray-800">Custom Survey</h3>
+        <div className="space-y-6">
+          {participantData.surveys.map((survey, index) => (
+            <div key={index} className="rounded-md border border-gray-200 bg-white p-6 shadow-md">
+              {/* Custom Survey */}
+              <div className="space-y-2">
+                <p className="text-sm text-gray-700">
+                  <strong>Title:</strong> {survey.custom_survey.title}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Description:</strong> {survey.custom_survey.description}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Status:</strong> {survey.custom_survey.status}
+                </p>
+              </div>
 
-          {/* 성별 수정 가능 */}
-          <div className="col-span-1 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-            <GenderMark />
-          </div>
-          <div className="col-span-4">
-            <h3 className="font-light">Gender</h3>
-            {isEditing.gender ? (
-              <select
-                name="gender"
-                value={participantData.gender}
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            ) : (
-              <p className="font-semibold">{participantData.gender}</p>
-            )}
-          </div>
-          <div className="col-span-1 flex items-center justify-center">
-            <button onClick={() => toggleEditMode('gender')}>
-              <PencilIcon />
-            </button>
-          </div>
+              {/* Selection */}
+              <div className="mt-4">
+                <h6 className="text-md font-medium text-gray-600">Selection</h6>
+                <ul className="list-disc space-y-2 pl-5 text-sm text-gray-700">
+                  {survey.custom_survey.selection.map((item, idx) => (
+                    <li key={idx}>
+                      <p>
+                        <strong>Question:</strong> {item.content}
+                      </p>
+                      <p>
+                        <strong>Options:</strong> {item.options.join(', ')}
+                      </p>
+                      <p>
+                        <strong>Answer:</strong> {item.answer.join(', ')}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          {/* 연락처 수정 가능 */}
-          <div className="col-span-1 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-            <PhoneIcon />
-          </div>
-          <div className="col-span-4">
-            <h3 className="font-light">Contact Info.</h3>
-            {isEditing.phone_number ? (
-              <input
-                type="text"
-                name="phone_number"
-                value={participantData.phone_number}
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-              />
-            ) : (
-              <p className="font-semibold">{participantData.phone_number}</p>
-            )}
-          </div>
-          <div className="col-span-1 flex items-center justify-center">
-            <button onClick={() => toggleEditMode('phone_number')}>
-              <PencilIcon />
-            </button>
-          </div>
+              {/* Text Response */}
+              <div className="mt-4">
+                <h6 className="text-md font-medium text-gray-600">Text Response</h6>
+                <ul className="list-disc space-y-2 pl-5 text-sm text-gray-700">
+                  {survey.custom_survey.text_response.map((response, idx) => (
+                    <li key={idx}>
+                      <p>
+                        <strong>Question:</strong> {response.content}
+                      </p>
+                      <p>
+                        <strong>Answer:</strong> {response.answer}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          {/* 보험사 수정 가능 */}
-          <div className="col-span-1 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-            <InsuranceIcon />
-          </div>
-          <div className="col-span-4">
-            <h3 className="font-light">Insurance Provider</h3>
-            {isEditing.insurance_type ? (
-              <input
-                type="text"
-                name="insurance_type"
-                value={participantData.insurance_type}
-                onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
-              />
-            ) : (
-              <p className="font-semibold">{participantData.insurance_type}</p>
-            )}
-          </div>
-          <div className="col-span-1 flex items-center justify-center">
-            <button onClick={() => toggleEditMode('insurance_type')}>
-              <PencilIcon />
-            </button>
-          </div>
+              {/* Survey Created Date */}
+              <p className="mt-6 text-sm text-gray-500">
+                <strong>Created At:</strong>{' '}
+                {new Date(survey.createdAt).toLocaleString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false,
+                })}
+              </p>
+            </div>
+          ))}
         </div>
-        <button className="mt-8 justify-self-center rounded-full bg-teal-300 px-12 py-4 font-semibold text-black hover:bg-teal-500">
-          Show All Information
-        </button>
       </div>
     </section>
   )

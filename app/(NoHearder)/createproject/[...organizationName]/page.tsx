@@ -5,7 +5,6 @@ import { Trash2 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { LoadingSpinner } from '@/components'
 import { validateEmail } from '@/utils'
 
 const ProjectPage = () => {
@@ -184,7 +183,6 @@ const ProjectPage = () => {
             >
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <LoadingSpinner />
                   <span className="ml-2">Loading...</span>
                 </div>
               ) : (

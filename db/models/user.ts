@@ -4,9 +4,9 @@ import mongoose from 'mongoose'
 // ====== User Schema
 const UserSchema = new mongoose.Schema(
   {
-    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project', default: [] }], // 프로젝트 ID 배열
-    surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Survey', default: [] }], // 설문조사 ID 배열
-    walking_history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WalkingHistory', default: [] }], // 걷기 이력 ID 배열
+    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project', default: [] }], // 프로젝트 ID 배열
+    surveys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'survey', default: [] }], // 설문조사 ID 배열
+    walking_history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'walking', default: [] }], // 걷기 이력 ID 배열
     firstName: { type: String, required: true }, // 사용자의 이름
     lastName: { type: String, required: true }, // 사용자의 성
     gender: { type: String, required: true }, // 성별
