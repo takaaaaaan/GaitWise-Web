@@ -1,7 +1,6 @@
 import { DiagnosisHistory, PatientList } from 'components'
 
 import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType, User } from '@/app/types'
-import { SideTabs } from '@/components/common/SideTabs'
 import getAllPatients from '@/lib/services/Patients'
 
 async function fetchProjectData(projectTitle: string) {
@@ -9,6 +8,7 @@ async function fetchProjectData(projectTitle: string) {
   const baseUrl = process.env.SERVER_DOMAIN
   const response = await fetch(`${baseUrl}/api/project/pagedetails/?${query}`, {
     method: 'GET',
+    cache: 'no-store', // 캐싱 방지
   })
 
   if (!response.ok) {
@@ -49,6 +49,9 @@ export default async function Home({ params }: { params: { projectTitle: string;
   if (projectData.participants) {
     participants = projectData.participants
   }
+
+  console.log(participants)
+
   // 全患者データを取得
   const initialData = await getAllPatients()
 
@@ -79,9 +82,9 @@ export default async function Home({ params }: { params: { projectTitle: string;
       <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
       </section>
-      <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <SideTabs profile={profile} labResults={labResults} />
-      </section>
+      {/* <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
+        <SideTabs profile={userprofileData}/>
+      </section> */}
     </main>
   )
 }

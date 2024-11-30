@@ -1,47 +1,25 @@
-import { DiagnosisHistory, PatientList } from 'components'
-
-import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType, User } from '@/app/types'
-import { SideTabs } from '@/components/common/SideTabs'
-import getAllPatients from '@/lib/services/Patients'
+import { PatientList, SideTabs } from 'components'
+import { User } from 'types'
 
 async function fetchProjectData(projectTitle: string) {
   const query = new URLSearchParams({ project_name: projectTitle }).toString()
   const baseUrl = process.env.SERVER_DOMAIN
   const response = await fetch(`${baseUrl}/api/project/pagedetails/?${query}`, {
     method: 'GET',
+    cache: 'no-store', // 캐싱 방지
   })
 
   if (!response.ok) {
     throw new Error(`Failed to fetch data for project: ${projectTitle}`)
   }
-
   const data = await response.json()
   return data.projectData
 }
 
-function getProfileData<Patient>(participant: Patient) {
-  const profile: {
-    [key: string]: NonNullable<NonNullable<Patient>[Extract<keyof Patient, string>]>
-  } = {}
+export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
+  const { projectTitle, username } = params
+  console.log('SSR params:', projectTitle, username)
 
-  for (const key in participant) {
-    if (participant) {
-      const value = participant[key]
-      if (value && !Array.isArray(value)) {
-        profile[key] = value
-      }
-    }
-  }
-
-  return profile
-}
-
-export default async function Home({ params }: { params: { projectTitle: string; userid: string } }) {
-  const { projectTitle, userid } = params
-  console.log('SSR params:', projectTitle)
-  console.log('SSR params 2:', userid)
-
-  // API からプロジェクトデータを取得
   const projectData = await fetchProjectData(projectTitle)
 
   let participants!: User[]
@@ -49,38 +27,54 @@ export default async function Home({ params }: { params: { projectTitle: string;
   if (projectData.participants) {
     participants = projectData.participants
   }
-  // 全患者データを取得
-  const initialData = await getAllPatients()
 
-  // 条件に合う患者データを探す
-  const participant: Patient | undefined = initialData.find((participant) => participant.name.match('Jessica Taylor'))
+  // participants matching the User_id
+  const participant = participants.find((p) => p._id === username)
 
-  // 必要なデータを設定
-  let profile!: PatientProfileType
-  let diagnosisHistory!: DiagnosisRecord[]
-  let diagnoticList!: Diagnostic[]
-  let labResults!: Array<string>
-
-  if (participant) {
-    profile = getProfileData<Patient>(participant) as PatientProfileType
-
-    if (participant.diagnosis_history) diagnosisHistory = participant.diagnosis_history
-
-    if (participant.diagnostic_list) diagnoticList = participant.diagnostic_list
-
-    if (participant.lab_results) labResults = participant.lab_results
+  if (!participant) {
+    throw new Error(`Participant with username (ID) ${username} not found`)
   }
+
+  // Extract surveys and walkingHistory
+  const survey = participant.surveys.map((survey) => ({
+    essential_survey: survey.essential_survey,
+    custom_survey: survey.custom_survey,
+    createdAt: survey.createdAt,
+  }))
+
+  const walkingHistory = participant.walking_history.map((history) => ({
+    _id: history._id,
+    createdAt: history.createdAt,
+    walking_time: history.walking_time,
+  }))
+
+  // Create the user profile object
+  const userprofileData = {
+    _id: participant._id,
+    firstName: participant.firstName,
+    lastName: participant.lastName,
+    gender: participant.gender,
+    age: participant.age,
+    email: participant.email,
+    height: participant.height,
+    weight: participant.weight,
+    job: participant.job,
+    survey,
+    walkingHistory,
+  }
+
+  console.log('userprofileData', userprofileData)
 
   return (
     <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
       <section className="mb-8 lg:mb-0">
         <PatientList participants={participants} projectTitle={projectTitle} />
       </section>
-      <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
+      {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
         <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
-      </section>
+      </section> */}
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <SideTabs profile={profile} labResults={labResults} />
+        <SideTabs profile={userprofileData} />
       </section>
     </main>
   )

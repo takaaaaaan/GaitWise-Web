@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { dbConnect, Project } from '@/db/models'
+import { dbConnect, Project, Survey, Walking } from '@/db/models'
 
-/**
- * @description Get project details by project name.
- * @searchParams project_name
- */
 export async function GET(req: NextRequest) {
   try {
     await dbConnect()
@@ -16,12 +12,15 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'project_name is required.', success: false }, { status: 400 })
     }
 
-    // Search for the project in the database
     const project = await Project.findOne({ project_name: projectName })
-      .populate('organization') // Get organization details
+      .populate('organization')
       .populate({
         path: 'participants',
-        select: '-password', // Exclude the password field
+        select: '-password',
+        populate: [
+          { path: 'walking_history', model: Walking, select: 'walking_time createdAt _id' },
+          { path: 'surveys', model: Survey },
+        ],
       })
       .populate({
         path: 'analysts',
@@ -36,7 +35,6 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Return the required data (including all schema fields)
     const projectData = {
       project_id: project._id,
       project_name: project.project_name,
@@ -52,12 +50,18 @@ export async function GET(req: NextRequest) {
       updatedAt: project.updatedAt, // Update date
     }
 
-    return NextResponse.json({ message: 'Data retrieved successfully.', success: true, projectData }, { status: 200 })
-  } catch (error) {
-    console.error('An error occurred while fetching project information:', error)
-    return NextResponse.json(
-      { message: 'An unexpected error occurred. Please try again later.', success: false },
-      { status: 500 }
+    const response = NextResponse.json(
+      { message: 'Data retrieved successfully.', success: true, projectData },
+      { status: 200 }
     )
+
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
+
+    return response
+  } catch (error) {
+    console.error('Error while fetching project information:', error)
+    return NextResponse.json({ message: 'Internal server error.', success: false }, { status: 500 })
   }
 }
