@@ -83,6 +83,7 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
     const historyDate = new Date(history.createdAt)
     const start = new Date(startDate)
     const end = new Date(endDate)
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return false
     return historyDate >= start && historyDate <= end
   }
 
@@ -101,6 +102,8 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
       setIsDownloading(null)
     }
   }
+
+  const filteredHistory = participant.walkingHistory.filter(filterByDate)
 
   return (
     <div>
@@ -132,43 +135,47 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
         </div>
       </div>
 
-      <ul role="list" className="w-full divide-y divide-gray-200 rounded-lg bg-gray-50 shadow-md">
-        {participant.walkingHistory.filter(filterByDate).map((history, index) => (
-          <li
-            key={history._id}
-            className="flex items-center justify-between px-6 py-4 transition duration-200 ease-in-out hover:bg-gray-100"
-          >
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium text-gray-800">
-                <strong>Created At:</strong> {`${new Date(history.createdAt).getFullYear().toString().slice(-2)}.`}
-                {new Date(history.createdAt).toLocaleString('ko-KR', {
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit',
-                  hour12: false,
-                })}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Walking Time:</strong> {history.walking_time || 'N/A'}
-              </p>
-            </div>
+      {filteredHistory.length === 0 ? (
+        <p className="text-center text-gray-500">No walking history found for the selected dates.</p>
+      ) : (
+        <ul role="list" className="w-full divide-y divide-gray-200 rounded-lg bg-gray-50 shadow-md">
+          {filteredHistory.map((history, index) => (
+            <li
+              key={history._id}
+              className="flex items-center justify-between px-6 py-4 transition duration-200 ease-in-out hover:bg-gray-100"
+            >
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium text-gray-800">
+                  <strong>Created At:</strong> {`${new Date(history.createdAt).getFullYear().toString().slice(-2)}.`}
+                  {new Date(history.createdAt).toLocaleString('ko-KR', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false,
+                  })}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Walking Time:</strong> {history.walking_time || 'N/A'}
+                </p>
+              </div>
 
-            <div className="shrink-0">
-              <button
-                onClick={() => handleDownload(history._id, index)}
-                disabled={isDownloading === history._id}
-                className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition duration-200 ease-in-out hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 ${
-                  isDownloading === history._id ? 'cursor-not-allowed opacity-50' : ''
-                }`}
-              >
-                {isDownloading === history._id ? '...' : <DownloadIcon />}
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="shrink-0">
+                <button
+                  onClick={() => handleDownload(history._id, index)}
+                  disabled={isDownloading === history._id}
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition duration-200 ease-in-out hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 ${
+                    isDownloading === history._id ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
+                >
+                  {isDownloading === history._id ? '...' : <DownloadIcon />}
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

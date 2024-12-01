@@ -10,19 +10,16 @@ import ProjectCard from './org/ProjectCard'
 //======== participants =======
 import BaseCardDiagnosis from './participants/BaseCardDiagnosis'
 import DiagnosisHistory from './participants/DiagnosisHistory'
-import DiagnosticList from './participants/DiagnosticList'
 import LabResultsList from './participants/LabResultList'
 import ParticipantHeader from './participants/ParticipantHeader'
 import PatientList from './participants/ParticipantsList'
 import PatientProfile from './participants/ParticipantsProfile'
-import ProjectList from './participants/ProjectList'
 
 export {
   AnalystList,
   BaseCardDiagnosis,
   CDropdownMenu,
   DiagnosisHistory,
-  DiagnosticList,
   LabResultsList,
   LoadingSpinner,
   Navbar,
@@ -31,6 +28,5 @@ export {
   PatientList,
   PatientProfile,
   ProjectCard,
-  ProjectList,
   SideTabs,
 }

@@ -1,7 +1,5 @@
-import { DiagnosisHistory, PatientList } from 'components'
-
-import type { DiagnosisRecord, Diagnostic, Patient, PatientProfileType, User } from '@/app/types'
-import getAllPatients from '@/lib/services/Patients'
+import ProjectHeader from '@/components/participants/ParticipantHeader'
+import TableWrapper from '@/components/participants/TableWapper'
 
 async function fetchProjectData(projectTitle: string) {
   const query = new URLSearchParams({ project_name: projectTitle }).toString()
@@ -14,77 +12,35 @@ async function fetchProjectData(projectTitle: string) {
   if (!response.ok) {
     throw new Error(`Failed to fetch data for project: ${projectTitle}`)
   }
-
   const data = await response.json()
   return data.projectData
 }
 
-function getProfileData<Patient>(participant: Patient) {
-  const profile: {
-    [key: string]: NonNullable<NonNullable<Patient>[Extract<keyof Patient, string>]>
-  } = {}
+export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
+  const { projectTitle, username } = params
+  console.log('SSR params:', projectTitle, username)
 
-  for (const key in participant) {
-    if (participant) {
-      const value = participant[key]
-      if (value && !Array.isArray(value)) {
-        profile[key] = value
-      }
+  let projectData, participants
+  try {
+    projectData = await fetchProjectData(projectTitle)
+    if (projectData.participants) {
+      participants = projectData.participants
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error fetching project or participant data: ${error.message}`)
+    } else {
+      console.error('Error fetching project or participant data:', error)
     }
   }
 
-  return profile
-}
-
-export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
-  const { projectTitle, username } = params
-  console.log('SSR params:', projectTitle)
-  console.log('SSR params 2:', username)
-
-  // API からプロジェクトデータを取得
-  const projectData = await fetchProjectData(projectTitle)
-
-  let participants!: User[]
-
-  if (projectData.participants) {
-    participants = projectData.participants
-  }
-
-  console.log(participants)
-
-  // 全患者データを取得
-  const initialData = await getAllPatients()
-
-  // 条件に合う患者データを探す
-  const participant: Patient | undefined = initialData.find((participant) => participant.name.match('Jessica Taylor'))
-
-  // 必要なデータを設定
-  let profile!: PatientProfileType
-  let diagnosisHistory!: DiagnosisRecord[]
-  let diagnoticList!: Diagnostic[]
-  let labResults!: Array<string>
-
-  if (participant) {
-    profile = getProfileData<Patient>(participant) as PatientProfileType
-
-    if (participant.diagnosis_history) diagnosisHistory = participant.diagnosis_history
-
-    if (participant.diagnostic_list) diagnoticList = participant.diagnostic_list
-
-    if (participant.lab_results) labResults = participant.lab_results
-  }
-
   return (
-    <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
-      <section className="mb-8 lg:mb-0">
-        <PatientList participants={participants} projectTitle={projectTitle} />
-      </section>
-      <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
-      </section>
-      {/* <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <SideTabs profile={userprofileData}/>
-      </section> */}
+    <main className="mt-10 w-full flex-row px-11">
+      <ProjectHeader projectdata={projectData || []} />
+      <h2 className="mt-10 text-2xl font-semibold text-gray-800">User List</h2>
+      <div className="mt-5">
+        <TableWrapper participants={participants} projectdata={projectData} />
+      </div>
     </main>
   )
 }

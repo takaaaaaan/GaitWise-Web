@@ -20,19 +20,35 @@ export default async function Home({ params }: { params: { projectTitle: string;
   const { projectTitle, username } = params
   console.log('SSR params:', projectTitle, username)
 
-  const projectData = await fetchProjectData(projectTitle)
+  let projectData, participants, participant
 
-  let participants!: User[]
+  try {
+    projectData = await fetchProjectData(projectTitle)
 
-  if (projectData.participants) {
-    participants = projectData.participants
+    if (projectData.participants) {
+      participants = projectData.participants
+    }
+
+    // participants matching the User_id
+    participant = participants?.find((p) => p._id === username)
+  } catch (error) {
+    console.error(`Error fetching project or participant data: ${error.message}`)
   }
 
-  // participants matching the User_id
-  const participant = participants.find((p) => p._id === username)
-
+  // Participant not found or no data
   if (!participant) {
-    throw new Error(`Participant with username (ID) ${username} not found`)
+    return (
+      <main className="mx-4 mb-8 flex min-h-screen flex-wrap items-center justify-center">
+        <section className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800">Participant Not Found</h1>
+          <p className="mt-2 text-gray-600">
+            The participant with username (ID) <strong>{username}</strong> could not be located in the project{' '}
+            <strong>{projectTitle}</strong>.
+          </p>
+          <p className="mt-4 text-sm text-gray-500">Please check the project or participant details and try again.</p>
+        </section>
+      </main>
+    )
   }
 
   // Extract surveys and walkingHistory
@@ -70,9 +86,9 @@ export default async function Home({ params }: { params: { projectTitle: string;
       <section className="mb-8 lg:mb-0">
         <PatientList participants={participants} projectTitle={projectTitle} />
       </section>
-      {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <DiagnosisHistory diagnosisHistory={diagnosisHistory} />
-      </section> */}
+      <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
+        {/* <DiagnosisHistory diagnosisHistory={diagnosisHistory} /> */}
+      </section>
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
         <SideTabs profile={userprofileData} />
       </section>
