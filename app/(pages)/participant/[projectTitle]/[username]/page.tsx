@@ -1,5 +1,8 @@
 import { PatientList, SideTabs } from 'components'
-import { User } from 'types'
+import Link from 'next/link'
+import { Survey, User, Walking } from 'types'
+
+import { Button } from '@/components/ui'
 
 async function fetchProjectData(projectTitle: string) {
   const query = new URLSearchParams({ project_name: projectTitle }).toString()
@@ -30,7 +33,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
     }
 
     // participants matching the User_id
-    participant = participants?.find((p) => p._id === username)
+    participant = participants?.find((p: User) => p._id === username)
   } catch (error) {
     console.error(`Error fetching project or participant data: ${error.message}`)
   }
@@ -38,7 +41,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
   // Participant not found or no data
   if (!participant) {
     return (
-      <main className="mx-4 mb-8 flex min-h-screen flex-wrap items-center justify-center">
+      <main className="mx-4 flex min-h-[calc(100vh-7rem)] flex-wrap items-center justify-center">
         <section className="text-center">
           <h1 className="text-2xl font-bold text-gray-800">Participant Not Found</h1>
           <p className="mt-2 text-gray-600">
@@ -46,19 +49,22 @@ export default async function Home({ params }: { params: { projectTitle: string;
             <strong>{projectTitle}</strong>.
           </p>
           <p className="mt-4 text-sm text-gray-500">Please check the project or participant details and try again.</p>
+          <Button variant="default" color="primary" className="mt-4" asChild>
+            <Link href={`/participant/${projectTitle}`}>Back Project Menu</Link>
+          </Button>
         </section>
       </main>
     )
   }
 
   // Extract surveys and walkingHistory
-  const survey = participant.surveys.map((survey) => ({
+  const survey = participant.surveys.map((survey: Survey) => ({
     essential_survey: survey.essential_survey,
     custom_survey: survey.custom_survey,
     createdAt: survey.createdAt,
   }))
 
-  const walkingHistory = participant.walking_history.map((history) => ({
+  const walkingHistory = participant.walking_history.map((history: Walking) => ({
     _id: history._id,
     createdAt: history.createdAt,
     walking_time: history.walking_time,
