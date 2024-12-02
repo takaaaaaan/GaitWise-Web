@@ -36,7 +36,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
     participant = participants?.find((p: User) => p._id === userid)
     console.log('Participant:', participant)
   } catch (error) {
-    console.error(`Error fetching project or participant data: ${error.message}`)
+    console.error(`Error fetching project or participant data: ${(error as Error).message}`)
   }
 
   // Participant not found or no data
