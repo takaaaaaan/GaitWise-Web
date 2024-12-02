@@ -93,7 +93,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
       </section>
       {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0"> */}
       <section className="col-start-2 col-end-4 mb-8">
-        <WidgetsWapper userid={userid} walkingHistory={walkingHistory} />
+        <WidgetsWapper userid={userid} walkingHistory={walkingHistory} userData={userprofileData} />
       </section>
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
         <SideTabs profile={userprofileData} />

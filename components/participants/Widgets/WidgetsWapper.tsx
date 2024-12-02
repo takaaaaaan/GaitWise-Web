@@ -1,19 +1,22 @@
 'use client'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Walking } from 'types'
+import { User, Walking, WalkingData } from 'types'
 
+import BmiWidgets from './BmiWidgets'
+import StepCountWidgets from './StepCountWidgets'
 import WalkingDataChart from './WalkingDataChart'
 import { WalkingListSelecter } from './WalkingListSelecter'
+import WalkingTimeWidgets from './WalkingTimeWidgets'
 import { WidgetsMenu } from './WidgetsMenu'
 
 type WidgetsWapperProps = {
-  userid: string
   walkingHistory: Walking[]
+  userData: User
 }
 
-export default function WidgetsWapper({ userid, walkingHistory }: WidgetsWapperProps) {
-  const [walkingData, setWalkingData] = useState<any>(null)
+export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWapperProps) {
+  const [walkingData, setWalkingData] = useState<WalkingData | null>(null)
   const [selectedWalkingId, setSelectedWalkingId] = useState<string | null>(
     walkingHistory.length > 0 ? walkingHistory[0]._id : null // 初期選択を最初の項目に設定
   )
@@ -45,6 +48,21 @@ export default function WidgetsWapper({ userid, walkingHistory }: WidgetsWapperP
     }
   }, [walkingHistory, selectedWalkingId])
 
+  // グラフごとのデータを定義
+  const chartConfigs = walkingData
+    ? [
+        { label: 'Acc-X', data: walkingData.acc.accX, color: 'rgba(75, 192, 192, 1)' },
+        { label: 'Acc-Y', data: walkingData.acc.accY, color: 'rgba(153, 102, 255, 1)' },
+        { label: 'Acc-Z', data: walkingData.acc.accZ, color: 'rgba(255, 159, 64, 1)' },
+        { label: 'Gyro-X', data: walkingData.gyro.gyroX, color: 'rgba(255, 99, 132, 1)' },
+        { label: 'Gyro-Y', data: walkingData.gyro.gyroY, color: 'rgba(54, 162, 235, 1)' },
+        { label: 'Gyro-Z', data: walkingData.gyro.gyroZ, color: 'rgba(255, 206, 86, 1)' },
+        { label: 'Rot-X', data: walkingData.rot.rotX, color: 'rgba(75, 192, 192, 1)' },
+        { label: 'Rot-Y', data: walkingData.rot.rotY, color: 'rgba(153, 102, 255, 1)' },
+        { label: 'Rot-Z', data: walkingData.rot.rotZ, color: 'rgba(255, 159, 64, 1)' },
+      ]
+    : []
+
   return (
     <div>
       {walkingHistory && walkingHistory.length > 0 ? (
@@ -58,15 +76,25 @@ export default function WidgetsWapper({ userid, walkingHistory }: WidgetsWapperP
             <WidgetsMenu />
           </div>
           {walkingData ? (
-            <section className="col-span-4">
-              <h2 className="text-center text-lg font-bold">Walking Data Visualization</h2>
-              <WalkingDataChart
-                eventTime={walkingData.event_time}
-                acc={walkingData.acc}
-                gyro={walkingData.gyro}
-                rot={walkingData.rot}
-              />
-            </section>
+            <>
+              <section className="col-span-4">
+                <h2 className="text-center text-lg font-bold">Walking Data Visualization</h2>
+                <div>
+                  {chartConfigs.map(({ label, data, color }, index) => (
+                    <WalkingDataChart
+                      key={index}
+                      eventTime={walkingData.event_time}
+                      data={data}
+                      label={label}
+                      color={color}
+                    />
+                  ))}
+                </div>
+              </section>
+              <BmiWidgets userData={userData} />
+              <StepCountWidgets step_count={walkingData?.step_count} />
+              <WalkingTimeWidgets walking_time={walkingData?.walking_time} />
+            </>
           ) : (
             <p>Loading Walking Data...</p>
           )}

@@ -8,6 +8,7 @@ export type Walking = {
   rot: string // 회전 데이터 ID (별도의 컬렉션)
   walking_time: string // 걷기 시간 (형식: "HH:MM:SS" 등)
   step_count: number // 걸음 수
+  event_time: number
   shose: string // 사용한 신발 정보
   createdAt: Date // 레코드 생성 날짜
   updatedAt: Date // 레코드 갱신 날짜

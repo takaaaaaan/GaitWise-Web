@@ -54,6 +54,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
+    "react-lottie-player": "^2.1.0",
     "styled-components": "^6.1.13",
     "survey-core": "^1.12.6",
     "survey-creator-react": "^1.12.6",
