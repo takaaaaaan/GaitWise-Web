@@ -8,12 +8,13 @@ import AnalystList from './org/AnalystList'
 import OrganizationTitle from './org/OrganzationTitle'
 import ProjectCard from './org/ProjectCard'
 //======== participants =======
-import BaseCardDiagnosis from './participants/BaseCardDiagnosis'
-import DiagnosisHistory from './participants/DiagnosisHistory'
 import LabResultsList from './participants/LabResultList'
 import ParticipantHeader from './participants/ParticipantHeader'
 import PatientList from './participants/ParticipantsList'
 import PatientProfile from './participants/ParticipantsProfile'
+//======== participants Widgets=======
+import BaseCardDiagnosis from './participants/Widgets/BaseCardDiagnosis'
+import DiagnosisHistory from './participants/Widgets/DiagnosisHistory'
 
 export {
   AnalystList,

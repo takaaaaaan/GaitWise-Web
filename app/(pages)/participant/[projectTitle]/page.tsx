@@ -1,5 +1,5 @@
 import ProjectHeader from '@/components/participants/ParticipantHeader'
-import TableWrapper from '@/components/participants/TableWapper'
+import TableWrapper from '@/components/participants/Table/TableWapper'
 
 async function fetchProjectData(projectTitle: string) {
   const query = new URLSearchParams({ project_name: projectTitle }).toString()

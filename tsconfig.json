@@ -27,6 +27,7 @@
       "@/*": ["./*"],
       "@/ui": ["./components/ui/index"],
       "@/dialog": ["./components/dialog/index"],
+      "@/Wedgets": ["./components/participants/Widgets/index"],
       "@DB/*": ["./db/*"],
       "@Models/*": ["./db/models/*"],
       "@/types/*": ["./app/types/*"],

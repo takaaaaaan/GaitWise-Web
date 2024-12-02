@@ -13,10 +13,7 @@ export async function POST(req: NextRequest) {
     // Parse and validate walkingId from request body
     const { walkingId } = await req.json()
     if (!walkingId || !mongoose.Types.ObjectId.isValid(walkingId)) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid or missing walkingId' },
-        { status: 400 }
-      )
+      return NextResponse.json({ success: false, message: 'Invalid or missing walkingId' }, { status: 400 })
     }
 
     // Query walking history data and populate fields
@@ -27,10 +24,7 @@ export async function POST(req: NextRequest) {
       .select('acc gyro rot walking_time event_time step_count createdAt')
 
     if (!walkingData) {
-      return NextResponse.json(
-        { success: false, message: 'Walking history not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ success: false, message: 'Walking history not found' }, { status: 404 })
     }
 
     // Format the response data
@@ -47,9 +41,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, data: responseData })
   } catch (error) {
     console.error('Error fetching walking data:', error)
-    return NextResponse.json(
-      { success: false, message: 'Internal Server Error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 })
   }
 }

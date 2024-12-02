@@ -2,7 +2,8 @@ import { PatientList, SideTabs } from 'components'
 import Link from 'next/link'
 import { Survey, User, Walking } from 'types'
 
-import { Button } from '@/components/ui'
+import { WidgetsWapper } from '@/components/participants/Widgets'
+import { Button } from '@/ui'
 
 async function fetchProjectData(projectTitle: string) {
   const query = new URLSearchParams({ project_name: projectTitle }).toString()
@@ -19,9 +20,9 @@ async function fetchProjectData(projectTitle: string) {
   return data.projectData
 }
 
-export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
-  const { projectTitle, username } = params
-  console.log('SSR params:', projectTitle, username)
+export default async function Home({ params }: { params: { projectTitle: string; userid: string } }) {
+  const { projectTitle, userid } = params
+  console.log('SSR params:', projectTitle, userid)
 
   let projectData, participants, participant
 
@@ -32,8 +33,8 @@ export default async function Home({ params }: { params: { projectTitle: string;
       participants = projectData.participants
     }
 
-    // participants matching the User_id
-    participant = participants?.find((p: User) => p._id === username)
+    participant = participants?.find((p: User) => p._id === userid)
+    console.log('Participant:', participant)
   } catch (error) {
     console.error(`Error fetching project or participant data: ${error.message}`)
   }
@@ -45,7 +46,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
         <section className="text-center">
           <h1 className="text-2xl font-bold text-gray-800">Participant Not Found</h1>
           <p className="mt-2 text-gray-600">
-            The participant with username (ID) <strong>{username}</strong> could not be located in the project{' '}
+            The participant with username (ID) <strong>{userid}</strong> could not be located in the project{' '}
             <strong>{projectTitle}</strong>.
           </p>
           <p className="mt-4 text-sm text-gray-500">Please check the project or participant details and try again.</p>
@@ -69,7 +70,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
     createdAt: history.createdAt,
     walking_time: history.walking_time,
   }))
-
+  console.log('walkingHistory:', walkingHistory)
   // Create the user profile object
   const userprofileData = {
     _id: participant._id,
@@ -85,15 +86,14 @@ export default async function Home({ params }: { params: { projectTitle: string;
     walkingHistory,
   }
 
-  console.log('userprofileData', userprofileData)
-
   return (
     <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
       <section className="mb-8 lg:mb-0">
         <PatientList participants={participants} projectTitle={projectTitle} />
       </section>
-      <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        {/* <DiagnosisHistory diagnosisHistory={diagnosisHistory} /> */}
+      {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0"> */}
+      <section className="col-start-2 col-end-4 mb-8">
+        <WidgetsWapper userid={userid} walkingHistory={walkingHistory} />
       </section>
       <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
         <SideTabs profile={userprofileData} />

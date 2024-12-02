@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { GProject } from 'types'
 
-import UserTable from '@/components/participants/UserTable'
 import { QRDialog } from '@/dialog'
 import {
   Button,
@@ -17,6 +16,8 @@ import {
   DropdownMenuTrigger,
   Input,
 } from '@/ui'
+
+import UserTable from './UserTable'
 
 type Participant = {
   _id: string
