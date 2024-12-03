@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose'
 
-import { Acc, Gyro, Rot } from './AccGyroRot'
+import { Acc, Gyro, ResponseData, Rot } from './AccGyroRot'
 import { Analyst } from './Analyst'
 import { CustomSurvey2 } from './CustomSurvey'
 import { Organization } from './Organization'
@@ -22,6 +22,7 @@ export type {
   Gyro,
   Organization,
   Post,
+  ResponseData,
   Rot,
   Selection,
   Survey,

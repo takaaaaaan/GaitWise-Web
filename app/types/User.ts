@@ -1,7 +1,6 @@
-// ====== User Type ======
-
 import { Weight } from './Weight'
 
+// ====== User Type ======
 export type User = {
   _id: string // MongoDB ObjectId
   projects: string[] // 프로젝트 ID 배열
@@ -11,6 +10,7 @@ export type User = {
   lastName: string // 사용자의 성
   gender: string // 성별
   age: number // 나이
+  email: string // 이메일 주소
   weight: Weight // 체중 정보 (Weight 타입)
   height: number // 키 (정수형)
   job: string // 직업

@@ -70,7 +70,6 @@ export default async function Home({ params }: { params: { projectTitle: string;
     createdAt: history.createdAt,
     walking_time: history.walking_time,
   }))
-  console.log('walkingHistory:', walkingHistory)
   // Create the user profile object
   const userprofileData = {
     _id: participant._id,

@@ -1,14 +1,16 @@
 'use client'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { User, Walking, WalkingData } from 'types'
+import { User, Walking } from 'types'
+
+import { ResponseData } from '@/app/types/AccGyroRot'
 
 import BmiWidgets from './BmiWidgets'
 import StepCountWidgets from './StepCountWidgets'
 import WalkingDataChart from './WalkingDataChart'
 import { WalkingListSelecter } from './WalkingListSelecter'
 import WalkingTimeWidgets from './WalkingTimeWidgets'
-import { WidgetsMenu } from './WidgetsMenu'
+import WidgetsMenu from './WidgetsMenu'
 
 type WidgetsWapperProps = {
   walkingHistory: Walking[]
@@ -16,12 +18,13 @@ type WidgetsWapperProps = {
 }
 
 export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWapperProps) {
-  const [walkingData, setWalkingData] = useState<WalkingData | null>(null)
+  const [walkingData, setWalkingData] = useState<ResponseData | null>(null)
   const [selectedWalkingId, setSelectedWalkingId] = useState<string | null>(
-    walkingHistory.length > 0 ? walkingHistory[0]._id : null // 初期選択を最初の項目に設定
+    walkingHistory.length > 0 ? walkingHistory[0]._id : null
   )
+  const [activeWidgets, setActiveWidgets] = useState<string[]>([]) // アクティブなウィジェットを管理
 
-  // API からデータを取得
+  // APIからデータを取得
   const fetchWalkingData = async (walkingId: string) => {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_DOMAIN
@@ -48,19 +51,19 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
     }
   }, [walkingHistory, selectedWalkingId])
 
-  // グラフごとのデータを定義
+  // グラフの設定をアクティブな項目に基づいてフィルタリング
   const chartConfigs = walkingData
     ? [
-        { label: 'Acc-X', data: walkingData.acc.accX, color: 'rgba(75, 192, 192, 1)' },
-        { label: 'Acc-Y', data: walkingData.acc.accY, color: 'rgba(153, 102, 255, 1)' },
-        { label: 'Acc-Z', data: walkingData.acc.accZ, color: 'rgba(255, 159, 64, 1)' },
+        { label: 'ACC-X', data: walkingData.acc.accX, color: 'rgba(75, 192, 192, 1)' },
+        { label: 'ACC-Y', data: walkingData.acc.accY, color: 'rgba(153, 102, 255, 1)' },
+        { label: 'ACC-Z', data: walkingData.acc.accZ, color: 'rgba(255, 159, 64, 1)' },
         { label: 'Gyro-X', data: walkingData.gyro.gyroX, color: 'rgba(255, 99, 132, 1)' },
         { label: 'Gyro-Y', data: walkingData.gyro.gyroY, color: 'rgba(54, 162, 235, 1)' },
         { label: 'Gyro-Z', data: walkingData.gyro.gyroZ, color: 'rgba(255, 206, 86, 1)' },
         { label: 'Rot-X', data: walkingData.rot.rotX, color: 'rgba(75, 192, 192, 1)' },
         { label: 'Rot-Y', data: walkingData.rot.rotY, color: 'rgba(153, 102, 255, 1)' },
         { label: 'Rot-Z', data: walkingData.rot.rotZ, color: 'rgba(255, 159, 64, 1)' },
-      ]
+      ].filter((config) => activeWidgets.includes(config.label)) // アクティブな項目のみ
     : []
 
   return (
@@ -73,7 +76,10 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
               selectedId={selectedWalkingId}
               onSelect={(walkingId) => setSelectedWalkingId(walkingId)}
             />
-            <WidgetsMenu />
+            <WidgetsMenu
+              activeWidgets={activeWidgets}
+              onUpdate={(updatedActiveWidgets) => setActiveWidgets(updatedActiveWidgets)}
+            />
           </div>
           {walkingData ? (
             <>
@@ -91,9 +97,14 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
                   ))}
                 </div>
               </section>
-              <BmiWidgets userData={userData} />
-              <StepCountWidgets step_count={walkingData?.step_count} />
-              <WalkingTimeWidgets walking_time={walkingData?.walking_time} />
+              {/* BMI */}
+              {activeWidgets.includes('BMI') && <BmiWidgets userData={userData} />}
+              {/* Step Count */}
+              {activeWidgets.includes('Step Count') && <StepCountWidgets step_count={walkingData?.step_count} />}
+              {/* Walking Time */}
+              {activeWidgets.includes('Walking Time') && (
+                <WalkingTimeWidgets walking_time={walkingData?.walking_time.toString()} />
+              )}
             </>
           ) : (
             <p>Loading Walking Data...</p>

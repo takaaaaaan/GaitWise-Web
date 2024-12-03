@@ -6,7 +6,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import LottieJson from '@/public/lotties/walkingtime.json' // 適切なLottieアニメーションを指定
 
 type WalkingTimeWidgetsProps = {
-  walking_time?: string // ウォーキング時間（フォーマット例: "00:30:00"）
+  walking_time: string // ウォーキング時間（フォーマット例: "00:30:00"）
 }
 
 export default function WalkingTimeWidgets({ walking_time }: WalkingTimeWidgetsProps) {
