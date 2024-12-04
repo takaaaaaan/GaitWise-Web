@@ -1,16 +1,7 @@
 import '@/styles/globals.css'
 
-import { Navbar } from 'components'
+import AdminPanelLayout from '@/components/admin-panel/admin-panel-layout'
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <>
-      <Navbar />
-      {children}
-    </>
-  )
+export default function MainLayout({ children }: { children: React.ReactNode }) {
+  return <AdminPanelLayout>{children}</AdminPanelLayout>
 }
