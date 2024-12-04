@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { User, Walking } from 'types'
 
 import { ResponseData } from '@/app/types/AccGyroRot'
+import { SkeletonCard } from '@/components/common/SkeletonCard'
 
 import BmiWidgets from './BmiWidgets'
 import StepCountWidgets from './StepCountWidgets'
@@ -18,11 +19,20 @@ type WidgetsWapperProps = {
 }
 
 export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWapperProps) {
+  const LOCAL_STORAGE_KEY = 'activeWidgets'
+
   const [walkingData, setWalkingData] = useState<ResponseData | null>(null)
   const [selectedWalkingId, setSelectedWalkingId] = useState<string | null>(
     walkingHistory.length > 0 ? walkingHistory[0]._id : null
   )
-  const [activeWidgets, setActiveWidgets] = useState<string[]>([]) // アクティブなウィジェットを管理
+  const [activeWidgets, setActiveWidgets] = useState<string[]>(() => {
+    // 初期化時にローカルストレージから取得
+    if (typeof window !== 'undefined') {
+      const storedWidgets = localStorage.getItem(LOCAL_STORAGE_KEY)
+      return storedWidgets ? JSON.parse(storedWidgets) : []
+    }
+    return []
+  })
 
   // APIからデータを取得
   const fetchWalkingData = async (walkingId: string) => {
@@ -50,6 +60,11 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
       setSelectedWalkingId(walkingHistory[0]._id)
     }
   }, [walkingHistory, selectedWalkingId])
+
+  // アクティブなウィジェットの状態をローカルストレージに保存
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activeWidgets))
+  }, [activeWidgets])
 
   // グラフの設定をアクティブな項目に基づいてフィルタリング
   const chartConfigs = walkingData
@@ -83,8 +98,7 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
           </div>
           {walkingData ? (
             <>
-              <section className="col-span-4">
-                <h2 className="text-center text-lg font-bold">Walking Data Visualization</h2>
+              <section className="col-span-4 py-4">
                 <div>
                   {chartConfigs.map(({ label, data, color }, index) => (
                     <WalkingDataChart
@@ -97,17 +111,21 @@ export default function WidgetsWapper({ walkingHistory, userData }: WidgetsWappe
                   ))}
                 </div>
               </section>
-              {/* BMI */}
-              {activeWidgets.includes('BMI') && <BmiWidgets userData={userData} />}
-              {/* Step Count */}
-              {activeWidgets.includes('Step Count') && <StepCountWidgets step_count={walkingData?.step_count} />}
-              {/* Walking Time */}
-              {activeWidgets.includes('Walking Time') && (
-                <WalkingTimeWidgets walking_time={walkingData?.walking_time.toString()} />
-              )}
+              <div className="flex gap-4">
+                {/* BMI */}
+                {activeWidgets.includes('BMI') && <BmiWidgets userData={userData} />}
+                {/* Step Count */}
+                {activeWidgets.includes('Step Count') && <StepCountWidgets step_count={walkingData?.step_count} />}
+                {/* Walking Time */}
+                {activeWidgets.includes('Walking Time') && (
+                  <WalkingTimeWidgets walking_time={walkingData?.walking_time.toString()} />
+                )}
+              </div>
             </>
           ) : (
-            <p>Loading Walking Data...</p>
+            <div className="mt-4">
+              <SkeletonCard />
+            </div>
           )}
         </>
       ) : (

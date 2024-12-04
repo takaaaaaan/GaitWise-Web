@@ -71,16 +71,16 @@ export default function BmiWidgets({ userData }: BmiWidgetsProps) {
       </CardHeader>
       <CardContent className="flex items-center gap-4">
         <div>
-          <p className="text-lg font-semibold">
+          <p className="whitespace-nowrap text-lg font-semibold">
             <strong>BMI:</strong> <span className="text-blue-600">{bmi.toFixed(2)}</span>
           </p>
-          <p>
+          <p className="whitespace-nowrap">
             <strong>Height:</strong> {userData.height} cm
           </p>
-          <p>
+          <p className="whitespace-nowrap">
             <strong>Weight:</strong> {userData.weight.value} {userData.weight.type}
           </p>
-          <p>
+          <p className="whitespace-nowrap">
             <strong>Sex:</strong> {userData.gender}
           </p>
         </div>

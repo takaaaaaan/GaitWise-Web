@@ -13,7 +13,7 @@ export default function WalkingTimeWidgets({ walking_time }: WalkingTimeWidgetsP
   const walkingTimeMessage = walking_time ? `${walking_time} times` : 'No walking time recorded'
 
   return (
-    <Card className="h-[286px] w-[350px] overflow-hidden rounded-lg border-4 shadow-lg">
+    <Card className="h-78 w-[350px] overflow-hidden rounded-lg border-4 p-4 shadow-lg">
       <CardHeader>
         <CardTitle className="text-center text-xl font-bold">Walking Time</CardTitle>
         <CardDescription className="text-center">Information about the total walking time recorded.</CardDescription>

@@ -78,7 +78,7 @@ const WalkingDataChart = ({ eventTime, data, label, color }) => {
   }
 
   return (
-    <Card className="mb-[60px] h-[330px]">
+    <Card className="mb-4 h-[330px]">
       <Line data={chartData} options={options} className="h-[200px]" />
     </Card>
   )

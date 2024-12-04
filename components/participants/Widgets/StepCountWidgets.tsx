@@ -13,7 +13,7 @@ export default function StepCountWidgets({ step_count }: StepCountWidgetsProps) 
   const stepCountMessage = step_count && step_count > 0 ? `${step_count} steps` : 'No steps recorded'
 
   return (
-    <Card className="h-[286px] w-[350px] overflow-hidden rounded-lg border-4 shadow-lg">
+    <Card className="h-78 w-[350px] overflow-hidden rounded-lg border-4 p-4 shadow-lg">
       <CardHeader>
         <CardTitle className="text-center text-xl font-bold">Step Count</CardTitle>
         <CardDescription className="text-center">
