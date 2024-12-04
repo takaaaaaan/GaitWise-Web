@@ -2,7 +2,7 @@ import { SheetMenu } from '@/components/admin-panel/sheet-menu'
 // import { UserNav } from '@/components/admin-panel/user-nav'
 
 interface NavbarProps {
-  title: string
+  title: string | string[]
 }
 
 export function Navbar({ title }: NavbarProps) {

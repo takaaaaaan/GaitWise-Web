@@ -86,7 +86,7 @@ export default async function Home({ params }: { params: { projectTitle: string;
   }
 
   return (
-    <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
+    <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center p-8 lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
       <section className="mb-8 lg:mb-0">
         <PatientList participants={participants} projectTitle={projectTitle} />
       </section>

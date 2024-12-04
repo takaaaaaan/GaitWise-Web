@@ -1,3 +1,4 @@
+import { HContentLayout } from '@/components/admin-panel/h-content-layout'
 import ProjectHeader from '@/components/participants/ParticipantHeader'
 import TableWrapper from '@/components/participants/Table/TableWapper'
 
@@ -17,8 +18,8 @@ async function fetchProjectData(projectTitle: string) {
 }
 
 export default async function Home({ params }: { params: { projectTitle: string; username: string } }) {
-  const { projectTitle, username } = params
-  console.log('SSR params:', projectTitle, username)
+  const { projectTitle } = params
+  console.log('SSR params:', projectTitle)
 
   let projectData, participants
   try {
@@ -34,13 +35,22 @@ export default async function Home({ params }: { params: { projectTitle: string;
     }
   }
 
+  // HContentLayout に渡すデータを生成
+  const hContentLayoutParams = {
+    project_name: projectData?.project_name || undefined,
+    organization_name: projectData?.organization?.organization_name || undefined,
+  }
+
+  console.log('projectData:', projectData.project_name, projectData.organization.organization_name)
   return (
-    <main className="mt-10 w-full flex-row px-11">
-      <ProjectHeader projectdata={projectData || []} />
-      <h2 className="mt-10 text-2xl font-semibold text-gray-800">User List</h2>
-      <div className="mt-5">
-        <TableWrapper participants={participants} projectdata={projectData} />
-      </div>
-    </main>
+    <HContentLayout params={hContentLayoutParams}>
+      <main className="mt-10 w-full flex-row px-11">
+        <ProjectHeader projectdata={projectData || []} />
+        <h2 className="mt-10 text-2xl font-semibold text-gray-800">User List</h2>
+        <div className="mt-5">
+          <TableWrapper participants={participants} projectdata={projectData} />
+        </div>
+      </main>
+    </HContentLayout>
   )
 }

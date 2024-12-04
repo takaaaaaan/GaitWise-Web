@@ -19,7 +19,6 @@ interface MenuProps {
 
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname()
-  console.log('pathname', pathname)
   const { data } = useNavPage('nav')
   const menuList = getMenuList(data)
 

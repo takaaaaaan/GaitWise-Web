@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
         select: '-password', // Exclude the password field
       })
       .populate('surveys') // Get related survey information
-    console.log('project data:', project)
+    // console.log('project data:', project)
     if (!project) {
       return NextResponse.json(
         { message: 'No project found with the specified name.', success: false },

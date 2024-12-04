@@ -49,14 +49,15 @@ export function CollapseMenuButton({ icon: Icon, label, active, submenus, isOpen
               <span className="mr-4">
                 <Icon size={18} />
               </span>
-              <p
+              <Link
+                href={`/organization/${encodeURIComponent(label)}`}
                 className={cn(
-                  'max-w-[150px] truncate',
+                  'max-w-[150px] truncate hover:underline',
                   isOpen ? 'translate-x-0 opacity-100' : '-translate-x-96 opacity-0'
                 )}
               >
                 {label}
-              </p>
+              </Link>
             </div>
             <div
               className={cn('whitespace-nowrap', isOpen ? 'translate-x-0 opacity-100' : '-translate-x-96 opacity-0')}
