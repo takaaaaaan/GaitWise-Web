@@ -2,6 +2,7 @@ import { PatientList, SideTabs } from 'components'
 import Link from 'next/link'
 import { Survey, User, Walking } from 'types'
 
+import { HContentLayout } from '@/components/admin-panel/h-content-layout'
 import { WidgetsWapper } from '@/components/participants/Widgets'
 import { Button } from '@/ui'
 
@@ -85,18 +86,27 @@ export default async function Home({ params }: { params: { projectTitle: string;
     walkingHistory,
   }
 
+  // HContentLayout に渡すデータを生成
+  const hContentLayoutParams = {
+    project_name: projectData?.project_name || undefined,
+    organization_name: projectData?.organization?.organization_name || undefined,
+    userid: params?.userid || undefined,
+  }
+
   return (
-    <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center p-8 lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
-      <section className="mb-8 lg:mb-0">
-        <PatientList participants={participants} projectTitle={projectTitle} />
-      </section>
-      {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0"> */}
-      <section className="col-start-2 col-end-4 mb-8">
-        <WidgetsWapper userid={userid} walkingHistory={walkingHistory} userData={userprofileData} />
-      </section>
-      <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
-        <SideTabs profile={userprofileData} />
-      </section>
-    </main>
+    <HContentLayout params={hContentLayoutParams}>
+      <main className="mx-4 mb-8 flex min-h-screen flex-wrap justify-center p-4 lg:grid lg:grid-flow-col lg:grid-cols-4 lg:grid-rows-1 lg:gap-x-8">
+        <section className="mb-8 lg:mb-0">
+          <PatientList participants={participants} projectTitle={projectTitle} />
+        </section>
+        {/* <section className="col-start-2 col-end-4 mb-8 grid grid-cols-1 gap-8 lg:mb-0"> */}
+        <section className="col-start-2 col-end-4 mb-8">
+          <WidgetsWapper userid={userid} walkingHistory={walkingHistory} userData={userprofileData} />
+        </section>
+        <section className="mb-8 grid grid-cols-1 gap-8 lg:mb-0">
+          <SideTabs profile={userprofileData} />
+        </section>
+      </main>
+    </HContentLayout>
   )
 }

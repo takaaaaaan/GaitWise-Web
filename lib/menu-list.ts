@@ -1,4 +1,4 @@
-import { LucideIcon, Plus, Settings, SquarePen } from 'lucide-react'
+import { Building2, LucideIcon, Plus, Settings } from 'lucide-react'
 import { GProject } from 'types'
 
 type Submenu = {
@@ -29,7 +29,7 @@ export function getMenuList(organizationData: OrganizationData[] = []): Group[] 
   const organizationMenus = organizationData.map((org) => ({
     href: '',
     label: org.organization_name, // Organization name as menu label
-    icon: SquarePen,
+    icon: Building2,
     submenus: [
       ...org.projects.map((project) => ({
         href: `/participant/${encodeURIComponent(project.project_name)}`, // Dynamic URL for projects

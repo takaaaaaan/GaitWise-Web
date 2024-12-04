@@ -21,7 +21,7 @@ interface ContentLayoutProps {
 }
 
 export function HContentLayout({ children, params }: ContentLayoutProps) {
-  const { project_name: projectName, organization_name: organizationName } = params
+  const { project_name: projectName, organization_name: organizationName, userid } = params
 
   console.log('HContentLayout params:', params)
 
@@ -51,7 +51,7 @@ export function HContentLayout({ children, params }: ContentLayoutProps) {
             )}
 
             {/* organizationName と projectName が両方存在する場合 */}
-            {organizationName && projectName && (
+            {!userid && organizationName && projectName && (
               <>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
@@ -62,6 +62,28 @@ export function HContentLayout({ children, params }: ContentLayoutProps) {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>Project: {projectName}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            )}
+
+            {/* userid のみ存在する場合 */}
+            {organizationName && projectName && userid && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/organization/${organizationName}`}>Org: {organizationName}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/participant/${organizationName}`}>Project: {projectName}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>User ID: {userid}</BreadcrumbPage>
                 </BreadcrumbItem>
               </>
             )}

@@ -41,7 +41,8 @@ export default async function Home({ params }: { params: { projectTitle: string;
     organization_name: projectData?.organization?.organization_name || undefined,
   }
 
-  console.log('projectData:', projectData.project_name, projectData.organization.organization_name)
+  console.log('projectData:', projectData?.project_name, projectData?.organization?.organization_name)
+
   return (
     <HContentLayout params={hContentLayoutParams}>
       <main className="mt-10 w-full flex-row px-11">

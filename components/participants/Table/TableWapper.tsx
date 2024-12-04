@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCcw } from 'lucide-react'
+import { BookOpenCheck, Columns3, RefreshCcw } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { GProject } from 'types'
@@ -90,6 +90,14 @@ export default function TableWrapper({ participants, projectdata }: WrapperProps
           <Button variant="default" onClick={handleRefresh}>
             <RefreshCcw />
           </Button>
+          <Button
+            variant="outline"
+            className="flex gap-3"
+            onClick={() => router.push(`/survey/${projectdata.project_name}`)}
+          >
+            <BookOpenCheck />
+            Survey List
+          </Button>
           <ColumnsDropdownMenu columns={columnFilters} onChange={setColumnFilters} />
           <QRDialog projectdata={projectdata} />
         </div>
@@ -110,7 +118,10 @@ function ColumnsDropdownMenu({ columns, onChange }: ColumnsDropdownMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Columns</Button>
+        <Button variant="outline" className="flex gap-3">
+          <Columns3 />
+          Columns
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Visible Columns</DropdownMenuLabel>

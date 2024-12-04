@@ -98,7 +98,9 @@ export default function SurveySearchWrapper({ data, projectName }: SurveySearchW
       {/* フッター */}
       <div className="mt-5">
         <div className="flex justify-between">
-          <Button variant="default">Back</Button>
+          <Button variant="default" onClick={() => router.push(`/participant/${projectName}`)}>
+            Back
+          </Button>
         </div>
       </div>
     </div>
