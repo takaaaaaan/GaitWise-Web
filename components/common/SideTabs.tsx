@@ -1,10 +1,12 @@
+import { Participant } from 'types'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import LabResultsList from '../participants/LabResultList'
 import PatientProfile from '../participants/ParticipantsProfile'
 
-export function SideTabs({ profile }: { profile: any }) {
+export function SideTabs({ profile }: { profile: Participant }) {
   return (
     <Tabs defaultValue="Profile" className="w-full">
       <TabsList className="grid w-full grid-cols-2">

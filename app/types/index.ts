@@ -7,7 +7,7 @@ import { Organization } from './Organization'
 import { Post } from './Post'
 import { CustomSurvey, GProject, Selection, TextResponse } from './Project'
 import { EssentialSurvey, Survey } from './Survey'
-import { User } from './User'
+import { Participant, User } from './User'
 import { VerificationCode } from './VerificationCode'
 import { Walking } from './Walking'
 import { Weight } from './Weight'
@@ -21,6 +21,7 @@ export type {
   GProject,
   Gyro,
   Organization,
+  Participant,
   Post,
   ResponseData,
   Rot,

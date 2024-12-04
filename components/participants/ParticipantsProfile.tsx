@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { Participant } from 'types'
 
 import { CalendarTodayIcon, GenderMark, IdCard, PhoneIcon } from '@/components/icons'
 
-const PatientProfile = ({ participant }) => {
+const PatientProfile = ({ participant }: { participant: Participant }) => {
   const [participantData] = useState({
     name: `${participant.firstName || 'N/A'} ${participant.lastName || ''}`.trim(),
     gender: participant.gender || 'Unknown',
