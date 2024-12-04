@@ -1,5 +1,5 @@
 import { SheetMenu } from '@/components/admin-panel/sheet-menu'
-import { UserNav } from '@/components/admin-panel/user-nav'
+// import { UserNav } from '@/components/admin-panel/user-nav'
 
 interface NavbarProps {
   title: string
@@ -13,9 +13,9 @@ export function Navbar({ title }: NavbarProps) {
           <SheetMenu />
           <h1 className="font-bold">{title}</h1>
         </div>
-        <div className="flex flex-1 items-center justify-end">
+        {/* <div className="flex flex-1 items-center justify-end">
           <UserNav />
-        </div>
+        </div> */}
       </div>
     </header>
   )

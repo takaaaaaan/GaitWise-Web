@@ -7,7 +7,7 @@ interface OrganizationData {
   projects: string[]
 }
 
-const useNavPage = () => {
+const useNavPage = (type: 'search' | 'nav') => {
   const [data, setData] = useState<OrganizationData[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -24,13 +24,17 @@ const useNavPage = () => {
         return
       }
 
-      const response = await fetch('/api/organization/search', {
+      // 動的に URL を設定
+      const url = type === 'search' ? '/api/organization/search' : '/api/organization/nav'
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // Add token to the headers
         },
       })
+
       if (!response.ok) {
         const errorData = await response.json()
         setError(errorData.error || 'API error occurred')
@@ -55,7 +59,7 @@ const useNavPage = () => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, []) // typeが変更されたら再フェッチ
 
   // Function to refetch data
   const refetch = () => {

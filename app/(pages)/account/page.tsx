@@ -16,12 +16,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useSidebar } from '@/hooks/use-sidebar'
 import { useStore } from '@/hooks/use-store'
 
-export default function DashboardPage() {
+export default function AccountPage() {
   const sidebar = useStore(useSidebar, (x) => x)
   if (!sidebar) return null
   const { settings, setSettings } = sidebar
   return (
-    <ContentLayout title="Dashboard">
+    <ContentLayout title="Account">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -31,7 +31,7 @@ export default function DashboardPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+            <BreadcrumbPage>Account</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

@@ -1,4 +1,5 @@
-import { Bookmark, LayoutGrid, LucideIcon, Settings, SquarePen, Tag, Users } from 'lucide-react'
+import { LucideIcon, Plus, Settings, SquarePen } from 'lucide-react'
+import { GProject } from 'types'
 
 type Submenu = {
   href: string
@@ -19,57 +20,45 @@ type Group = {
   menus: Menu[]
 }
 
-export function getMenuList(pathname: string): Group[] {
+interface OrganizationData {
+  organization_name: string
+  projects: GProject[]
+}
+
+export function getMenuList(organizationData: OrganizationData[] = []): Group[] {
+  const organizationMenus = organizationData.map((org) => ({
+    href: '',
+    label: org.organization_name, // Organization name as menu label
+    icon: SquarePen,
+    submenus: [
+      ...org.projects.map((project) => ({
+        href: `/participant/${encodeURIComponent(project.project_name)}`, // Dynamic URL for projects
+        label: project.project_name, // プロジェクト名を直接ラベルに指定
+      })),
+      // Add link to create a new project for this organization
+      {
+        href: `/createproject/${encodeURIComponent(org.organization_name)}/`, // Dynamic URL for creating a new project
+        label: 'Create New Project', // Label for the new project creation link
+      },
+    ],
+  }))
+
+  // Add "New Organization" menu item
+  organizationMenus.push({
+    href: '/auth?type=organization',
+    label: 'New Organization',
+    icon: Plus,
+    submenus: [],
+  })
+
   return [
     {
-      groupLabel: '',
-      menus: [
-        {
-          href: '/dashboard',
-          label: 'Dashboard',
-          icon: LayoutGrid,
-          submenus: [],
-        },
-      ],
-    },
-    {
-      groupLabel: 'Contents',
-      menus: [
-        {
-          href: '',
-          label: 'Posts',
-          icon: SquarePen,
-          submenus: [
-            {
-              href: '/posts',
-              label: 'All Posts',
-            },
-            {
-              href: '/posts/new',
-              label: 'New Post',
-            },
-          ],
-        },
-        {
-          href: '/categories',
-          label: 'Categories',
-          icon: Bookmark,
-        },
-        {
-          href: '/tags',
-          label: 'Tags',
-          icon: Tag,
-        },
-      ],
+      groupLabel: 'Organizations',
+      menus: organizationMenus,
     },
     {
       groupLabel: 'Settings',
       menus: [
-        {
-          href: '/users',
-          label: 'Users',
-          icon: Users,
-        },
         {
           href: '/account',
           label: 'Account',

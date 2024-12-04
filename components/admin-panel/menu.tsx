@@ -4,12 +4,14 @@ import { Ellipsis, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import useNavPage from '@/app/hooks/useNavPage'
 import { CollapseMenuButton } from '@/components/admin-panel/collapse-menu-button'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { getMenuList } from '@/lib/menu-list'
 import { cn } from '@/lib/utils'
+import { signout } from '@/utils/auth/signout'
 
 interface MenuProps {
   isOpen: boolean | undefined
@@ -17,7 +19,9 @@ interface MenuProps {
 
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname()
-  const menuList = getMenuList(pathname)
+  console.log('pathname', pathname)
+  const { data } = useNavPage('nav')
+  const menuList = getMenuList(data)
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -95,7 +99,13 @@ export function Menu({ isOpen }: MenuProps) {
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <Button onClick={() => {}} variant="outline" className="mt-5 h-10 w-full justify-center">
+                  <Button
+                    onClick={() => {
+                      signout()
+                    }}
+                    variant="outline"
+                    className="mt-5 h-10 w-full justify-center"
+                  >
                     <span className={cn(isOpen === false ? '' : 'mr-4')}>
                       <LogOut size={18} />
                     </span>

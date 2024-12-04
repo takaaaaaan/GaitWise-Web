@@ -20,7 +20,7 @@ import {
 
 export function CDropdownMenu() {
   const router = useRouter()
-  const { data, loading, error } = useNavPage()
+  const { data, loading, error } = useNavPage('search')
   console.log('useNavPage data:', data)
 
   return (
