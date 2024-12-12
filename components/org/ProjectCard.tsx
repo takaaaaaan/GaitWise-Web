@@ -63,36 +63,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             }}
           >
             {/* Project Code */}
-            <Typography
-              variant="subtitle1"
-              sx={{
-                fontWeight: 'medium',
-                color: '#1976d2',
-              }}
-            >
-              Code: {project.project_code}
-            </Typography>
-
+            <p className="mt-1 text-xs text-gray-500 md:text-sm">
+              Project Code: <span className="font-medium text-gray-800">{project.project_code}</span>
+            </p>
             {/* Participants and Analysts */}
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 'medium',
-                }}
-              >
-                🧑‍🤝‍🧑: <strong>{project.participants?.length || 0}</strong>
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: 'medium',
-                }}
-              >
-                🧠: <strong>{project.analysts?.length || 0}</strong>
-              </Typography>
+            <div className="mt-4 flex flex-col space-y-2 md:flex-row md:space-x-6 md:space-y-0">
+              <p className="text-sm text-gray-600">
+                Participants: <span className="font-bold text-gray-800">{project.participants?.length || 0}</span>
+              </p>
+              <p className="text-sm text-gray-600">
+                Analysts: <span className="font-bold text-gray-800">{project.analysts?.length || 0}</span>
+              </p>
             </div>
           </div>
         </CardContent>

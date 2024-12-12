@@ -108,7 +108,9 @@ export default function SurveyPage() {
       if (response.ok) {
         const result = await response.json()
         console.log('Update successful:', result)
-        alert('Survey successfully saved and updated.')
+
+        // Redirect to the survey list page after successful save
+        router.push(`/survey/${validprojectTitle}`)
       } else {
         const error = await response.json()
         console.error('Update failed:', error)
@@ -172,6 +174,7 @@ export default function SurveyPage() {
                 index={index}
                 moveQuestion={moveQuestion}
                 onSelectQuestion={() => setSelectedQuestion(question)}
+                deleteQuestion={deleteQuestion}
               />
             ))
           )}
@@ -229,7 +232,8 @@ const DraggableQuestion: React.FC<{
   index: number
   moveQuestion: (dragIndex: number, hoverIndex: number) => void
   onSelectQuestion: () => void
-}> = ({ question, index, moveQuestion, onSelectQuestion }) => {
+  deleteQuestion: (id: number) => void // このプロパティを追加
+}> = ({ question, index, moveQuestion, onSelectQuestion, deleteQuestion }) => {
   const ref = useRef<HTMLDivElement>(null)
 
   const [, drop] = useDrop({
@@ -264,9 +268,15 @@ const DraggableQuestion: React.FC<{
             Max : {question.max} Min : {question.min}
           </h4>
         )}
-        <div className="ml-auto flex items-start justify-center gap-3">
-          <Trash2 />
-          <Pencil />
+        <div className="ml-auto flex items-start">
+          <DeleteButtonIcon
+            onClick={(e) => {
+              e.stopPropagation() // 親要素へのイベント伝播を防ぐ
+              deleteQuestion(question.id) // 親から渡された関数を呼び出す
+            }}
+          >
+            <Trash2 color="black" />
+          </DeleteButtonIcon>
         </div>
       </div>
       {question.type === 'multiple' && (
@@ -498,6 +508,23 @@ const DeleteButton = styled.button`
 
   &:hover {
     background-color: #c82333;
+  }
+`
+const DeleteButtonIcon = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 3px;
+  background-color: white;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ebebeb;
   }
 `
 const SaveButton = styled.button`
