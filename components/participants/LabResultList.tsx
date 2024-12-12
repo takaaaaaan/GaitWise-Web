@@ -165,7 +165,7 @@ const WalkingHistoryList = ({ participant }: { participant: { _id: string; walki
                 <button
                   onClick={() => handleDownload(history._id, index)}
                   disabled={isDownloading === history._id}
-                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white transition duration-200 ease-in-out hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 ${
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-teal-400 text-white transition duration-200 ease-in-out hover:bg-teal-500 focus:ring-2 focus:ring-blue-300 ${
                     isDownloading === history._id ? 'cursor-not-allowed opacity-50' : ''
                   }`}
                 >

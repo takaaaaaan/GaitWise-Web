@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
     // 요청 내용 가져오기
     const body = await request.json()
-    const { email, _id: orgid } = body
+    const { email, orgid } = body
 
     // 유효성 검사
     if (!email) {

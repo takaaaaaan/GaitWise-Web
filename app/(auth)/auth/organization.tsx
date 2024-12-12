@@ -98,7 +98,7 @@ export default function CreateOrganizationView() {
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <CreateButton
         onClick={createOrganization}
-        disabled={isLoading || !organizationName.trim() || !organizationDescription.trim() || !organizationProfileImage}
+        disabled={isLoading || !organizationName.trim() || !organizationDescription.trim()}
       >
         {isLoading ? 'Creating...' : 'Create Organization'}
       </CreateButton>

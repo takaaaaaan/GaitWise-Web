@@ -7,7 +7,7 @@ const AnalystSchema = new mongoose.Schema(
     lastname: { type: String, required: true, default: '' },
     email: { type: String, required: true, unique: true, index: true, default: '' },
     password: { type: String, required: true, default: '' },
-    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project', default: [] }],
+    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project', default: [] }],
     organizations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Organization', default: [] }],
   },
   {
