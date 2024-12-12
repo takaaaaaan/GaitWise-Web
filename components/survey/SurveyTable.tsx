@@ -5,7 +5,7 @@ import { EllipsisVertical, NotebookPen } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { CustomAlertDialog, EditSurvey } from '@/dialog'
+import { CustomAlertDialog, EditSurvey, RegisterSurveyDialog } from '@/dialog'
 import {
   Button,
   DropdownMenu,
@@ -116,6 +116,15 @@ export default function SurveyTable({ data, projectName, visibleColumns, onDelet
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem
+                        onClick={(event) => {
+                          event.stopPropagation() // イベント伝播を停止
+                          event.preventDefault() // デフォルトのイベントをキャンセル
+                          console.log('isActivate Survey clicked')
+                        }}
+                      >
+                        <RegisterSurveyDialog data={row.original} registerSurvey={onDeleteComplete} />
+                      </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={(event) => {
                           event.stopPropagation() // イベント伝播を停止

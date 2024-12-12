@@ -3,7 +3,6 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link' // Link をインポート
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { GProject } from '@/app/types'
