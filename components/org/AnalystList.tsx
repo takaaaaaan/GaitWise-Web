@@ -76,7 +76,7 @@ const AnalystList = ({ analysts, organization_id }: AnalystListProps) => {
       <ul role="list" className="divide-y divide-gray-100 rounded-3xl bg-white">
         <li className="flex items-center justify-between gap-x-6 p-5">
           <h2 className="text-2xl font-medium">Analysts</h2>
-          <SearchIcon />
+          {/* <SearchIcon /> */}
         </li>
         {(analystList || []).map((analyst, index) => (
           <li key={index} className="flex items-center justify-between gap-x-6 p-5">
@@ -88,9 +88,9 @@ const AnalystList = ({ analysts, organization_id }: AnalystListProps) => {
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">Email: {analyst.email}</p>
               </div>
             </div>
-            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-center">
+            {/* <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-center">
               <MenuIcon />
-            </div>
+            </div> */}
           </li>
         ))}
 

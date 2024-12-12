@@ -78,7 +78,7 @@ export function HContentLayout({ children, params }: ContentLayoutProps) {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href={`/participant/${organizationName}`}>Project: {projectName}</Link>
+                    <Link href={`/participant/${projectName}`}>Project: {projectName}</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
