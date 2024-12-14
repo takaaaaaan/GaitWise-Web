@@ -1,4 +1,3 @@
-import { createAnalyst, updateAnalyst } from '@/db/actions/analyst/analyst'
 import { checkAnalysts } from '@/db/actions/analyst/checkAnalysts'
 import { getOrganizationsAndProjectsByAnalyst } from '@/db/actions/analyst/fetchRelations'
 import { verifyTokenAndGetUser } from '@/db/actions/analyst/verifyToken'
@@ -11,13 +10,11 @@ export {
   addAnalystToOrganization,
   addProjectToOrganization,
   checkAnalysts,
-  createAnalyst,
   getOrganizationIdByName,
   getOrganizationNameById,
   getOrganizationsAndProjectsByAnalyst,
   getProjectIdByName,
   getProjectNameById,
   sendEmail,
-  updateAnalyst,
   verifyTokenAndGetUser,
 }
