@@ -33,7 +33,7 @@ interface CollapseMenuButtonProps {
   isOpen: boolean | undefined
 }
 
-export function CollapseMenuButton({ icon: Icon, label, active, submenus, isOpen }: CollapseMenuButtonProps) {
+export function CollapseMenuButton({ icon: Icon, label, submenus, isOpen }: CollapseMenuButtonProps) {
   const pathname = usePathname()
   const isSubmenuActive = submenus.some((submenu) =>
     submenu.active === undefined ? submenu.href === pathname : submenu.active

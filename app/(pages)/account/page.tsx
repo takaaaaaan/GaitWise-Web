@@ -36,9 +36,6 @@ export default function AccountPage() {
   const [analystData, setAnalystData] = useState<Analyst | null>(null)
   const [error, setError] = useState<string | null>(null)
   const sidebar = useStore(useSidebar, (x) => x)
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [email, setEmail] = useState('')
   // APIデータの取得
   useEffect(() => {
     const fetchAnalystData = async () => {
@@ -64,7 +61,7 @@ export default function AccountPage() {
 
     fetchAnalystData()
   }, [])
-  const handleSave = async () => {}
+
   if (!sidebar) return null
   const { settings, setSettings } = sidebar
 

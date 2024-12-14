@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { dbConnect } from '@/db/models'
-import { Acc, Gyro, Rot } from '@/db/models/accGyroRot'
 import Walking from '@/db/models/walking'
 
 export async function POST(req: NextRequest) {

@@ -14,6 +14,7 @@ interface PatientListProps {
 
 const PatientList: React.FC<PatientListProps> = ({ participants: initialParticipants, projectTitle }) => {
   const router = useRouter()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [participants, setParticipants] = useState(initialParticipants)
   const [filteredParticipants, setFilteredParticipants] = useState(initialParticipants) // フィルタリング用
   const [searchQuery, setSearchQuery] = useState('') // 検索クエリ

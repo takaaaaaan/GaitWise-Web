@@ -3,8 +3,6 @@ import { Card } from '@mui/material'
 import { useState } from 'react'
 import { validateEmail } from 'utils'
 
-import { MenuIcon, SearchIcon } from '@/components/icons'
-
 interface AnalystListProps {
   organization_id: string
   analysts: {

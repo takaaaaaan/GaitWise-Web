@@ -4,6 +4,7 @@ import { FolderPlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
+import { Organization } from 'types'
 
 import { HContentLayout } from '@/components/admin-panel/h-content-layout'
 import useFetchOrganizationDetails from '@/hooks/useOrganizationDetails'
@@ -12,7 +13,12 @@ const OrganizationPage = () => {
   const params = useParams()
   const { organizationName } = params || {}
   const validOrganizationName = Array.isArray(organizationName) ? organizationName[0] : organizationName || ''
-  const { data, loading, error } = useFetchOrganizationDetails(validOrganizationName)
+  const { data, loading, error } = useFetchOrganizationDetails(validOrganizationName) as {
+    data: Organization | null
+    loading: boolean
+    error: string | { message: string } | null
+  }
+
   // ==== Dev logs ====
   useEffect(() => {
     console.log('params', params)
@@ -32,7 +38,11 @@ const OrganizationPage = () => {
       <div className="mb-8 flex min-h-screen w-full flex-wrap justify-center px-7 lg:grid lg:grid-flow-col lg:grid-cols-5 lg:grid-rows-1 lg:gap-x-8">
         <section className="col-start-1 col-end-5 mb-8 flex-col lg:mb-0">
           {loading && <p>Loading...</p>}
-          {error && <p style={{ color: 'red' }}>Error: {error.message || 'Failed to fetch data.'}</p>}
+          {error && (
+            <p style={{ color: 'red' }}>
+              Error: {typeof error === 'string' ? error : error.message || 'Failed to fetch data.'}
+            </p>
+          )}
           {data && <OrganizationTitle Organzation={data} />}
           <div className="flex-col items-center">
             <div className="mb-6 mt-8">
